@@ -1,5 +1,6 @@
 class QueueRepository {
   List queue = [];
+  int currentIndex = 0;
   Future<void> addItem(String file,int position) async {
     if (position == -1) {
       queue.add(file);
@@ -12,5 +13,9 @@ class QueueRepository {
 
   String getItemAtPos(int position) {
     return queue[position];
+  }
+
+  String getCurrentItem() {
+    return queue[currentIndex];
   }
 }

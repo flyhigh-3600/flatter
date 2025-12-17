@@ -11,17 +11,20 @@ class FoldersTabViewModel extends ChangeNotifier {
   String directoryString = "no directory selected";
   List<String> folders = [];//mwegen berechtigungen soll man einfach mehrere ordner hinzufügen, auf alle unterordner hat die app dann zugriff; man hat also eine liste mit den hinzugefügten ordnern.
   List<List<dynamic>> toDisplay = [];
-  List<String> history = ["start"];
+  List<String> history = [];
   final QueueRepository _queueRepository;
 
   Future<void> updateList(List<String> whattodisplay) async {
     toDisplay.clear();
-    for (String item in whattodisplay) {
-      Icon iconToDisplay = Icon(Icons.folder);
-      if (await FileSystemEntity.isDirectory(item) == false) {
-        iconToDisplay = Icon(Icons.audio_file);
+    for (String path in whattodisplay) {
+      int lastSlash = path.lastIndexOf("/");
+      String name = path.substring(lastSlash + 1);
+      IconData iconToDisplay = Icons.folder;
+      if (await FileSystemEntity.isDirectory(path) == false) {
+        iconToDisplay = Icons.audio_file;
+
       }
-      toDisplay.add([item,iconToDisplay]);
+      toDisplay.add([path,name,iconToDisplay]);
     }
     notifyListeners();
   }
@@ -36,9 +39,8 @@ class FoldersTabViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> removeFolder(String directory) async {
-    folders.remove(directory);
-    notifyListeners();
+  Future<void> threePoint(String path) async {
+    print("bleh");
   }
 
   Future<void> openFolder(String directory) async {
@@ -62,11 +64,12 @@ class FoldersTabViewModel extends ChangeNotifier {
   }
 
   Future<void> leaveFolder() async {
-    if (history.length > 2) {
+    if (history.length > 1) {
       history.removeLast();
       openFolder(history.last);
     }
-    else if (history.length == 2) {
+    else if (history.length == 1) {
+      history.clear();
       updateList(folders);
     }
   }

@@ -13,7 +13,9 @@ class PlayerScreen extends StatelessWidget {
         children: [
           ElevatedButton(onPressed: viewModel.setSource, child: Text("set source")),
           ElevatedButton(onPressed: viewModel.play, child: Text("play")),
-          ElevatedButton(onPressed: viewModel.pause, child: Text("pause"))
+          ElevatedButton(onPressed: viewModel.pause, child: Text("pause")),
+          ElevatedButton(onPressed: viewModel.rewind, child: Text("rewind")),
+          ElevatedButton(onPressed: viewModel.skip, child: Text("skip")),
         ],
       ),
     );
