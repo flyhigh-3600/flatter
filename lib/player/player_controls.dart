@@ -1,10 +1,13 @@
 import 'package:flatter/Repositories/queue_repository.dart';
-import 'package:flatter/main.dart';
 import 'package:flatter/player/audio_player.dart';
 
 class PlayerControls {
   final player = MyPlayer();
   final QueueRepository queueRepository = QueueRepository();
+
+  int getCurrentIndex() {
+    return queueRepository.getCurrentIndex();
+  }
 
   void setSource(String source) {
     player.setSource(source);

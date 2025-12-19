@@ -1,4 +1,3 @@
-import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/artists_tab/artists_tab.dart';
@@ -9,8 +8,6 @@ import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playli
 import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playlists_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab_viewModel.dart';
-import 'package:flatter/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LibraryTabBar extends StatelessWidget {

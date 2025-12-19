@@ -1,6 +1,4 @@
-import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/main.dart';
-import 'package:flatter/player/audio_player.dart';
 import 'package:flutter/cupertino.dart';
 
 class PlayerScreenViewModel extends ChangeNotifier {

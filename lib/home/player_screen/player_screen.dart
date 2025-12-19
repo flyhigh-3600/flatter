@@ -1,5 +1,4 @@
 import 'package:flatter/home/player_screen/player_screen_ViewModel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlayerScreen extends StatelessWidget {

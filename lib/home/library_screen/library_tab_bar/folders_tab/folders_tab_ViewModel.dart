@@ -1,10 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/main.dart';
-import 'package:flatter/player/player_controls.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FoldersTabViewModel extends ChangeNotifier {
