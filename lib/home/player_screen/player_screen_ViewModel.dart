@@ -15,6 +15,10 @@ class PlayerScreenViewModel extends ChangeNotifier {
     playerControl.pause();
   }
 
+  Future<void> togglePlayPause() async {
+    playerControl.togglePlayPause();
+  }
+
   Future<void> rewind() async {
     print("nothing here yet");
   }

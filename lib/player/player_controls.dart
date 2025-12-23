@@ -5,15 +5,43 @@ class PlayerControls {
   final player = MyPlayer();
   final QueueRepository queueRepository = QueueRepository();
 
-  int getCurrentIndex() {
-    return queueRepository.getCurrentIndex();
-  }
+  bool playing = false;
 
+  //player controls
   void setSource(String source) {
     player.setSource(source);
   }
+  void togglePlayPause() {
+    if (player.playerState().toString() == "PlayerState.playing") {
+      pause();
+    } else if (player.playerState().toString() == "PlayerState.paused") {
+      play();
+    } else if (player.playerState().toString() == "PlayerState.stopped") {
+      player.setSource(queueRepository.getItemAtPos(getCurrentIndex()));
+      play();
+    }
+  }
+
+  String checkPlayerState() {
+    if (player.playerState().toString() == "PlayerState.playing") {
+      return "playing";
+    } else if (player.playerState().toString() == "PlayerState.paused") {
+      return "paused";
+    } else if (player.playerState().toString() == "PlayerState.stopped") {
+      player.setSource(queueRepository.getItemAtPos(getCurrentIndex()));
+      return "stopped";
+    } else {
+      return "";
+    }
+  }
 
   void play() {
+    if (queueRepository.getQueueLength() == 0) {
+      return;
+    }
+    if (checkPlayerState() == "stopped") {
+      player.setSource(queueRepository.getItemAtPos(getCurrentIndex()));
+    }
     player.play();
   }
 
@@ -32,5 +60,9 @@ class PlayerControls {
 
   void addItemAt(int position, String item) {
     queueRepository.addItem(item, position);
+  }
+
+  int getCurrentIndex() {
+    return queueRepository.getCurrentIndex();
   }
 }

@@ -1,21 +1,25 @@
 import 'package:audioplayers/audioplayers.dart';
 
 class MyPlayer {
-  final player = AudioPlayer();
+  final _player = AudioPlayer();
 
   Future<void> setSource(String source) async {
-    await player.setSource(DeviceFileSource(source));
+    await _player.setSource(DeviceFileSource(source));
   }
 
   Future<void> play() async {
-    await player.resume();
+    await _player.resume();
   }
 
   Future<void> pause() async {
-    await player.pause();
+    await _player.pause();
   }
 
   Future<void> seek(Duration position) async {
-    await player.seek(position);
+    await _player.seek(position);
+  }
+
+  playerState() {
+    return _player.state;
   }
 }

@@ -18,4 +18,8 @@ class QueueRepository {
   int getCurrentIndex() {
     return _currentIndex;
   }
+
+  int getQueueLength() {
+    return _queue.length;
+  }
 }
