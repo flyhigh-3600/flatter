@@ -20,10 +20,10 @@ class PlayerScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> rewind() async {
-    print("nothing here yet");
+    playerControl.rewind();
   }
 
   Future<void> skip() async {
-    print("nothing heree yetr");
+    playerControl.skip();
   }
 }

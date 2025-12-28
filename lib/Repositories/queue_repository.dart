@@ -1,7 +1,6 @@
 class QueueRepository {
-  final List<String> _queue = [];
-  final int _currentIndex = 0;
-  Future<void> addItem(String file,int position) async {
+  final List<List<String>> _queue = [];
+  Future<void> addItem(List<String> file,int position) async {
     if (position == -1) {
       _queue.add(file);
       print(_queue);
@@ -11,14 +10,17 @@ class QueueRepository {
     print(_queue);
   }
 
-  String getItemAtPos(int position) {
+  Future<void> removeItem(int position) async {
+    _queue.removeAt(position);
+  }
+
+  List<String> getItemAtPos(int position) {
     return _queue[position];
   }
 
-  int getCurrentIndex() {
-    return _currentIndex;
+  List<List<String>> getQueue() {
+    return _queue;
   }
-
   int getQueueLength() {
     return _queue.length;
   }

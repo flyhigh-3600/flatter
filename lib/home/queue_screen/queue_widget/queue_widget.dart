@@ -1,3 +1,4 @@
+import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
 class QueueWidget extends StatefulWidget {
@@ -8,5 +9,38 @@ class QueueWidget extends StatefulWidget {
 }
 
 class _QueueWidgetState extends State<QueueWidget> {
-  final List<String> _items = //hier ein viewModel erstellen und so
+  List<List<String>> _items = playerControl.getQueue();
+
+  void updateQueue(int oldIndex,int newIndex) {
+    playerControl.moveItem(oldIndex, newIndex);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ReorderableListView(
+      children: [
+        for (int index = 0; index < _items.length; index += 1)
+          Card(
+            key: Key('$index'),
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text(_items[index][1]),
+                  subtitle: Text(_items[index][0]),
+                ),
+              ],
+            ),
+          ),
+      ],
+      onReorder: (int oldIndex, int newIndex) {
+        setState(() {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          updateQueue(oldIndex, newIndex);
+          _items = playerControl.getQueue();
+        });
+      },
+    );
+  }
 }

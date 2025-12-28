@@ -1,4 +1,5 @@
 import 'package:flatter/home/queue_screen/queue_screen_ViewModel.dart';
+import 'package:flatter/home/queue_screen/queue_widget/queue_widget.dart';
 import 'package:flutter/cupertino.dart';
 
 class QueueScreen extends StatelessWidget {
@@ -8,7 +9,7 @@ class QueueScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("queue screen"),
+      child: QueueWidget(),
     );
   }
 }

@@ -5,19 +5,21 @@ class PlayerControls {
   final player = MyPlayer();
   final QueueRepository queueRepository = QueueRepository();
 
+  int _currentIndex = 0;
   bool playing = false;
 
   //player controls
   void setSource(String source) {
     player.setSource(source);
   }
+
   void togglePlayPause() {
     if (player.playerState().toString() == "PlayerState.playing") {
       pause();
     } else if (player.playerState().toString() == "PlayerState.paused") {
       play();
     } else if (player.playerState().toString() == "PlayerState.stopped") {
-      player.setSource(queueRepository.getItemAtPos(getCurrentIndex()));
+      player.setSource(queueRepository.getItemAtPos(_currentIndex)[0]);
       play();
     }
   }
@@ -28,7 +30,6 @@ class PlayerControls {
     } else if (player.playerState().toString() == "PlayerState.paused") {
       return "paused";
     } else if (player.playerState().toString() == "PlayerState.stopped") {
-      player.setSource(queueRepository.getItemAtPos(getCurrentIndex()));
       return "stopped";
     } else {
       return "";
@@ -40,7 +41,7 @@ class PlayerControls {
       return;
     }
     if (checkPlayerState() == "stopped") {
-      player.setSource(queueRepository.getItemAtPos(getCurrentIndex()));
+      player.setSource(queueRepository.getItemAtPos(_currentIndex)[0]);
     }
     player.play();
   }
@@ -53,16 +54,44 @@ class PlayerControls {
     player.seek(position);
   }
 
+  void rewind() async {
+    //hier seek zum anfang des songs oder vorheriger song
+    if (true) {
+      _currentIndex = _currentIndex - 1;
+    }
+    setSource(queueRepository.getItemAtPos(_currentIndex)[0]);
+    play();
+  }
+
+  void skip() async {
+    _currentIndex = _currentIndex + 1;
+    setSource(queueRepository.getItemAtPos(_currentIndex)[0]);
+    play();
+  }
+
   //playlist controls
   void playSpecificFromQueue(int index) {
-    player.setSource(queueRepository.getItemAtPos(index));
+    player.setSource(queueRepository.getItemAtPos(index)[0]);
   }
 
   void addItemAt(int position, String item) {
-    queueRepository.addItem(item, position);
+    queueRepository.addItem(getMetadata(item), position);
   }
 
-  int getCurrentIndex() {
-    return queueRepository.getCurrentIndex();
+  List<List<String>> getQueue() {
+    return queueRepository.getQueue();
+  }
+
+  void moveItem(oldIndex,newIndex) {
+    final List<String> file = queueRepository.getItemAtPos(oldIndex);
+    queueRepository.removeItem(oldIndex);
+    queueRepository.addItem(file, newIndex);
+  }
+
+  //metadata
+  List<String> getMetadata(String path) {
+    int lastSlash = path.lastIndexOf("/");
+    String name = path.substring(lastSlash + 1);
+    return [path,name];
   }
 }
