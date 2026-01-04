@@ -19,7 +19,6 @@ class LibraryDatabase {
     print(path);
     db = sqlite3.open(path);
     createTables();
-    closeDatabase();
   }
 
   void closeDatabase() {

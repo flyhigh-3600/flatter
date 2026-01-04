@@ -13,8 +13,8 @@ class FoldersTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: viewModel.leaveFolder, icon: Icon(Icons.arrow_upward)),
-          IconButton(onPressed: viewModel.addFolder, icon: Icon(Icons.folder)),//den knopf wegmachen wenn man nicht im start ordner ist
+          IconButton(onPressed: viewModel.leaveFolder, icon: Icon(Icons.arrow_upward)),//den knopf wegmachen wenn man im start ordner ist
+          IconButton(onPressed: viewModel.addFolder, icon: Icon(Icons.folder)),
         ],
         title: ListenableBuilder(
           listenable: viewModel,
@@ -38,7 +38,7 @@ class FoldersTab extends StatelessWidget {
                         leading: Icon(viewModel.toDisplay[index][2]),
                         title: Text(viewModel.toDisplay[index][1]),
                         subtitle: Text(viewModel.toDisplay[index][0]),
-                        trailing: IconButton(onPressed: () => viewModel.threePoint(viewModel.toDisplay[index][0]), icon: Icon(Icons.more_vert)),
+                        //trailing: IconButton(onPressed: () => viewModel.threePoint(viewModel.toDisplay[index][0]), icon: Icon(Icons.more_vert)),
                       )
                     ],
                   ),

@@ -3,10 +3,68 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter_plus/iconify_flutter_plus.dart';
+import 'package:iconify_flutter_plus/icons/mdi.dart';
 
 class FoldersTabViewModel extends ChangeNotifier {
   String title = "Folders";
-  String directoryString = "no directory selected";
+  List<List<dynamic>> startFolders = databaseControl.getFolders();//[[path,name,isFavorited]]
+  List<List<dynamic>> toDisplay = [];//[[path,name,icontodisplay]]
+  List<String> pathway = ["startfolders"];//[startfolders,
+
+  void updateList() {
+    notifyListeners();
+  }
+
+  Future<void> addFolder() async {
+    String? path = await FilePicker.platform.getDirectoryPath();
+    if (path != null) {
+      databaseControl.addFolder(path);
+    }
+    while (pathway.length > 1) {
+      pathway.removeLast();
+    }
+    openEntry(pathway[0]);
+  }
+
+  void leaveFolder() {
+    if (pathway.length > 1) {
+      pathway.removeLast();
+    }
+    openEntry(pathway.last);
+  }
+
+  Future<void> openEntry(String path) async {
+    if (path == pathway[0]) {
+      openDefaultFolders();
+      return;
+    }
+  }
+
+  void openDefaultFolders() {
+    print(startFolders);
+    toDisplay.clear();
+    List<List<dynamic>> favoriteFolders = [];
+    List<List<dynamic>> normalFolders = [];
+    for (List<dynamic> folder in startFolders) {
+      if (folder[2] == true) {
+        favoriteFolders.add(folder);
+      } else {
+        normalFolders.add(folder);
+      }
+    }
+    favoriteFolders.sort();
+    normalFolders.sort();
+    for (List<dynamic> folder in favoriteFolders) {
+      toDisplay.add([folder[0],folder[1],Iconify(Mdi.folder_favorite)]);
+    }
+    updateList();
+  }
+
+  void threePoint() {
+
+  }
+  /*
   List<String> folders = [];//mwegen berechtigungen soll man einfach mehrere ordner hinzufügen, auf alle unterordner hat die app dann zugriff; man hat also eine liste mit den hinzugefügten ordnern.
   List<List<dynamic>> toDisplay = [];
   List<String> history = [];
@@ -31,13 +89,14 @@ class FoldersTabViewModel extends ChangeNotifier {
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
     if (selectedDirectory != null) {
       folders.add(selectedDirectory);
+      databaseControl.addFolder(selectedDirectory);
       history.clear();
       updateList(folders);
     }
   }
 
   Future<void> threePoint(String path) async {
-    print("bleh");
+    print("bleh");//hier dinge wie isFavorited ändern können und auch den namen ändern können, außerdem alle abspielen/in queue, shuffled in queue maybe noch, mal schauen
   }
 
   Future<void> openFolder(String directory) async {
@@ -70,4 +129,5 @@ class FoldersTabViewModel extends ChangeNotifier {
       updateList(folders);
     }
   }
+  */
 }
