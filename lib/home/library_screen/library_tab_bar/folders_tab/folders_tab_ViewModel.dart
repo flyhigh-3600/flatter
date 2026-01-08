@@ -43,12 +43,40 @@ class FoldersTabViewModel extends ChangeNotifier {
     if (path == pathway[0]) {
       openDefaultFolders();
       return;
+    } else if (await FileSystemEntity.isDirectory(path) == true) {
+      pathway.add(path);
+      openFolder(path);
+    } else {
+      playerControl.addItemAt(-1, path);
     }
   }
 
+  void openFolder(String path) async {
+    toDisplay.clear();
+    Directory dir = Directory(path);
+    List<FileSystemEntity> entries = await dir.list().toList();
+    List<List<dynamic>> folders = [];
+    List<List<dynamic>> files = [];
+    for (FileSystemEntity entryEntity in entries) {
+      String entry = entryEntity.path;
+      int lastSlash = entry.lastIndexOf("/");
+      String name = entry.substring(lastSlash + 1);
+      if (await FileSystemEntity.isDirectory(entry)) {
+        folders.add([entry,name,Icons.folder]);
+      } else {
+        files.add([entry,name,Icons.audio_file]);
+      }
+    }
+    for (List<dynamic> item in folders) {
+      toDisplay.add(item);
+    }
+    for (List<dynamic> item in files) {
+      toDisplay.add(item);
+    }
+    updateList();
+  }
+
   void openDefaultFolders() {
-    print("uh here lol");
-    print(startFolders);
     toDisplay.clear();
     List<List<dynamic>> favoriteFolders = [];
     List<List<dynamic>> normalFolders = [];

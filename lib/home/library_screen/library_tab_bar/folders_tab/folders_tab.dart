@@ -26,7 +26,7 @@ class FoldersTab extends StatelessWidget {
       body: ListenableBuilder(
         listenable: viewModel,
         builder: (context,_) {
-          return ListView.builder(
+          return ListView.builder(//eventuell ersetzen durch scrollable positioned list class, für das nach oben scrollen; oder einen scroll controller einbauen, mal genauer informieren
             itemCount: viewModel.toDisplay.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
