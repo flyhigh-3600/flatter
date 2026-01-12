@@ -71,6 +71,7 @@ class FoldersTabViewModel extends ChangeNotifier {
       if (await FileSystemEntity.isDirectory(entry)) {
         folders.add([entry,name,Icons.folder]);
       } else {
+        if (await FileSystemEntity.type(entry) == )
         files.add([entry,name,Icons.audio_file]);
       }
     }
