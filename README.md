@@ -1,10 +1,17 @@
 # flatter
 
-A cross platform music player and audio tagger
+An offline music player and metadata editor
 
-### Features
-✅ plays local files
+## features
 
-❌
+- Cross Platform
+  - Android
+  - Linux
+  - Windows
+  - should work on iOS and MacOS too
+- Batch metadata editor
 
-- might play music from servers like navidrome
+### planned
+
+- Navidrome/Subsonic support
+- automatically fetch Lyrics from the web
