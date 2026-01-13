@@ -1,5 +1,5 @@
+import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/player_screen_ViewModel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlayerScreen extends StatelessWidget {
@@ -8,13 +8,19 @@ class PlayerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          ElevatedButton(onPressed: viewModel.setSource, child: Text("set source")),
-          ElevatedButton(onPressed: viewModel.play, child: Text("play")),
-          ElevatedButton(onPressed: viewModel.pause, child: Text("pause"))
-        ],
+    return SafeArea(
+      child: Center(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                IconButton.filledTonal(onPressed: viewModel.rewind, icon: Icon(Icons.fast_rewind)),
+                PlayButton(),
+                IconButton.filledTonal(onPressed: viewModel.skip, icon: Icon(Icons.fast_forward_rounded)),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

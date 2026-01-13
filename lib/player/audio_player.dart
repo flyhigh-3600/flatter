@@ -1,17 +1,25 @@
 import 'package:audioplayers/audioplayers.dart';
 
 class MyPlayer {
-  final player = AudioPlayer();
+  final _player = AudioPlayer();
 
-  Future<void> setSource(source) async {
-    await player.setSourceUrl("https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3");
+  Future<void> setSource(String source) async {
+    await _player.setSource(DeviceFileSource(source));
   }
 
   Future<void> play() async {
-    await player.resume();
+    await _player.resume();
   }
 
   Future<void> pause() async {
-    await player.pause();
+    await _player.pause();
+  }
+
+  Future<void> seek(Duration position) async {
+    await _player.seek(position);
+  }
+
+  playerState() {
+    return _player.state;
   }
 }

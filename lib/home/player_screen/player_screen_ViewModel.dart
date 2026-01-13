@@ -1,18 +1,29 @@
-import 'package:flatter/player/audio_player.dart';
+import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 
 class PlayerScreenViewModel extends ChangeNotifier {
-  final player = MyPlayer();
 
   Future<void> setSource() async {
-    await player.setSource("bleh :P");
+    playerControl.playSpecificFromQueue(0);
   }
 
   Future<void> play() async {
-    await player.play();
+    playerControl.play();
   }
 
   Future<void> pause() async {
-    await player.pause();
+    playerControl.pause();
+  }
+
+  Future<void> togglePlayPause() async {
+    playerControl.togglePlayPause();
+  }
+
+  Future<void> rewind() async {
+    playerControl.rewind();
+  }
+
+  Future<void> skip() async {
+    playerControl.skip();
   }
 }
