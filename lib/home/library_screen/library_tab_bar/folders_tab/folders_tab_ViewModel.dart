@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flatter/home/library_screen/library_tab_bar/folders_tab/three_dot_options/three_dot_options_buttons.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter_plus/iconify_flutter_plus.dart';
@@ -10,9 +11,8 @@ import 'package:iconify_flutter_plus/icons/mdi.dart';
 class FoldersTabViewModel extends ChangeNotifier {
   String title = "Folders";
   List<List<dynamic>> startFolders = databaseControl.getFolders();//[[path,name,isFavorited]]
-  List<List<dynamic>> toDisplay = [];//[[path,name,icontodisplay]]
+  List<List<dynamic>> toDisplay = [];//[[path,name,icontodisplay,threedotmenu]]
   List<String> pathway = ["startfolders"];//[startfolders,
-
   FoldersTabViewModel() {
     openDefaultFolders();
   }
@@ -54,7 +54,7 @@ class FoldersTabViewModel extends ChangeNotifier {
       pathway.add(path);
       openFolder(path);
     } else {
-      playerControl.addItemAt(-1, path);
+      playerControl.addItem(path);
     }
   }
 
@@ -69,10 +69,10 @@ class FoldersTabViewModel extends ChangeNotifier {
       int lastSlash = entry.lastIndexOf("/");
       String name = entry.substring(lastSlash + 1);
       if (await FileSystemEntity.isDirectory(entry)) {
-        folders.add([entry,name,Icons.folder]);
+        folders.add([entry,name,Icons.folder,FolderOptionsButton(path: entry)]);
       } else {
         if (entry.endsWith(".mp3") || entry.endsWith(".m4a") || entry.endsWith(".wav") || entry.endsWith(".ogg") || entry.endsWith(".opus") || entry.endsWith(".aac")) {
-          files.add([entry, name, Icons.audio_file]);
+          files.add([entry, name, Icons.audio_file,SongOptionsButton(path: entry)]);
         }
       }
     }
@@ -100,16 +100,12 @@ class FoldersTabViewModel extends ChangeNotifier {
     favoriteFolders.sort((a,b) => a[0][1].compareTo(b[0][1]));
     normalFolders.sort((a,b) => a[0][1].compareTo(b[0][1]));
     for (List<dynamic> folder in favoriteFolders) {
-      toDisplay.add([folder[0],folder[1],Icons.favorite]);
+      toDisplay.add([folder[0],folder[1],Icons.favorite,FolderOptionsButton(path: folder[0])]);
     }
     for (List<dynamic> folder in normalFolders) {
-      toDisplay.add([folder[0],folder[1],Icons.folder]);
+      toDisplay.add([folder[0],folder[1],Icons.folder,FolderOptionsButton(path: folder[0])]);
     }
     title = "Folders";
     updateList();
-  }
-
-  void threePoint(String path) {
-
   }
 }

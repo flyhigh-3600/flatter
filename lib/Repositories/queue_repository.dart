@@ -1,13 +1,12 @@
 class QueueRepository {
   final List<List<dynamic>> _queue = [];//[path,[metadata],current]
-  void addItem(List<dynamic> item,int position) {
-    if (position == -1) {
-      _queue.add(item);
-      print(_queue);
-      return;
-    }
+
+  void insertItem(List<dynamic> item,int position) {
     _queue.insert(position, item);
-    print(_queue);
+  }
+
+  void addItem(List<dynamic> item) {
+    _queue.add(item);
   }
 
   void removeItem(int position) {

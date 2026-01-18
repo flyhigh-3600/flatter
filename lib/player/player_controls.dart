@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/player/audio_player.dart';
 
@@ -92,14 +94,61 @@ class PlayerControls {
     player.setSource(queueRepository.getItemAtPos(index)[0]);
   }
 
-  void addItemAt(int position, String file) {
+  void insertItemAt(int position, String file) {
     bool current = false;
     if (getQueueLength() == 0) {
       current = true;
+      position = 0;
     }
     List<dynamic> item = getMetadata(file);
     item.add(current);
-    queueRepository.addItem(item, position);
+    queueRepository.insertItem(item, position);
+  }
+
+  Future<void> addItem(String path) async {
+    if (await FileSystemEntity.isDirectory(path) == true) {
+      Directory dir = Directory(path);
+      List<FileSystemEntity> entries = await dir.list().toList();
+      for (FileSystemEntity entryEntity in entries) {
+        String entryPath = entryEntity.path;
+        if (await FileSystemEntity.isDirectory(entryPath)) {
+          await addNext(entryPath);
+        } else {
+          if (entryPath.endsWith(".mp3") || entryPath.endsWith(".m4a") || entryPath.endsWith(".wav") || entryPath.endsWith(".ogg") || entryPath.endsWith(".opus") || entryPath.endsWith(".aac")) {
+            insertItemAt(getQueueLength(), entryPath);
+          }
+        }
+      }
+      return;
+    } else {
+      if (path.endsWith(".mp3") || path.endsWith(".m4a") || path.endsWith(".wav") || path.endsWith(".ogg") || path.endsWith(".opus") || path.endsWith(".aac")) {
+        insertItemAt(getQueueLength(), path);
+      }
+    }
+    return;
+  }
+
+  Future<void> addNext(String path) async {
+    if (await FileSystemEntity.isDirectory(path) == true) {
+      Directory dir = Directory(path);
+      List<FileSystemEntity> entries = await dir.list().toList();
+      for (FileSystemEntity entryEntity in entries) {
+        String entryPath = entryEntity.path;
+        if (await FileSystemEntity.isDirectory(entryPath)) {
+          await addNext(entryPath);
+        } else {
+          if (entryPath.endsWith(".mp3") || entryPath.endsWith(".m4a") || entryPath.endsWith(".wav") || entryPath.endsWith(".ogg") || entryPath.endsWith(".opus") || entryPath.endsWith(".aac")) {
+            insertItemAt(getCurrentIndex() + 1, entryPath);
+          }
+        }
+      }
+      return;
+    } else {
+      if (path.endsWith(".mp3") || path.endsWith(".m4a") || path.endsWith(".wav") || path.endsWith(".ogg") || path.endsWith(".opus") || path.endsWith(".aac")) {
+        insertItemAt(getCurrentIndex() + 1, path);
+      }
+    }
+    return;
   }
 
   List<List<dynamic>> getQueue() {
@@ -113,12 +162,13 @@ class PlayerControls {
   void moveItem(int oldIndex,int newIndex) {
     final List<dynamic> item = queueRepository.getItemAtPos(oldIndex);
     queueRepository.removeItem(oldIndex);
-    queueRepository.addItem(item, newIndex);
+    queueRepository.insertItem(item, newIndex);
   }
 
   void makeCurrent(int index) {
     queueRepository.makeCurrent(index);
   }
+
   //metadata
   List<dynamic> getMetadata(String path) {
     int lastSlash = path.lastIndexOf("/");
