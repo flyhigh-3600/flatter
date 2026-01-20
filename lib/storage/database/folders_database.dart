@@ -63,4 +63,10 @@ class FoldersDatabase {
       UPDATE folder SET isFavorited = $isFavorite WHERE path = '$path'
     ''');
   }
+
+  void changeName(String path, String name) {
+    db.execute('''
+      UPDATE folder SET name = '$name' WHERE path = '$path'
+    ''');
+  }
 }

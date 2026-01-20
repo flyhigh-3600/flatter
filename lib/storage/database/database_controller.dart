@@ -33,12 +33,16 @@ class DatabaseController {
     return startFolders;
   }
 
-  void changeFavouriteStatus(String path) {
+  void changeFolderFavouriteStatus(String path) {
     if (_folder_db.getFavoriteStatus(path)[0]['isFavorited'] == 1) {
       _folder_db.setFavorite(path, 0);
     } else {
       _folder_db.setFavorite(path, 1);
     }
+  }
+
+  void changeFolderName(String path, String name) {
+    _folder_db.changeName(path, name);
   }
 
   //TODO: change favorite status (actually wäre das eigentlich auch für songs babo, aber weniger wichtig. user soll sich einfach eine playlist machen xD

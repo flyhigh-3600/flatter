@@ -59,14 +59,6 @@ class FolderOptionsButton extends StatelessWidget {
     playerControl.addItem(path);
   }
 
-  void addToFavorites() {
-    databaseControl.changeFavouriteStatus(path);
-  }
-
-  void changeName() {
-
-  }
-
   void moreOptions() {
 
   }
@@ -106,11 +98,11 @@ class DefaultFolderOptionsButton extends StatelessWidget {
   }
 
   void addToFavorites() {
-    databaseControl.changeFavouriteStatus(path);
+    databaseControl.changeFolderFavouriteStatus(path);
   }
 
   void changeName() {
-
+    //hier dann ein dialog mit entry hin wo man einen namen eintragen kann
   }
 
   void moreOptions() {
