@@ -14,7 +14,18 @@ class FoldersTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: viewModel.leaveFolder, icon: Icon(Icons.arrow_upward)),//den knopf wegmachen wenn man im start ordner ist
+          IconButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text("loading..."),
+                    duration: const Duration(microseconds: 2),
+                  ),
+                );
+                viewModel.leaveFolder();
+              },
+              icon: Icon(Icons.arrow_upward)
+          ),//den knopf wegmachen wenn man im start ordner ist
           IconButton(onPressed: viewModel.addFolder, icon: Icon(Icons.folder)),
         ],
         title: ListenableBuilder(

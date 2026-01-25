@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/player/audio_player.dart';
+import 'package:just_audio/just_audio.dart';
 
 class PlayerControls {
   final player = MyPlayer();
@@ -15,43 +16,24 @@ class PlayerControls {
   }
 
   void togglePlayPause() {
-    if (player.playerState().toString() == "PlayerState.playing") {
-      pause();
-    } else if (player.playerState().toString() == "PlayerState.paused") {
+    if (isPlayerPlaying() == false) {
       play();
-    } else if (player.playerState().toString() == "PlayerState.stopped") {
-      setSource(getCurrentIndex());
-    }
-  }
-
-  String checkPlayerState() {
-    if (player.playerState().toString() == "PlayerState.playing") {
-      return "playing";
-    } else if (player.playerState().toString() == "PlayerState.paused") {
-      return "paused";
-    } else if (player.playerState().toString() == "PlayerState.stopped") {
-      return "stopped";
     } else {
-      return "";
+      pause();
     }
   }
 
   bool isPlayerPlaying() {
-    if (checkPlayerState() == "playing") {
-      return true;
-    } else {
-      return false;
-    }
+    return player.playerState().playing;
   }
 
-  void play() {
-    if (queueRepository.getQueueLength() == 0) {
-      return;
+  void play() {//TODO:das hier besser machen, also so, dass buffering und loading und ready gut reflektiert werden etc
+    if (player.playerState().processingState == ProcessingState.idle) {
+      setSource(0);
+      player.play();
+    } else {
+      player.play();
     }
-    if (checkPlayerState() == "stopped") {
-      setSource(getCurrentIndex());
-    }
-    player.play();
   }
 
   void pause() {
