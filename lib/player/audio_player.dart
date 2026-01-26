@@ -1,14 +1,29 @@
-import 'package:audioplayers/audioplayers.dart';
+
+
+import 'dart:io';
+
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 
 class MyPlayer {
   final _player = AudioPlayer();
 
+  MyPlayer() {
+    JustAudioMediaKit.ensureInitialized();
+  }
+
   Future<void> setSource(String source) async {
-    await _player.setSource(DeviceFileSource(source));
+    print(source);
+    if (Platform.isAndroid == true) {
+      Uri uriSource = Uri.parse(source);
+      await _player.setAudioSource(AudioSource.uri(uriSource));
+    } else {
+      await _player.setAudioSource(AudioSource.file(source));
+    }
   }
 
   Future<void> play() async {
-    await _player.resume();
+    await _player.play();
   }
 
   Future<void> pause() async {
@@ -19,7 +34,7 @@ class MyPlayer {
     await _player.seek(position);
   }
 
-  playerState() {
-    return _player.state;
+  PlayerState playerState() {
+    return _player.playerState;
   }
 }

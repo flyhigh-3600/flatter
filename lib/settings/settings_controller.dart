@@ -12,8 +12,10 @@ extension on TomlDocument {
 
 class SettingsController {
   Map defaultSettingsMap = {
-    'colorScheme': ColorScheme.fromSeed(seedColor: Colors.green),
-  };
+    'startTab':1,
+    'lastTab':1,
+    'startTabSetting':['dropdown',-1,[-1,0,1,2]]//[selection,type,[options]] (-1 = last)
+  };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
 
   Future<void> initialize() async {
@@ -36,7 +38,10 @@ class SettingsController {
   }
 
   void changeSetting(String key,dynamic value) {
+    print(key);
+    print(value);
     settingsMap[key] = value;
+    print(settingsMap);
     saveSettings();
   }
 
@@ -57,7 +62,7 @@ class SettingsController {
   }
 
   List<Widget> getSettingsOptions() {
-    //bruh ok das könnte komplizierter werden
+    //später implementieren
     return [];
   }
 }

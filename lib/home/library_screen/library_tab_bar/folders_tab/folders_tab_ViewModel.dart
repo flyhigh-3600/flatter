@@ -1,18 +1,20 @@
 import 'dart:io';
+import 'dart:core';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flatter/home/library_screen/library_tab_bar/folders_tab/three_dot_options/three_dot_options_buttons.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter_plus/iconify_flutter_plus.dart';
 import 'package:iconify_flutter_plus/icons/ci.dart';
 import 'package:iconify_flutter_plus/icons/mdi.dart';
+import 'package:saf_util/saf_util_platform_interface.dart';
 
 class FoldersTabViewModel extends ChangeNotifier {
   String title = "Folders";
   List<List<dynamic>> startFolders = databaseControl.getFolders();//[[path,name,isFavorited]]
-  List<List<dynamic>> toDisplay = [];//[[path,name,icontodisplay]]
+  List<List<dynamic>> toDisplay = [];//[[path,name,icontodisplay,threedotmenu]]
   List<String> pathway = ["startfolders"];//[startfolders,
-
   FoldersTabViewModel() {
     openDefaultFolders();
   }
@@ -22,9 +24,19 @@ class FoldersTabViewModel extends ChangeNotifier {
   }
 
   Future<void> addFolder() async {
-    String? path = await FilePicker.platform.getDirectoryPath();
+    String? path = await directoryControl.openDirectory();
     if (path != null) {
-      databaseControl.addFolder(path);
+      if (Platform.isAndroid) {
+        SafDocumentFile? folder = await safutil.documentFileFromUri(path, true);
+        if (folder != null) {
+          String name = folder.name;
+          databaseControl.addFolder(path, name);
+        }
+      } else {
+        int lastSlash = path.lastIndexOf("/");
+        String name = path.substring(lastSlash + 1);
+        databaseControl.addFolder(path, name);
+      }
     }
     while (pathway.length > 1) {
       pathway.removeLast();
@@ -33,15 +45,14 @@ class FoldersTabViewModel extends ChangeNotifier {
   }
 
   void leaveFolder() {
-    print(pathway);
-    print(pathway.length);
     if (pathway.length > 2) {
       pathway.removeLast();
-      print(pathway);
     } else if (pathway.length == 2) {
       pathway.removeLast();
       openDefaultFolders();
       return;
+    } else if (pathway.length == 1) {
+      openDefaultFolders();
     }
     openFolder(pathway.last);
   }
@@ -50,29 +61,76 @@ class FoldersTabViewModel extends ChangeNotifier {
     if (path == pathway[0]) {
       openDefaultFolders();
       return;
-    } else if (await FileSystemEntity.isDirectory(path) == true) {
-      pathway.add(path);
-      openFolder(path);
     } else {
-      playerControl.addItemAt(-1, path);
+      if (Platform.isAndroid == true) {
+        if (path.endsWith(".mp3") || path.endsWith(".m4a") || path.endsWith(".wav") || path.endsWith(".ogg") || path.endsWith(".opus") || path.endsWith(".aac")) {
+          playerControl.addItem(path);
+        } else {
+          pathway.add(path);
+          openFolder(path);
+        }
+      } else {
+        if (await FileSystemEntity.isDirectory(path) == true) {
+          pathway.add(path);
+          openFolder(path);
+        } else {
+          playerControl.addItem(path);
+        }
+      }
     }
   }
 
   void openFolder(String path) async {
+    if (path == pathway[0]) {
+      openDefaultFolders();
+      return;
+    }
     toDisplay.clear();
-    Directory dir = Directory(path);
-    List<FileSystemEntity> entries = await dir.list().toList();
+    var entries = await directoryControl.getDirectoryContents(path);
     List<List<dynamic>> folders = [];
     List<List<dynamic>> files = [];
-    for (FileSystemEntity entryEntity in entries) {
-      String entry = entryEntity.path;
-      int lastSlash = entry.lastIndexOf("/");
-      String name = entry.substring(lastSlash + 1);
-      if (await FileSystemEntity.isDirectory(entry)) {
-        folders.add([entry,name,Icons.folder]);
-      } else {
-        if (entry.endsWith(".mp3") || entry.endsWith(".m4a") || entry.endsWith(".wav") || entry.endsWith(".ogg") || entry.endsWith(".opus") || entry.endsWith(".aac")) {
-          files.add([entry, name, Icons.audio_file]);
+    if (Platform.isAndroid == false) {
+      for (FileSystemEntity entryEntity in entries) {
+        String entry = entryEntity.path;
+        int lastSlash = entry.lastIndexOf("/");
+        String name = entry.substring(lastSlash + 1);
+        if (await FileSystemEntity.isDirectory(entry)) {
+          folders.add(
+              [entry, name, Icons.folder, FolderOptionsButton(path: entry)]
+          );
+        } else {
+          if (entry.endsWith(".mp3") || entry.endsWith(".m4a") ||
+              entry.endsWith(".wav") || entry.endsWith(".ogg") ||
+              entry.endsWith(".opus") || entry.endsWith(".aac")) {
+            files.add([
+              entry,
+              name,
+              Icons.audio_file,
+              SongOptionsButton(path: entry)
+            ]);
+          }
+        }
+      }
+    } else {
+      for (SafDocumentFile entryEntity in entries) {
+        String path = entryEntity.uri;
+        String name = entryEntity.name;
+        bool isDir = entryEntity.isDir;
+        if (isDir == true) {
+          folders.add(
+            [path,name,Icons.folder,FolderOptionsButton(path: path)]
+          );
+        } else {
+          if (path.endsWith(".mp3") || path.endsWith(".m4a") ||
+              path.endsWith(".wav") || path.endsWith(".ogg") ||
+              path.endsWith(".opus") || path.endsWith(".aac")) {
+            files.add([
+              path,
+              name,
+              Icons.audio_file,
+              SongOptionsButton(path: path)
+            ]);
+          }
         }
       }
     }
@@ -82,7 +140,16 @@ class FoldersTabViewModel extends ChangeNotifier {
     for (List<dynamic> item in files) {
       toDisplay.add(item);
     }
-    title = pathway.last;
+    if (Platform.isAndroid == true) {
+      SafDocumentFile? documentFile = await safutil.documentFileFromUri(pathway.last, true);
+      if (documentFile != null) {
+        title = documentFile.name;
+      }
+    } else {
+      int lastSlash = pathway.last.lastIndexOf("/");
+      String name = pathway.last.substring(lastSlash + 1);
+      title = name;
+    }
     updateList();
   }
 
@@ -100,16 +167,12 @@ class FoldersTabViewModel extends ChangeNotifier {
     favoriteFolders.sort((a,b) => a[0][1].compareTo(b[0][1]));
     normalFolders.sort((a,b) => a[0][1].compareTo(b[0][1]));
     for (List<dynamic> folder in favoriteFolders) {
-      toDisplay.add([folder[0],folder[1],Icons.favorite]);
+      toDisplay.add([folder[0],folder[1],Icons.favorite,DefaultFolderOptionsButton(path: folder[0])]);
     }
     for (List<dynamic> folder in normalFolders) {
-      toDisplay.add([folder[0],folder[1],Icons.folder]);
+      toDisplay.add([folder[0],folder[1],Icons.folder,DefaultFolderOptionsButton(path: folder[0])]);
     }
     title = "Folders";
     updateList();
-  }
-
-  void threePoint(String path) {
-
   }
 }
