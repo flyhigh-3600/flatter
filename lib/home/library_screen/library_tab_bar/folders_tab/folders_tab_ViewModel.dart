@@ -1,13 +1,9 @@
 import 'dart:io';
 import 'dart:core';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/folders_tab/three_dot_options/three_dot_options_buttons.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
-import 'package:iconify_flutter_plus/iconify_flutter_plus.dart';
-import 'package:iconify_flutter_plus/icons/ci.dart';
-import 'package:iconify_flutter_plus/icons/mdi.dart';
 import 'package:saf_util/saf_util_platform_interface.dart';
 
 class FoldersTabViewModel extends ChangeNotifier {
@@ -27,7 +23,7 @@ class FoldersTabViewModel extends ChangeNotifier {
     String? path = await directoryControl.openDirectory();
     if (path != null) {
       if (Platform.isAndroid) {
-        SafDocumentFile? folder = await safutil.documentFileFromUri(path, true);
+        SafDocumentFile? folder = await directoryControl.getDocumentDirectoryFromUri(path);
         if (folder != null) {
           String name = folder.name;
           databaseControl.addFolder(path, name);
@@ -141,9 +137,9 @@ class FoldersTabViewModel extends ChangeNotifier {
       toDisplay.add(item);
     }
     if (Platform.isAndroid == true) {
-      SafDocumentFile? documentFile = await safutil.documentFileFromUri(pathway.last, true);
-      if (documentFile != null) {
-        title = documentFile.name;
+      SafDocumentFile? documentDirectory = await directoryControl.getDocumentDirectoryFromUri(pathway.last);
+      if (documentDirectory != null) {
+        title = documentDirectory.name;
       }
     } else {
       int lastSlash = pathway.last.lastIndexOf("/");

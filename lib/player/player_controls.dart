@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flatter/Repositories/queue_repository.dart';
+import 'package:flatter/main.dart';
 import 'package:flatter/player/audio_player.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:saf_util/saf_util_platform_interface.dart';
 
 class PlayerControls {
   final player = MyPlayer();
@@ -27,7 +29,7 @@ class PlayerControls {
     return player.playerState().playing;
   }
 
-  void play() {//TODO:das hier besser machen, also so, dass buffering und loading und ready gut reflektiert werden etc
+  void play() {//TODO:das hier besser machen, also so, dass buffering und loading und ready gut reflektiert werden etc (sollte in der progressbar sein)
     if (player.playerState().processingState == ProcessingState.idle) {
       setSource(0);
       player.play();
@@ -76,13 +78,13 @@ class PlayerControls {
     player.setSource(queueRepository.getItemAtPos(index)[0]);
   }
 
-  void insertItemAt(int position, String file) {
+  void insertItemAt(int position, String file) async {
     bool current = false;
     if (getQueueLength() == 0) {
       current = true;
       position = 0;
     }
-    List<dynamic> item = getMetadata(file);
+    List<dynamic> item = await getMetadata(file);
     item.add(current);
     queueRepository.insertItem(item, position);
   }
@@ -152,9 +154,17 @@ class PlayerControls {
   }
 
   //metadata
-  List<dynamic> getMetadata(String path) {
-    int lastSlash = path.lastIndexOf("/");
-    String name = path.substring(lastSlash + 1);
+  Future<List<dynamic>> getMetadata(String path) async {
+    String name = "";
+    if (Platform.isAndroid == false) {
+      int lastSlash = path.lastIndexOf("/");
+      name = path.substring(lastSlash + 1);
+    } else {
+      SafDocumentFile? documentFile = await directoryControl.getDocumentFileFromUri(path);
+      if (documentFile != null) {
+        name = documentFile.name;
+      }
+    }
     return [path,[name]];
   }
 }

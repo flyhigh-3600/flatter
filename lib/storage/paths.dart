@@ -52,4 +52,12 @@ class DirectoryManager {
       return entries;
     }
   }
+
+  Future<SafDocumentFile?> getDocumentFileFromUri(String path) async {
+    return await safutil.documentFileFromUri(path, false);
+  }
+
+  Future<SafDocumentFile?> getDocumentDirectoryFromUri(String path) async {
+    return await safutil.documentFileFromUri(path, true);
+  }
 }
