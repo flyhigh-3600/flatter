@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flatter/home/library_screen/library_tab_bar/folders_tab/folders_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/library_tab_bar/folders_tab/three_dot_options/three_dot_options_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,18 @@ class FoldersTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: viewModel.leaveFolder, icon: Icon(Icons.arrow_upward)),//den knopf wegmachen wenn man im start ordner ist
+          IconButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text("loading..."),
+                    duration: const Duration(microseconds: 2),
+                  ),
+                );
+                viewModel.leaveFolder();
+              },
+              icon: Icon(Icons.arrow_upward)
+          ),//den knopf wegmachen wenn man im start ordner ist
           IconButton(onPressed: viewModel.addFolder, icon: Icon(Icons.folder)),
         ],
         title: ListenableBuilder(
@@ -31,14 +43,22 @@ class FoldersTab extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
-                  onTap: () => viewModel.openEntry(viewModel.toDisplay[index][0]),
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("loading..."),
+                        duration: const Duration(microseconds: 2),
+                      ),
+                    );
+                    viewModel.openEntry(viewModel.toDisplay[index][0]);
+                  },
                   child: Column(
                     children: [
                       ListTile(
                         leading: Icon(viewModel.toDisplay[index][2]),
                         title: Text(viewModel.toDisplay[index][1]),
                         subtitle: Text(viewModel.toDisplay[index][0]),
-                        trailing: IconButton(onPressed: () => viewModel.threePoint(viewModel.toDisplay[index][0]), icon: Icon(Icons.more_vert)),
+                        trailing: viewModel.toDisplay[index][3],
                       )
                     ],
                   ),

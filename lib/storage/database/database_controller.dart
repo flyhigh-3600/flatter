@@ -14,9 +14,7 @@ class DatabaseController {
     return;
   }
 
-  void addFolder(String path) {
-    int lastSlash = path.lastIndexOf("/");
-    String name = path.substring(lastSlash + 1);
+  void addFolder(String path,String name) {;
     _folder_db.addFolder(path, name);
   }
 
@@ -32,4 +30,26 @@ class DatabaseController {
     }
     return startFolders;
   }
+
+  void changeFolderFavouriteStatus(String path) {
+    if (_folder_db.getFavoriteStatus(path)[0]['isFavorited'] == 1) {
+      _folder_db.setFavorite(path, 0);
+    } else {
+      _folder_db.setFavorite(path, 1);
+    }
+  }
+
+  void changeFolderName(String path, String name) {
+    if (name == "") {
+      int lastSlash = path.lastIndexOf("/");
+      name = path.substring(lastSlash + 1);
+    }
+    _folder_db.changeName(path, name);
+  }
+
+  void removeFolder(String path) {
+    _folder_db.remove(path);
+  }
+
+  //TODO: change favorite status (actually wäre das eigentlich auch für songs babo, aber weniger wichtig. user soll sich einfach eine playlist machen xD
 }
