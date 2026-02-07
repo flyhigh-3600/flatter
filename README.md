@@ -1,6 +1,6 @@
 # flatter
 
-An offline music player and metadata editor
+A cross platform Navidrome client
 
 ## features
 
@@ -13,5 +13,4 @@ An offline music player and metadata editor
 
 ### planned
 
-- Navidrome/Subsonic support
 - automatically fetch Lyrics from the web
