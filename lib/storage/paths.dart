@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:saf_util/saf_util.dart';
 import 'package:saf_util/saf_util_platform_interface.dart';
-import 'package:uri_file_reader/uri_file_reader.dart';
+import 'package:uri_to_file_new/uri_to_file.dart';
 
 import '../main.dart';
 
@@ -70,11 +70,12 @@ class DirectoryManager {
   Future<SafDocumentFile?> getDocumentDirectoryFromUri(String path) async {
     return await safutil.documentFileFromUri(path, true);
   }
-
-  Future<String> getFilePathFromUri(String uriPath) async {
-    String fileName = "";
-    var fileInfo = await uriFileReader.getFileInfoFromUri(uriPath);
-    fileName = fileInfo!.path!;
-    return fileName;
+/*
+  Future<String> createTempFile(String uriPath) async {
+    //File file = await toFile(uriPath);
+    File.fromUri(getD);
+    //return file.path;
   }
+
+ */
 }

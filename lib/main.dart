@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flatter/home/home_navigation_bar.dart';
 import 'package:flatter/player/metadata_control.dart';
 import 'package:flatter/player/player_controls.dart';
@@ -9,7 +7,6 @@ import 'package:flatter/storage/paths.dart';
 import 'package:flutter/material.dart';
 import 'package:saf_util/saf_util.dart';
 
-bool allow_android = false;
 PlayerControls playerControl = PlayerControls();
 DirectoryManager directoryControl = DirectoryManager();
 SafUtil safutil = SafUtil();
@@ -20,11 +17,6 @@ late PathProvider pathProvider;
 
 
 void main() async {
-  if (allow_android == false) {
-    if (Platform.isAndroid == true) {
-      return;
-    }
-  }
   WidgetsFlutterBinding.ensureInitialized();
   pathProvider = PathProvider();
   databaseControl = DatabaseController();
