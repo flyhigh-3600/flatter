@@ -18,7 +18,7 @@ class ServerSettingsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: Column(
+      body: Column(//hier irgendwie die server anzeigen, der view muss obviously aktualisiert werden
         children: [
           ListView(
             shrinkWrap: true,
