@@ -1,17 +1,16 @@
-import 'package:flatter/settings/server_settings/server_settings_screen.dart';
-import 'package:flatter/settings/settings_screen_ViewModel.dart';
+import 'package:flatter/settings/server_settings/add_server_popup.dart';
+import 'package:flatter/settings/settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key,required this.viewModel});
-  final SettingsScreenViewmodel viewModel;
+class ServerSettingsScreen extends StatelessWidget {
+  const ServerSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings"),
+        title: const Text("Server Settings"),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -21,19 +20,18 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          //search bar mb
           ListView(
             shrinkWrap: true,
             children: [
               ListTile(
-                leading: Icon(Icons.storage),
-                title: Text("Server"),
+                leading: Icon(Icons.add),
+                title: Text("Add Server"),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
+                  AddServerPopup.showAddServerPopUp(context);
                 },
               )
             ],
-          ),
+          )
         ],
       ),
     );

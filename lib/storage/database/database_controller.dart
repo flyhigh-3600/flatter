@@ -1,16 +1,20 @@
 import 'package:flatter/storage/database/folders_database.dart';
 import 'package:flatter/storage/database/library_database.dart';
+import 'package:flatter/storage/database/servers_database.dart';
 import 'package:sqlite3/common.dart';
 
 class DatabaseController {
   late LibraryDatabase _library_db;
   late FoldersDatabase _folder_db;
+  late ServersDatabase _servers_db;
 
   Future<void> initialize() async {
     _library_db = LibraryDatabase();
     _folder_db = FoldersDatabase();
+    _servers_db = ServersDatabase();
     await _library_db.initialize();
     await _folder_db.initialize();
+    await _servers_db.initialize();
     return;
   }
 
@@ -49,6 +53,14 @@ class DatabaseController {
 
   void removeFolder(String path) {
     _folder_db.remove(path);
+  }
+
+  //library database
+
+  //servers database
+
+  void addServer(String name,String url,String username,String password) {
+    _servers_db.addServer(name, url, username, password);
   }
 
   //TODO: change favorite status (actually wäre das eigentlich auch für songs babo, aber weniger wichtig. user soll sich einfach eine playlist machen xD
