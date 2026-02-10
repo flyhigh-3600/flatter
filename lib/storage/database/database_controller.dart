@@ -63,5 +63,10 @@ class DatabaseController {
     _servers_db.addServer(name, url, username, password);
   }
 
+  List<String> getCurrentServer() {
+    //hier die infos des aktuellen sevrer bekommen
+    return ["navidrome.baron.berlin","api_test","s>~\$5>6YbM_i29S"];
+  }
+
   //TODO: change favorite status (actually wäre das eigentlich auch für songs babo, aber weniger wichtig. user soll sich einfach eine playlist machen xD
 }

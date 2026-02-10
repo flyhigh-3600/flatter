@@ -42,4 +42,11 @@ class ServersDatabase {
       ('$url','$name','$username','$password')
     ''');
   }
+
+  ResultSet getServerInfo(int id) {
+    ResultSet result = db.select('''
+      //hier credentials bekommen
+    ''');
+    return result;
+  }
 }
