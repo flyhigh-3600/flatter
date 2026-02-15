@@ -107,6 +107,7 @@ class AddServerPopup {
                                           } else {
                                             ref.invalidate(riverpodManager.authenticateProvider);
                                           }
+                                          //iich glaube das hier kann weg
                                           //process data
                                           //also einmal connection testen, dann aus dem speichern test save machen
                                           subsonicService.authenticate(serverURLcontroller.text, serverUsernameController.text, serverPasswordController.text);//gibt den status der authentifizierung
