@@ -43,6 +43,12 @@ class ServersDatabase {
     ''');
   }
 
+  void deleteServer(int id) {
+    db.execute('''
+      DELETE FROM servers WHERE id = $id
+    ''');
+  }
+
   List<List> getServers() {
     ResultSet serverInfosMap = db.select('''
       SELECT id,name,url FROM servers
@@ -55,10 +61,15 @@ class ServersDatabase {
     return returnList;
   }
 
-  ResultSet getServerInfo(int id) {
+  List<String> getServerInfo(int id) {
     ResultSet result = db.select('''
-      //hier credentials bekommen
+      SELECT url,username,password FROM servers WHERE id = $id
     ''');
-    return result;
+    List<String> resultList = [];
+    print(result);
+    for (Map resultMap in result) {
+      resultList.addAll([resultMap['url'],resultMap['username'],resultMap['password']]);
+    }
+    return resultList;
   }
 }

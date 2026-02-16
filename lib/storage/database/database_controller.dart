@@ -1,3 +1,4 @@
+import 'package:flatter/main.dart';
 import 'package:flatter/storage/database/folders_database.dart';
 import 'package:flatter/storage/database/library_database.dart';
 import 'package:flatter/storage/database/servers_database.dart';
@@ -63,14 +64,23 @@ class DatabaseController {
     _servers_db.addServer(name, url, username, password);
   }
 
+  void deleteServer(int id) {
+    print(id);
+    _servers_db.deleteServer(id);
+  }
+
+  void selectServer(int id) {
+    settingsControl.changeSetting('selectedServer', id);
+  }
   List<String> getCurrentServer() {
+    int currentID = settingsControl.loadSetting('selectedServer');
     //hier die infos des aktuellen sevrer bekommen
-    return ["navidrome.baron.berlin","api_test","s>~\$5>6YbM_i29S"];
+    _servers_db.getServerInfo(currentID);
+    return _servers_db.getServerInfo(currentID);
   }
 
   List<List> getServers() {
     return _servers_db.getServers();
   }
-
   //TODO: change favorite status (actually wäre das eigentlich auch für songs babo, aber weniger wichtig. user soll sich einfach eine playlist machen xD
 }

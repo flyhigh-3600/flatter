@@ -43,6 +43,7 @@ dependencies:
   http: ^1.6.0
   crypto: ^3.0.7
   flutter_riverpod: ^3.2.1
+  flutter_slidable: ^4.0.3
 
   # Select the native media_kit libs based on your usage:
   # NOTE: if including video libs already, these audio libs aren't necessary.

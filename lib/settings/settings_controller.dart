@@ -14,7 +14,8 @@ class SettingsController {
   Map defaultSettingsMap = {
     'startTab':1,
     'lastTab':1,
-    'startTabSetting':['dropdown',-1,[-1,0,1,2]]//[selection,type,[options]] (-1 = last)
+    'startTabSetting':['dropdown',-1,[-1,0,1,2]],//[selection,type,[options]] (-1 = last)
+    'selectedServer':-1,
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
 
@@ -34,6 +35,13 @@ class SettingsController {
     }
     settingsDocument = await TomlDocument.load(path);
     settingsMap = settingsDocument.toMap();
+    if (settingsMap.length < defaultSettingsMap.length) {
+      defaultSettingsMap.forEach((key,value) {
+        if (settingsMap[key] == null) {
+          settingsMap[key] = value;
+        };
+      });
+    }
     print(settingsMap);
   }
 
