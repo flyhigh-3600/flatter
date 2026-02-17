@@ -16,6 +16,8 @@ class SettingsController {
     'lastTab':1,
     'startTabSetting':['dropdown',-1,[-1,0,1,2]],//[selection,type,[options]] (-1 = last)
     'selectedServer':-1,
+    'albumSortBy':'random',
+    'artistSortBy':'random',
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
 

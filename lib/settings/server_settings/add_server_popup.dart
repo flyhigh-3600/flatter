@@ -2,7 +2,6 @@ import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flatter/Services/subsonic_service.dart';
 
 
 
@@ -118,7 +117,7 @@ class AddServerPopup {
                                   ],
                                 ),
                                 AsyncValue(error: != null) => const Text("Error"),
-                                AsyncValue() => const CircularProgressIndicator(),
+                                AsyncValue() => CircularProgressIndicator(),
                               }
                             ],
                           );

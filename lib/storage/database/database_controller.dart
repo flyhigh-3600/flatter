@@ -65,7 +65,6 @@ class DatabaseController {
   }
 
   void deleteServer(int id) {
-    print(id);
     _servers_db.deleteServer(id);
   }
 

@@ -24,7 +24,7 @@ class RiverpodManager {
   final serverListProvider = FutureProvider<List<Widget>>((ref) async {
     List<List> serverInfos = databaseControl.getServers();
     List<Widget> returnList = [];
-    for (List serverInfo in serverInfos) {
+    for (List serverInfo in serverInfos) {//hier nicht die widgets direkt reinmachen
       returnList.add(
         Slidable(
           startActionPane: ActionPane(
@@ -62,12 +62,15 @@ class RiverpodManager {
               //select server
               databaseControl.selectServer(serverInfo[0]);
               //go to page smh
-              subsonicService.getAlbums();
             },
           ),
         ),
       );
     }
     return returnList;
+  });
+
+  final albumListProvider = FutureProvider.family<List<Map<String,dynamic>>,List<String>>((ref,List<String> filterSortOptions) async {
+    return subsonicService.getAlbums(["random","10","0"]);
   });
 }

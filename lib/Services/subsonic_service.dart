@@ -57,20 +57,24 @@ class SubsonicService {
     }
   }
 
-  Future<void> getAlbums() async {
+  Future<List<Map<String,dynamic>>> getAlbums(List<String> filterSortOptions) async {
     List<String> url = getURL(null, null, null);
-    final uri = Uri.parse("${url[0]}getAlbumList${url[1]}&type=random");
+    String offset = filterSortOptions[2];
+    final uri = Uri.parse("${url[0]}getAlbumList2${url[1]}&type=${filterSortOptions[0]}&size=${filterSortOptions[1]}&offset=$offset");//from year, to year und genre filtered fehlt da noch
     try {
       final data = await http.get(uri);
-      print(data.body);
       if (data.statusCode != 200) {
-        return;
+        return [{}];
       }
-      final responseMap = jsonDecode(data.body);
-      print(responseMap);
-      return;
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return [{}];
+      }
+      print(subsonicResponse['albumList2']['album']);
+      return subsonicResponse['albumList2']['album'];
     } catch(error) {
-      return;
+      return [{}];
     }
   }
 }

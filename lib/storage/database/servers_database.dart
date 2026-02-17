@@ -66,7 +66,6 @@ class ServersDatabase {
       SELECT url,username,password FROM servers WHERE id = $id
     ''');
     List<String> resultList = [];
-    print(result);
     for (Map resultMap in result) {
       resultList.addAll([resultMap['url'],resultMap['username'],resultMap['password']]);
     }
