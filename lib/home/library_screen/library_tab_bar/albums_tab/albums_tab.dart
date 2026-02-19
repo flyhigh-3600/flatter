@@ -78,7 +78,7 @@ class AlbumsTab extends StatelessWidget {
     return ListView(shrinkWrap: true,children: widgetList,);
   }
   //später diese liste aus drop down menüs und den einstellungen kriegen und so
-  static const List<String> filterSortList = ["random","10","0"];
+  static const List<String> filterSortList = ["random","50","0"];
   @override
   Widget build(BuildContext context) {
     return Column(

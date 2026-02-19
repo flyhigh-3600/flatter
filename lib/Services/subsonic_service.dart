@@ -76,4 +76,8 @@ class SubsonicService {
       return [];
     }
   }
+
+  Future<Map<dynamic,dynamic>> getAlbumDetails(String id) async {
+
+  }
 }
