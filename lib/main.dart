@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:saf_util/saf_util.dart';
 
 PlayerControls playerControl = PlayerControls();
-DirectoryManager directoryControl = DirectoryManager();
+//DirectoryManager directoryControl = DirectoryManager();
 SafUtil safutil = SafUtil();
 SubsonicService subsonicService = SubsonicService();
 RiverpodManager riverpodManager = RiverpodManager();
@@ -32,10 +32,6 @@ void main() async {
       child: MyApp(),
     ),
   );
-}
-
-void startApp() {
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

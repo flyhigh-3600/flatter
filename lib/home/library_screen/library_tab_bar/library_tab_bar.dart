@@ -15,14 +15,14 @@ class LibraryTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FoldersTabViewModel foldersTabViewModel = FoldersTabViewModel();
+//    final FoldersTabViewModel foldersTabViewModel = FoldersTabViewModel();
     final PlaylistsTabViewModel playlistsTabViewModel = PlaylistsTabViewModel();
     final SongsTabViewModel songsTabViewModel = SongsTabViewModel();
     final AlbumsTabViewModel albumsTabViewModel = AlbumsTabViewModel();
     final ArtistsTabViewModel artistsTabViewModel = ArtistsTabViewModel();
     return DefaultTabController(
       initialIndex: 0,
-      length: 5,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Library"),
@@ -31,7 +31,7 @@ class LibraryTabBar extends StatelessWidget {
           ],
           bottom: const TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.folder_copy),),
+              //Tab(icon: Icon(Icons.folder_copy),),
               Tab(icon: Icon(Icons.queue_music),),
               Tab(icon: Icon(Icons.music_note),),
               Tab(icon: Icon(Icons.album),),
@@ -41,7 +41,7 @@ class LibraryTabBar extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            FoldersTab(viewModel: foldersTabViewModel),
+            //FoldersTab(viewModel: foldersTabViewModel),
             PlaylistsTab(viewModel: playlistsTabViewModel),
             SongsTab(viewModel: songsTabViewModel),
             AlbumsTab(viewModel: albumsTabViewModel),

@@ -101,7 +101,7 @@ class AlbumScreen extends StatelessWidget {
                 ],
               ),
               switch (albumDetails) {
-                AsyncValue(:final value?) => buildAlbumList(value['song']),
+                AsyncValue(:final value?) => Expanded(child: buildAlbumList(value['song'])),
                 AsyncValue(error: != null) => Text("Error"),
                 AsyncValue() => CircularProgressIndicator(),
               },

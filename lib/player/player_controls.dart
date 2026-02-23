@@ -160,10 +160,13 @@ class PlayerControls {
       int lastSlash = path.lastIndexOf("/");
       name = path.substring(lastSlash + 1);
     } else {
+      /*
       SafDocumentFile? documentFile = await directoryControl.getDocumentFileFromUri(path);
       if (documentFile != null) {
         name = documentFile.name;
       }
+
+       */
     }
     return [path,[name]];
   }

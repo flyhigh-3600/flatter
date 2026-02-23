@@ -79,42 +79,44 @@ class AlbumsTab extends StatelessWidget {
       );
       index = index + 2;
     }
-    return ListView(shrinkWrap: true,children: widgetList,);
+    return Flexible(fit: FlexFit.loose, child: ListView(shrinkWrap: true,children: widgetList,));
   }
   //später diese liste aus drop down menüs und den einstellungen kriegen und so
   static const List<String> filterSortList = ["random","10","0"];
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          title: Text("uh"),
-          subtitle: Text("hier sorting stuff und so, probably nd im listtile"),
-        ),
-        Consumer(
-          builder: (context,ref,child) {
-            final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
-            return Center(
-              child: switch (albumList) {
-                AsyncValue(:final value?) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        ref.invalidate(riverpodManager.albumListProvider);
-                      },
-                      child: Text("invalidate"),
-                    ),
-                    buildListView(value,context),
-                  ],
-                ),
-                AsyncValue(error: != null) => const Text("Error"),
-                AsyncValue() => const CircularProgressIndicator(),
-              },
-            );
-          },
-        )
-      ],
+    return Expanded(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text("uh"),
+            subtitle: Text("hier sorting stuff und so, probably nd im listtile"),
+          ),
+          Consumer(
+            builder: (context,ref,child) {
+              final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
+              return Expanded(
+                child: switch (albumList) {
+                  AsyncValue(:final value?) => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          ref.invalidate(riverpodManager.albumListProvider);
+                        },
+                        child: Text("invalidate"),
+                      ),
+                      buildListView(value,context),
+                    ],
+                  ),
+                  AsyncValue(error: != null) => Center(child: const Text("Error")),
+                  AsyncValue() => Center(child: const CircularProgressIndicator()),
+                },
+              );
+            },
+          )
+        ],
+      ),
     );
   }
 }

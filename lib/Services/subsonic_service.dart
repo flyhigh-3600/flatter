@@ -82,20 +82,15 @@ class SubsonicService {
     final uri = Uri.parse("${url[0]}getAlbum${url[1]}&id=$id");
     try {
       final data = await http.get(uri);
-      try {
-        final data = await http.get(uri);
-        if (data.statusCode != 200) {
-          return {};
-        }
-        final Map responseMap = jsonDecode(data.body);
-        Map subsonicResponse = responseMap['subsonic-response'];
-        if (subsonicResponse['status'] != "ok") {
-          return {};
-        }
-        return subsonicResponse['album'];
-      } catch(error) {
+      if (data.statusCode != 200) {
         return {};
       }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return {};
+      }
+      return subsonicResponse['album'];
     } catch(error) {
       return {};
     }
@@ -115,8 +110,7 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return [];
       }
-      print(subsonicResponse);
-      return subsonicResponse['albumList2']['artists']['index'];
+      return subsonicResponse['artists']['index'];
     } catch (error) {
       return [];
     }
