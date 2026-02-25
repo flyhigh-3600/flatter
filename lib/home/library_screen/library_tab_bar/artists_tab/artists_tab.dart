@@ -15,6 +15,7 @@ class ArtistsTab extends StatelessWidget {
   Widget buildListView(List<dynamic> items,BuildContext context) {
     List<Widget> widgetList = [];
     print(items.length);
+    print(items);
     int index = 0;
     while (index < items.length) {
       Map albumOne = items[index];

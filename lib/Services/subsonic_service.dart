@@ -110,7 +110,7 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return [];
       }
-      return subsonicResponse['artists']['index'];
+      return subsonicResponse['artists']['index'][0]['artist'];
     } catch (error) {
       return [];
     }
