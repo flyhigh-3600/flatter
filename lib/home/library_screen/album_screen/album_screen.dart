@@ -2,13 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AlbumScreen extends StatelessWidget {
   const AlbumScreen({super.key,required this.albumID});
   final String albumID;
 
-  Widget buildAlbumList(List<dynamic> songList) {
+  Widget buildAlbumColumn(List<dynamic> songList) {
     List<Widget> widgetList = [];
     print(songList);
     for (Map song in songList) {
@@ -29,7 +30,7 @@ class AlbumScreen extends StatelessWidget {
         ),
       );
     }
-    return ListView(shrinkWrap: true,children: widgetList,);
+    return Column(children: widgetList,);
   }
 
   @override
@@ -65,47 +66,51 @@ class AlbumScreen extends StatelessWidget {
               ),
             ],
           ),
-          body: Column(
-            children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
-              //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-              switch (albumDetails) {
-                AsyncValue(:final value?) => CachedNetworkImage(
-                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}&size=300",
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      CircularProgressIndicator(value: downloadProgress.progress),
-                  errorWidget: (context, url, error) => IconButton(
-                    onPressed: () {
-                      //hier retry
-                    },
-                    icon: Icon(Icons.error),
+          body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
+                //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
+                switch (albumDetails) {
+                  AsyncValue(:final value?) => CachedNetworkImage(
+                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}&size=300",
+                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                        CircularProgressIndicator(value: downloadProgress.progress),
+                    errorWidget: (context, url, error) => IconButton(
+                      onPressed: () {
+                        //hier retry
+                      },
+                      icon: Icon(Icons.error),
+                    ),
                   ),
+                  AsyncValue(error: != null) => Text("Error"),
+                  AsyncValue() => CircularProgressIndicator(),
+                },
+                switch (albumDetails) {
+                  AsyncValue(:final value?) => TextButton(
+                    onPressed: () {
+                      //zum artist gehen
+                    },
+                    child: Text(value['artist']),
+                  ),
+                  AsyncValue(error: != null) => Text("Error"),
+                  AsyncValue() => CircularProgressIndicator(),
+                },
+                Row(
+                  children: [
+                    //also ja hier actions
+                    //diese diablen bis ergebnis da ist
+                    Text("hier sollen actions hin")
+                  ],
                 ),
-                AsyncValue(error: != null) => Text("Error"),
-                AsyncValue() => CircularProgressIndicator(),
-              },
-              switch (albumDetails) {
-                AsyncValue(:final value?) => TextButton(
-                  onPressed: () {
-                    //zum artist gehen
-                  },
-                  child: Text(value['artist']),
-                ),
-                AsyncValue(error: != null) => Text("Error"),
-                AsyncValue() => CircularProgressIndicator(),
-              },
-              Row(
-                children: [
-                  //also ja hier actions
-                  //diese diablen bis ergebnis da ist
-                  Text("hier sollen actions hin")
-                ],
-              ),
-              switch (albumDetails) {
-                AsyncValue(:final value?) => Expanded(child: buildAlbumList(value['song'])),
-                AsyncValue(error: != null) => Text("Error"),
-                AsyncValue() => CircularProgressIndicator(),
-              },
-            ],
+                switch (albumDetails) {
+                  AsyncValue(:final value?) => buildAlbumColumn(value['song']),
+                  AsyncValue(error: != null) => Text("Error"),
+                  AsyncValue() => CircularProgressIndicator(),
+                },
+              ],
+            ),
           ),
         );
       },
