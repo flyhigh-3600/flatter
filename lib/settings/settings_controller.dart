@@ -14,7 +14,6 @@ class SettingsController {
   Map defaultSettingsMap = {
     'startTab':1,
     'lastTab':1,
-    'startTabSetting':['dropdown',-1,[-1,0,1,2]],//[selection,type,[options]] (-1 = last)
     'selectedServer':-1,
     'albumSortBy':'random',
     'artistSortBy':'random',
@@ -41,7 +40,7 @@ class SettingsController {
       defaultSettingsMap.forEach((key,value) {
         if (settingsMap[key] == null) {
           settingsMap[key] = value;
-        };
+        }
       });
     }
     print(settingsMap);

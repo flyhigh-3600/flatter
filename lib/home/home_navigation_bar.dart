@@ -21,6 +21,9 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
   final QueueScreenViewModel queueScreenViewModel = QueueScreenViewModel();
   @override
   Widget build(BuildContext context) {
+    if (currentPageIndex == -1) {
+      currentPageIndex = settingsControl.loadSetting('lastTab');
+    }
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
