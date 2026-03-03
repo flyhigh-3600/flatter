@@ -18,7 +18,7 @@ class MyPlayer {
     if (Platform.isAndroid == true) {
       Uri uriSource = Uri.parse(source);
       await _player.setAudioSource(AudioSource.uri(uriSource));
-    } if (source.startsWith("/")) {//idk irgendwie checken, ob das eine lokale datei ist
+    } if (source.startsWith("/")) {//idk irgendwie checken, ob das eine lokale datei ist, hm
       List<String> baseUrl = subsonicService.getURL(null, null, null);
       Uri uriSource = Uri.parse("${baseUrl[0]}stream${baseUrl[1]}&id=$source");
       await _player.setAudioSource(AudioSource.uri(uriSource));
