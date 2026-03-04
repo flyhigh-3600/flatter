@@ -105,9 +105,13 @@ class PlayerControls {
       }
       return;
     } else {
+      /*
       if (path.endsWith(".mp3") || path.endsWith(".m4a") || path.endsWith(".wav") || path.endsWith(".ogg") || path.endsWith(".opus") || path.endsWith(".aac")) {
         insertItemAt(getQueueLength(), path);
       }
+
+       */
+      insertItemAt(getQueueLength(), path);
     }
     return;
   }
@@ -156,18 +160,18 @@ class PlayerControls {
   //metadata
   Future<List<dynamic>> getMetadata(String path) async {
     String name = "";
-    if (Platform.isAndroid == false) {
-      int lastSlash = path.lastIndexOf("/");
-      name = path.substring(lastSlash + 1);
-    } else {
-      /*
-      SafDocumentFile? documentFile = await directoryControl.getDocumentFileFromUri(path);
-      if (documentFile != null) {
-        name = documentFile.name;
+    String artist = "";
+    if (true == false) {
+      //halt checken, ob es eine lokale datei ist
+      if (Platform.isAndroid == false) {
+        int lastSlash = path.lastIndexOf("/");
+        name = path.substring(lastSlash + 1);
       }
-
-       */
+    } else {
+      Map<dynamic,dynamic> metadata = await subsonicService.getSongDetails(path);
+      name = metadata['title'];
+      artist = metadata['artist'];
     }
-    return [path,[name]];
+    return [path,[name,artist]];
   }
 }

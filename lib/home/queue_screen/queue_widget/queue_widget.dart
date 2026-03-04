@@ -29,7 +29,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                 children: [
                   ListTile(
                     title: Text(_items[index][1][0]),
-                    subtitle: Text(_items[index][0]),
+                    subtitle: Text(_items[index][1][1]),
                   ),
                 ],
               ),
@@ -40,7 +40,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                   children: [
                     ListTile(
                       title: Text(_items[index][1][0]),
-                      subtitle: Text(_items[index][0]),
+                      subtitle: Text(_items[index][1][1]),
                     ),
                   ],
                 ),

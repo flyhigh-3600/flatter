@@ -25,7 +25,7 @@ class AlbumScreen extends StatelessWidget {
             icon: Icon(Icons.more_vert),
           ),
           onTap: () {
-            //hier stuff
+            playerControl.addItem(song['id']);
           },
         ),
       );
