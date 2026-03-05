@@ -16,6 +16,7 @@ class LibraryTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 //    final FoldersTabViewModel foldersTabViewModel = FoldersTabViewModel();
+  //TODO:du brauchst noch einen tab nur zum suchen hier in dem man nach allem suchen kann
     final PlaylistsTabViewModel playlistsTabViewModel = PlaylistsTabViewModel();
     final SongsTabViewModel songsTabViewModel = SongsTabViewModel();
     final AlbumsTabViewModel albumsTabViewModel = AlbumsTabViewModel();

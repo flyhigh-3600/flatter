@@ -10,26 +10,26 @@ class AlbumsTab extends StatefulWidget {
   const AlbumsTab({super.key,required this.viewModel});
   final AlbumsTabViewModel viewModel;
 
-
-
-  static const List<String> filterSortList = ["random","10","0"];
-
   @override
   State<AlbumsTab> createState() => _AlbumsTabState();
 }
 
 class _AlbumsTabState extends State<AlbumsTab> {
+  String type = "random";
   bool ascending = true;
   int elementCount = 10;
   int offset = 0;
+  List<String> filterSortList = ["random","10","0","ASC"];
 
   void reverseSort() {
     if (ascending == true) {
       setState(() {
+        filterSortList = [type,elementCount.toString(),offset.toString(),"DESC"];
         ascending = false;
       });
     } else {
       setState(() {
+        filterSortList = [type,elementCount.toString(),offset.toString(),"ASC"];
         ascending = true;
       });
     }
@@ -110,27 +110,30 @@ class _AlbumsTabState extends State<AlbumsTab> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        children: [
-          ListTile(
-            title: Text("uh"),
-            subtitle: Text("hier sorting stuff und so, probably nd im listtile"),
-          ),
-          Row(
+      child: Consumer(
+        builder: (context, ref, child) {
+          final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
+          return Column(
             children: [
-              Text("hier drop down menü"),
-              IconButton(
-                onPressed: reverseSort,
-                icon: (ascending
-                  ? Icon(Icons.arrow_upward)
-                  : Icon(Icons.arrow_downward)),
-              )
-            ],
-          ),
-          Consumer(
-            builder: (context,ref,child) {
-              final albumList = ref.watch(riverpodManager.albumListProvider(AlbumsTab.filterSortList));
-              return Expanded(
+              ListTile(
+                title: Text("uh"),
+                subtitle: Text("hier suchleiste und filter stuff"),
+              ),
+              Row(
+                children: [
+                  Text("hier drop down menü"),
+                  IconButton(
+                    onPressed: () {
+                      reverseSort();
+                      ref.invalidate(riverpodManager.albumListProvider);
+                    },
+                    icon: (ascending
+                      ? Icon(Icons.arrow_upward)
+                      : Icon(Icons.arrow_downward)),
+                  )
+                ],
+              ),
+              Expanded(
                 child: switch (albumList) {
                   AsyncValue(:final value?) => Column(
                     mainAxisSize: MainAxisSize.min,
@@ -147,10 +150,10 @@ class _AlbumsTabState extends State<AlbumsTab> {
                   AsyncValue(error: != null) => Center(child: const Text("Error")),
                   AsyncValue() => Center(child: const CircularProgressIndicator()),
                 },
-              );
-            },
-          )
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }
