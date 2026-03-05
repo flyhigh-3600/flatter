@@ -6,9 +6,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AlbumsTab extends StatelessWidget {
+class AlbumsTab extends StatefulWidget {
   const AlbumsTab({super.key,required this.viewModel});
   final AlbumsTabViewModel viewModel;
+
+
+
+  static const List<String> filterSortList = ["random","10","0"];
+
+  @override
+  State<AlbumsTab> createState() => _AlbumsTabState();
+}
+
+class _AlbumsTabState extends State<AlbumsTab> {
+  bool ascending = true;
+  int elementCount = 10;
+  int offset = 0;
+
+  void reverseSort() {
+    if (ascending == true) {
+      setState(() {
+        ascending = false;
+      });
+    } else {
+      setState(() {
+        ascending = true;
+      });
+    }
+  }
 
   Widget buildListView(List<dynamic> items,BuildContext context) {
     List<Widget> widgetList = [];
@@ -81,8 +106,7 @@ class AlbumsTab extends StatelessWidget {
     }
     return Flexible(fit: FlexFit.loose, child: ListView(shrinkWrap: true,children: widgetList,));
   }
-  //später diese liste aus drop down menüs und den einstellungen kriegen und so
-  static const List<String> filterSortList = ["random","10","0"];
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -92,9 +116,20 @@ class AlbumsTab extends StatelessWidget {
             title: Text("uh"),
             subtitle: Text("hier sorting stuff und so, probably nd im listtile"),
           ),
+          Row(
+            children: [
+              Text("hier drop down menü"),
+              IconButton(
+                onPressed: reverseSort,
+                icon: (ascending
+                  ? Icon(Icons.arrow_upward)
+                  : Icon(Icons.arrow_downward)),
+              )
+            ],
+          ),
           Consumer(
             builder: (context,ref,child) {
-              final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
+              final albumList = ref.watch(riverpodManager.albumListProvider(AlbumsTab.filterSortList));
               return Expanded(
                 child: switch (albumList) {
                   AsyncValue(:final value?) => Column(
