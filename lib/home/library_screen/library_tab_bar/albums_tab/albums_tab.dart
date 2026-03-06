@@ -5,7 +5,7 @@ import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:masonry_grid/masonry_grid.dart';
 
 class AlbumsTab extends StatefulWidget {
   const AlbumsTab({super.key,required this.viewModel});
@@ -51,8 +51,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
               debugPrint('Card tapped.');
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
             },
-            child: Stack(
-              alignment: Alignment.bottomCenter,
+            child: Column(
               children: [
                 CachedNetworkImage(
                   imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
@@ -65,15 +64,8 @@ class _AlbumsTabState extends State<AlbumsTab> {
                     icon: Icon(Icons.error),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    children: [
-                      Text(albumOne['name']),
-                      Text(albumOne['artist'])
-                    ],
-                  ),
-                )
+                Text(albumOne['name']),
+                Text(albumOne['artist'])
               ],
             ),
           ),
@@ -81,36 +73,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
       );
       index = index + 1;
     }
-    //return Flexible(fit: FlexFit.loose, child: GridView.count(shrinkWrap: true,crossAxisCount: (screenWidth / 150).toInt(),children: widgetList,),);
-    return Flexible(fit: FlexFit.loose,child: MasonryGridView.count(crossAxisCount: (screenWidth / 150).toInt(), itemCount: items.length, itemBuilder: (context,index) {
-      return Card(
-        clipBehavior: Clip.hardEdge,
-        child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          onTap: () {
-            debugPrint('Card tapped.');
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: items[index]['id'])));
-          },
-          child: Column(
-            children: [
-              CachedNetworkImage(
-                imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${items[index]['coverArt']}",
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    CircularProgressIndicator(value: downloadProgress.progress),
-                errorWidget: (context, url, error) => IconButton(
-                  onPressed: () {
-                    //hier retry
-                  },
-                  icon: Icon(Icons.error),
-                ),
-              ),
-              Text(items[index]['name']),
-              Text(items[index]['artist'])
-            ],
-          ),
-        ),
-      );
-    }));
+    return Expanded(child: SingleChildScrollView(child: MasonryGrid(column: (screenWidth / 150).toInt(),children: widgetList,)));
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flatter/home/library_screen/itemMenus.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class AlbumScreen extends StatelessWidget {
             actions: [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
               IconButton(
                 onPressed: () {
-                  //hier ein abspielen menü oder so
+                  //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
                 },
                 icon: Icon(Icons.play_arrow),
               ),
@@ -60,7 +61,7 @@ class AlbumScreen extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  //hier irgendwie eine mehr tun aktion
+                  //Navigator.of(context).push();
                 },
                 icon: Icon(Icons.more_vert),
               ),
