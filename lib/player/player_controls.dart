@@ -30,6 +30,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler{
     return player.playerState().playing;
   }
 
+  @override
   Future<void> play() async {//TODO:das hier besser machen, also so, dass buffering und loading und ready gut reflektiert werden etc (sollte in der progressbar sein)
     if (player.playerState().processingState == ProcessingState.idle) {
       setSource(0);
@@ -39,14 +40,17 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler{
     }
   }
 
+  @override
   Future<void> pause() async {
     player.pause();
   }
 
+  @override
   Future<void> seek(Duration position) async {
     player.seek(position);
   }
 
+  @override
   Future<void> rewind() async {
     //hier seek zum anfang des songs oder vorheriger song
     if (true) {
