@@ -27,6 +27,6 @@ class PlayerScreenViewModel extends ChangeNotifier {
   }
 
   Future<void> skip() async {
-    playerControl.skip();
+    playerControl.skipToNext();
   }
 }
