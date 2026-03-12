@@ -3,7 +3,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/home_navigation_bar.dart';
-import 'package:flatter/player/AudioHandler.dart';
+import 'package:flatter/player/AudioHandler_todelete.dart';
 import 'package:flatter/player/player_controls.dart';
 import 'package:flatter/storage/database/database_controller.dart';
 import 'package:flatter/settings/settings_controller.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:saf_util/saf_util.dart';
 
-PlayerControls playerControl = PlayerControls();
+late final playerControl;
 //DirectoryManager directoryControl = DirectoryManager();
 SafUtil safutil = SafUtil();
 SubsonicService subsonicService = SubsonicService();
@@ -24,7 +24,7 @@ late PathProvider pathProvider;
 
 void main() async {
   playerControl = await AudioService.init(
-    builder: () => MyAudioHandler(),
+    builder: () => PlayerControls(),
     config: AudioServiceConfig(
       androidNotificationChannelId: 'me.dreamaviator.flutter.channel.audio',
       androidNotificationChannelName: 'flatter Music Playback'

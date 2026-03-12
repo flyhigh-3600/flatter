@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/player/audio_player.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:saf_util/saf_util_platform_interface.dart';
 
-class PlayerControls {
+class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final player = MyPlayer();
   final QueueRepository queueRepository = QueueRepository();
 
@@ -15,6 +16,7 @@ class PlayerControls {
 
   //player controls
   void setSource(int index) {
+    mediaItem.add(MediaItem(id: getQueue()[index][0], title: getQueue()[index][0]));
     player.setSource(getQueue()[index][0]);//sets the source to item at index
   }
 
@@ -30,6 +32,7 @@ class PlayerControls {
     return player.playerState().playing;
   }
 
+  @override
   Future<void> play() async {//TODO:das hier besser machen, also so, dass buffering und loading und ready gut reflektiert werden etc (sollte in der progressbar sein)
     if (player.playerState().processingState == ProcessingState.idle) {
       setSource(0);
@@ -37,16 +40,21 @@ class PlayerControls {
     } else {
       player.play();
     }
+    playbackState.add(PlaybackState(playing: playing));
   }
 
+  @override
   Future<void> pause() async {
     player.pause();
+    playbackState.add(PlaybackState(playing: playing));
   }
 
+  @override
   Future<void> seek(Duration position) async {
     player.seek(position);
   }
 
+  @override
   Future<void> rewind() async {
     //hier seek zum anfang des songs oder vorheriger song
     if (true) {
@@ -56,6 +64,7 @@ class PlayerControls {
     play();
   }
 
+  @override
   Future<void> skipToNext() async {
     makeCurrent(getCurrentIndex() + 1);
     setSource(getCurrentIndex());
