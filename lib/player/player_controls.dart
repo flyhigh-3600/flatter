@@ -40,13 +40,23 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     } else {
       player.play();
     }
-    playbackState.add(PlaybackState(playing: playing));
+    playbackState.add(PlaybackState(
+      playing: playing,
+      controls: [
+        MediaControl.skipToPrevious,
+        MediaControl.pause,
+        MediaControl.skipToNext,
+      ],
+      updatePosition: Duration(seconds: 0),
+      speed: 1.0,
+      queueIndex: getCurrentIndex(),
+    ));
   }
 
   @override
   Future<void> pause() async {
     player.pause();
-    playbackState.add(PlaybackState(playing: playing));
+    playbackState.add(playbackState.value.copyWith(playing: playing,controls: [MediaControl.skipToPrevious,MediaControl.play,MediaControl.skipToNext]));
   }
 
   @override
