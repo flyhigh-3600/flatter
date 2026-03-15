@@ -2,6 +2,7 @@ import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ServerList extends StatelessWidget {
   const ServerList({super.key});
@@ -15,12 +16,58 @@ class ServerList extends StatelessWidget {
           child: Row(
             children: [
               switch (serverWidgetList) {
-                AsyncValue(:final value?) => Expanded(
-                  child: ListView(
-                    primary: false,
-                    shrinkWrap: true,
+                AsyncValue(:final value?) => Expanded(//primary false, shrinkwrap true, scrolldirection axis.vertical
+                  child: ListView.builder(
+                    itemCount: value.length,
                     scrollDirection: Axis.vertical,
-                    children: serverWidgetList.requireValue,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      void deleteServer(int id) {
+                        databaseControl.deleteServer(id);
+                        ref.invalidate(riverpodManager.serverListProvider);
+                      }
+
+                      return Slidable(
+                        startActionPane: ActionPane(
+                          motion: DrawerMotion(),
+                            children: [
+                              SlidableAction(//farbe noch festlegen
+                                onPressed: (_) => () {
+                                  //hier server editieren
+                                },
+                                icon: Icons.edit,
+                                label: 'Edit',
+                              ),
+                            ],
+                        ),
+                        endActionPane: ActionPane(
+                          motion: DrawerMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (_) => (deleteServer(value[index][0])),
+                              icon: Icons.delete,
+                              label: 'Delete',
+                              backgroundColor: Colors.red,
+                            ),
+                          ],
+                        ),
+                        child: ListTile(
+                          leading: Icon(Icons.storage),
+                          title: Text(value[index][1]),
+                          subtitle: Text(value[index][2]),
+                          trailing: IconButton(
+                            onPressed: () {
+
+                            },
+                            icon: Icon(Icons.more_vert),
+                          ),
+                          onTap: () {
+                            databaseControl.selectServer(value[index][0]);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
                 AsyncValue(error: != null) => const Text("Error"),

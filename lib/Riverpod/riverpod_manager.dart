@@ -21,53 +21,8 @@ class RiverpodManager {
     }
   });
 
-  final serverListProvider = FutureProvider<List<Widget>>((ref) async {
-    List<List> serverInfos = databaseControl.getServers();
-    List<Widget> returnList = [];
-    for (List serverInfo in serverInfos) {//hier nicht die widgets direkt reinmachen
-      returnList.add(
-        Slidable(
-          startActionPane: ActionPane(
-            motion: DrawerMotion(),
-            children: [
-              SlidableAction(//farbe noch festlegen
-                onPressed: (_) => {databaseControl.deleteServer(serverInfo[0])},//edit server
-                icon: Icons.edit,
-                label: 'Edit',
-              )
-            ],
-          ),
-          endActionPane: ActionPane(
-            motion: DrawerMotion(),
-            children: [
-              SlidableAction(
-                onPressed: (_) => databaseControl.deleteServer(serverInfo[0]),//delete
-                icon: Icons.delete,
-                label: 'Delete',
-                backgroundColor: Colors.red,
-              )
-            ],
-          ),
-          child: ListTile(
-            leading: Icon(Icons.storage),
-            title: Text(serverInfo[1]),
-            subtitle: Text(serverInfo[2]),
-            trailing: IconButton(
-              onPressed: () {
-
-              },//more options pop up thing like on the folders page
-              icon: Icon(Icons.more_horiz),
-            ),
-            onTap: () {
-              //select server
-              databaseControl.selectServer(serverInfo[0]);
-              //go to page smh
-            },
-          ),
-        ),
-      );
-    }
-    return returnList;
+  final serverListProvider = FutureProvider<List<List>>((ref) async {
+    return databaseControl.getServers();
   });
 
   final albumListProvider = FutureProvider.family<List<dynamic>,List<String>>((ref,List<String> filterSortOptions) async {

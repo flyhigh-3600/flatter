@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:audio_service_mpris/audio_service_mpris.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/Services/subsonic_service.dart';
@@ -30,6 +31,7 @@ void main() async {
       androidNotificationChannelName: 'flatter Music Playback'
     ),
   );
+
   WidgetsFlutterBinding.ensureInitialized();
   pathProvider = PathProvider();
   databaseControl = DatabaseController();
