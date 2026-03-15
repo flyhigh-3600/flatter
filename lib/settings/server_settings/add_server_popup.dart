@@ -19,7 +19,7 @@ class AddServerPopup {
             TextEditingController serverUsernameController = TextEditingController();
             TextEditingController serverPasswordController = TextEditingController();
             List<String> authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
-            return AlertDialog(
+            return AlertDialog(//TODO:wenn etwas richtig läuft und man dan etwas ändert, dann sollte es invalidatet werden
               title: const Text("Add Server"),
               //TODO:overflow fixen
               content: SingleChildScrollView(
