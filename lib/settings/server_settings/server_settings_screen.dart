@@ -29,7 +29,7 @@ class ServerSettingsScreen extends StatelessWidget {
                   leading: Icon(Icons.add),
                   title: Text("Add Server"),
                   onTap: () {
-                    AddServerPopup.showAddServerPopUp(context);
+                    AddServerPopup.showAddServerPopUp(context,null,null,null,null,null);
                   },
                 ),
                 Divider(),

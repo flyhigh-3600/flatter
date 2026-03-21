@@ -63,11 +63,11 @@ class ServersDatabase {
 
   List<String> getServerInfo(int id) {
     ResultSet result = db.select('''
-      SELECT url,username,password FROM servers WHERE id = $id
+      SELECT url,username,password,name FROM servers WHERE id = $id
     ''');
     List<String> resultList = [];
     for (Map resultMap in result) {
-      resultList.addAll([resultMap['url'],resultMap['username'],resultMap['password']]);
+      resultList.addAll([resultMap['url'],resultMap['username'],resultMap['password'],resultMap['name']]);
     }
     return resultList;
   }

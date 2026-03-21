@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import 'add_server_popup.dart';
+
 class ServerList extends StatelessWidget {
   const ServerList({super.key});
 
@@ -27,15 +29,17 @@ class ServerList extends StatelessWidget {
                         databaseControl.deleteServer(id);
                         ref.invalidate(riverpodManager.serverListProvider);
                       }
+                      void editServer(int id) {
+                        List<String> serverInfo = databaseControl.getServerByID(id);
+                        AddServerPopup.showAddServerPopUp(context, serverInfo[3], serverInfo[0], serverInfo[1], serverInfo[2], id);
+                      }
 
                       return Slidable(
                         startActionPane: ActionPane(
                           motion: DrawerMotion(),
                             children: [
                               SlidableAction(//farbe noch festlegen
-                                onPressed: (_) => () {
-                                  //hier server editieren
-                                },
+                                onPressed: (_) => (editServer(value[index][0])),
                                 icon: Icons.edit,
                                 label: 'Edit',
                               ),
@@ -56,7 +60,7 @@ class ServerList extends StatelessWidget {
                           leading: Icon(Icons.storage),
                           title: Text(value[index][1]),
                           subtitle: Text(value[index][2]),
-                          trailing: ServerMenu(context).serverMenu(value[index][0]),
+                          trailing: ServerMenu(context,ref,value[index][0]).serverMenu(value[index][0]),
                           onTap: () {
                             databaseControl.selectServer(value[index][0]);
                             Navigator.of(context).pop();

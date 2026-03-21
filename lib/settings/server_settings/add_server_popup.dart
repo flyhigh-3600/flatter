@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 class AddServerPopup {
-  static void showAddServerPopUp(BuildContext context) {
+  static void showAddServerPopUp(BuildContext context,String? serverName,String? serverURL,String? serverUsername,String? serverPassword,int? id) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -14,10 +14,16 @@ class AddServerPopup {
         return StatefulBuilder(
           builder: (context,setState) {
             final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-            late String serverName;
+            TextEditingController serverNameController = TextEditingController();
             TextEditingController serverURLcontroller = TextEditingController();
             TextEditingController serverUsernameController = TextEditingController();
             TextEditingController serverPasswordController = TextEditingController();
+            if (serverName != null && serverURL != null && serverUsername != null && serverPassword!= null && id != null) {
+              serverNameController.text = serverName;
+              serverURLcontroller.text = serverURL;
+              serverUsernameController.text = serverUsername;
+              serverPasswordController.text = serverPassword;
+            }
             List<String> authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
             return AlertDialog(//TODO:wenn etwas richtig läuft und man dan etwas ändert, dann sollte es invalidatet werden
               title: const Text("Add Server"),
@@ -33,11 +39,11 @@ class AddServerPopup {
                           hintText: "Server Name",
                           border: OutlineInputBorder(),
                         ),
+                        controller: serverNameController,
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter a Name";
                           }
-                          serverName = value;
                           return null;
                         },
                       ),
@@ -99,7 +105,10 @@ class AddServerPopup {
                                           if (_formKey.currentState!.validate()) {
                                             authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
                                             if (value[1] == "Save") {
-                                              databaseControl.addServer(serverName, serverURLcontroller.text, serverUsernameController.text,serverPasswordController.text);
+                                              if (id != null) {
+                                                databaseControl.deleteServer(id);
+                                              }
+                                              databaseControl.addServer(serverNameController.text, serverURLcontroller.text, serverUsernameController.text,serverPasswordController.text);
                                               ref.invalidate(riverpodManager.serverListProvider);
                                               Navigator.of(context).pop();
                                             } if (value[1] == "Test connection") {

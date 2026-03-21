@@ -1,9 +1,14 @@
+import 'package:flatter/main.dart';
+import 'package:flatter/settings/server_settings/add_server_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ServerMenu {
   final BuildContext context;
-  ServerMenu(this.context);
+  final WidgetRef ref;
+  final int id;
+  ServerMenu(this.context,this.ref,this.id);
 
   Widget serverMenu(int id) {
     return PopupMenuButton(
@@ -11,13 +16,15 @@ class ServerMenu {
         PopupMenuItem(
           child: Text("Edit"),
           onTap: () {
-            //hier edit somehow
+            List<String> serverInfo = databaseControl.getServerByID(id);
+            AddServerPopup.showAddServerPopUp(context, serverInfo[3], serverInfo[0], serverInfo[1], serverInfo[2], id);
           },
         ),
         PopupMenuItem(
           child: Text("Remove/Delete"),//entscheiden
           onTap: () {
-            //hier irgendwie löschen und dann den ref invalidieren, idk wie
+            databaseControl.deleteServer(id);
+            ref.invalidate(riverpodManager.serverListProvider);
           },
         )
       ],

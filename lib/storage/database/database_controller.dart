@@ -74,8 +74,11 @@ class DatabaseController {
   List<String> getCurrentServer() {
     int currentID = settingsControl.loadSetting('selectedServer');
     //hier die infos des aktuellen sevrer bekommen
-    _servers_db.getServerInfo(currentID);
-    return _servers_db.getServerInfo(currentID);
+    return getServerByID(currentID);
+  }
+
+  List<String> getServerByID(int id) {
+    return _servers_db.getServerInfo(id);
   }
 
   List<List> getServers() {
