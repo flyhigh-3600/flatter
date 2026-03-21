@@ -10,7 +10,7 @@ class AlbumScreen extends StatelessWidget {
   const AlbumScreen({super.key,required this.albumID});
   final String albumID;
 
-  Widget buildAlbumColumn(List<dynamic> songList) {
+  Widget buildAlbumColumn(List<dynamic> songList,BuildContext context,ItemMenus itemMenus) {
     List<Widget> widgetList = [];
     print(songList);
     for (Map song in songList) {
@@ -19,12 +19,7 @@ class AlbumScreen extends StatelessWidget {
           leading: Text(song['track'].toString()),
           title: Text(song['title']),
           subtitle: Text(song['duration'].toString()),
-          trailing: IconButton(
-            onPressed: () {
-              //hier mehr menü
-            },
-            icon: Icon(Icons.more_vert),
-          ),
+          trailing: itemMenus.songMenu(song['id'], song['artist'], song['album']),//artist und album geben leider namen und keine ids zurück...👩‍🦲
           onTap: () {
             playerControl.addItem(song['id']);
           },
@@ -36,6 +31,7 @@ class AlbumScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ItemMenus itemMenus = ItemMenus(context);
     return Consumer(
       builder: (context,ref,child) {
         final albumDetails = ref.watch(riverpodManager.albumDetailsProvider(albumID));
@@ -46,26 +42,25 @@ class AlbumScreen extends StatelessWidget {
               AsyncValue(error: != null) => Text("Error"),
               AsyncValue() => CircularProgressIndicator(),
             },
-            actions: [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
-              IconButton(
-                onPressed: () {
-                  //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
-                },
-                icon: Icon(Icons.play_arrow),
-              ),
-              IconButton(
-                onPressed: () {
-                  //hier favouriten
-                },
-                icon: Icon(Icons.favorite_border),//probably damit sich das ändert hier ein eigenes widget bauen
-              ),
-              IconButton(
-                onPressed: () {
-                  //Navigator.of(context).push();
-                },
-                icon: Icon(Icons.more_vert),
-              ),
-            ],
+            actions: switch (albumDetails) {
+              AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
+                IconButton(
+                  onPressed: () {
+                    //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
+                  },
+                  icon: Icon(Icons.play_arrow),
+                ),
+                IconButton(
+                  onPressed: () {
+                    //hier favouriten
+                  },
+                  icon: Icon(Icons.favorite_border),//probably damit sich das ändert hier ein eigenes widget bauen
+                ),
+                itemMenus.albumMenu(value['id'], value['artistId'], value['song']),
+              ],
+              AsyncValue(error: != null) => [Text("Error")],
+              AsyncValue() => [CircularProgressIndicator()]
+            }
           ),
           body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -106,7 +101,7 @@ class AlbumScreen extends StatelessWidget {
                   ],
                 ),
                 switch (albumDetails) {
-                  AsyncValue(:final value?) => buildAlbumColumn(value['song']),
+                  AsyncValue(:final value?) => buildAlbumColumn(value['song'],context,itemMenus),
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => CircularProgressIndicator(),
                 },

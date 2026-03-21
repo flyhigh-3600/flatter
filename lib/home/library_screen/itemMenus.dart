@@ -2,8 +2,10 @@ import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
 class ItemMenus {
+  final BuildContext context;
+  ItemMenus(this.context);
 
-  PopupMenuEntry addNext(List<String> ids) {
+  PopupMenuEntry addNext(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
         for (String id in ids.reversed) {
@@ -14,14 +16,14 @@ class ItemMenus {
     );
   }
 
-  PopupMenuEntry Enqueue(List<String> ids) {
+  PopupMenuEntry enqueue(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
         for (String id in ids) {
           playerControl.addItem(id);
         }
       },
-      child: Text("Add next"),
+      child: Text("Enqueue"),
     );
   }
 
@@ -37,41 +39,44 @@ class ItemMenus {
   PopupMenuEntry goToArtist(String id) {
     return PopupMenuItem(
       onTap: () {
-        //nothing here yet
+        //nothing here yet (und obvs context verwenden
       },
       child: Text("Artist"),
     );
   }
 
-  Widget Song(String id,String artistID, String albumID) {
+  Widget songMenu(String id,String artistID, String albumID) {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
         addNext([id]),
-        Enqueue([id]),
+        enqueue([id]),
         PopupMenuDivider(),
         goToAlbum(albumID),
         goToArtist(artistID),
       ],
+      child: Icon(Icons.more_vert),
     );
   }
 
-  Widget Album(String id,String albumArtistID, List<String> songIDs) {
+  Widget albumMenu(String id,String albumArtistID, List<dynamic> songIDs) {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
         addNext(songIDs),
-        Enqueue(songIDs),
+        enqueue(songIDs),
         PopupMenuDivider(),
         goToArtist(albumArtistID),
       ],
+      child: Icon(Icons.more_vert),
     );
   }
 
-  Widget Artist(String id,List<String> songIDs) {
+  Widget artistMenu(String id,List<dynamic> songIDs) {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
         addNext(songIDs),
-        Enqueue(songIDs),
+        enqueue(songIDs),
       ],
+      child: Icon(Icons.more_vert),
     );
   }
 }
