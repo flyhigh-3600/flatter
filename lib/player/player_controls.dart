@@ -82,6 +82,10 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   }//vlt ein skip to oder so einfügen
 
   //playlist controls
+  void clearQueue() {
+    queueRepository.clearQueue();
+  }
+
   int getCurrentIndex() {
     List<List<dynamic>> queue = getQueue();
     for (int index = 0; index <= getQueueLength(); index++) {

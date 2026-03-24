@@ -7,6 +7,18 @@ class ItemMenus {
   final BuildContext context;
   ItemMenus(this.context);
 
+  PopupMenuEntry playNow(List<dynamic> ids) {
+    return PopupMenuItem(
+      onTap: () {
+        playerControl.clearQueue();
+        for (String id in ids) {
+          playerControl.addItem(id);
+        }
+      },
+      child: Text("Play now"),
+    );
+  }
+
   PopupMenuEntry addNext(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
@@ -50,6 +62,7 @@ class ItemMenus {
   Widget songMenu(String id,String artistID, String albumID) {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
+        playNow([id]),
         addNext([id]),
         enqueue([id]),
         PopupMenuDivider(),
@@ -63,6 +76,7 @@ class ItemMenus {
   Widget albumMenu(String id,String albumArtistID, List<dynamic> songIDs) {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
+        playNow(songIDs),
         addNext(songIDs),
         enqueue(songIDs),
         PopupMenuDivider(),

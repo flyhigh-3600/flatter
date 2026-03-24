@@ -13,6 +13,10 @@ class QueueRepository {
     _queue.removeAt(position);
   }
 
+  void clearQueue() {
+    _queue.clear();
+  }
+
   List<dynamic> getItemAtPos(int position) {
     return _queue[position];
   }
