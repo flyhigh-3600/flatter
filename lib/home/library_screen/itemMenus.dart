@@ -22,8 +22,8 @@ class ItemMenus {
   PopupMenuEntry addNext(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
-        for (String id in ids.reversed) {
-          playerControl.addNext(id);
+        for (Map song in ids.reversed) {
+          playerControl.addNext(song['id']);
         }
       },
       child: Text("Add next"),
@@ -33,8 +33,8 @@ class ItemMenus {
   PopupMenuEntry enqueue(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
-        for (String id in ids) {
-          playerControl.addItem(id);
+        for (Map song in ids) {
+          playerControl.addItem(song['id']);
         }
       },
       child: Text("Enqueue"),
@@ -44,7 +44,7 @@ class ItemMenus {
   PopupMenuEntry goToAlbum(String id) {
     return PopupMenuItem(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
       },
       child: Text("Album"),
     );

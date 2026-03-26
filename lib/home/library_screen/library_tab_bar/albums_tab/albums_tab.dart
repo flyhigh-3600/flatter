@@ -38,7 +38,6 @@ class _AlbumsTabState extends State<AlbumsTab> {
 
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
     List<Widget> widgetList = [];
-    print(items.length);
     int index = 0;
     while (index < items.length) {
       Map albumOne = items[index];

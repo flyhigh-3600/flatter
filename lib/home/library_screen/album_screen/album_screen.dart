@@ -12,14 +12,13 @@ class AlbumScreen extends StatelessWidget {
 
   Widget buildAlbumColumn(List<dynamic> songList,BuildContext context,ItemMenus itemMenus) {
     List<Widget> widgetList = [];
-    print(songList);
     for (Map song in songList) {
       widgetList.add(
         ListTile(//evt noch cover hinzufügen oder so idk
           leading: Text(song['track'].toString()),
           title: Text(song['title']),
           subtitle: Text(song['duration'].toString()),
-          trailing: itemMenus.songMenu(song['id'], song['artist'], song['album']),//artist und album geben leider namen und keine ids zurück...👩‍🦲
+          trailing: itemMenus.songMenu(song['id'], song['artistId'], song['albumId']),//artist und album geben leider namen und keine ids zurück...👩‍🦲
           onTap: () {
             playerControl.addItem(song['id']);
           },

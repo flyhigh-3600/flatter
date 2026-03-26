@@ -92,6 +92,7 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return {};
       }
+      print(subsonicResponse['album']);
       return subsonicResponse['album'];
     } catch(error) {
       return {};
