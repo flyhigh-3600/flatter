@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:saf_util/saf_util.dart';
 
-late final playerControl;
+late final PlayerControls playerControl;
 //DirectoryManager directoryControl = DirectoryManager();
 SafUtil safutil = SafUtil();
 SubsonicService subsonicService = SubsonicService();
@@ -21,6 +21,7 @@ RiverpodManager riverpodManager = RiverpodManager();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;
+late final AudioSession session;
 
 
 void main() async {
@@ -31,7 +32,8 @@ void main() async {
       androidNotificationChannelName: 'flatter Music Playback'
     ),
   );
-
+  session = await AudioSession.instance;
+  await session.configure(AudioSessionConfiguration.music());
   WidgetsFlutterBinding.ensureInitialized();
   pathProvider = PathProvider();
   databaseControl = DatabaseController();
