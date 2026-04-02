@@ -47,4 +47,9 @@ class RiverpodManager {
     Map<dynamic,dynamic> albumDetails = await subsonicService.getArtistDetails(id);
     return albumDetails;
   });
+
+  final queueProvider = FutureProvider<List<List<dynamic>>>((ref) {
+    List<List<dynamic>> queue = playerControl.getQueue();
+    return queue;
+  });
 }
