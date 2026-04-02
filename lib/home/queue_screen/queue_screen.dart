@@ -19,16 +19,40 @@ class QueueScreen extends StatelessWidget {
           Expanded(child: QueueWidget()),
           Divider(),
           Container(
-            color: Colors.primaries[1],//farbe auswählen (generell halt wenn du dich um die farben kümmerst
+            color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
               children: [
                 IconButton(
                   onPressed: () {
 
                   },
-                  icon: Icon(Icons.transfer_within_a_station),
-                )
+                  icon: Icon(Icons.check_box_outline_blank),//das wenn man selected in eine volle checkbox einteile, oder das hier einfach generell eine checkbox machen
+                ),
+                IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.playlist_add),
+                ),
+                IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.shuffle),
+                ),
+                IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.loop),//hier halt single und ganze queue
+                ),
+                IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.search),
+                ),
               ],
             ),
           ),
