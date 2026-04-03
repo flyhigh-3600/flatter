@@ -1,11 +1,16 @@
 import 'dart:collection';
 
+import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/queue_screen/queue_screen_ViewModel.dart';
 import 'package:flatter/home/queue_screen/queue_widget/queue_widget.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
+import '../library_screen/artist_screen/artist_screen.dart';
+import '../library_screen/itemMenus.dart';
 
 class QueueScreen extends StatefulWidget {
   const QueueScreen({super.key});
@@ -17,8 +22,112 @@ class QueueScreen extends StatefulWidget {
 class _QueueScreenState extends State<QueueScreen> {
 
   Widget buildQueue(WidgetRef ref, BuildContext context, List<List<dynamic>> queue) {
-    return ReorderableListView.builder(
 
+    void removeFromQueue(int index) {
+
+    }
+    void goToAlbum(BuildContext context, String id) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
+    }
+    void goToArtist(BuildContext context, String id) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
+    }
+
+    return ReorderableListView.builder(
+      itemCount: queue.length,
+      onReorder: (int oldIndex,int newIndex) {
+        if (oldIndex < newIndex) {
+          newIndex -= 1;
+        }
+        playerControl.moveItem(oldIndex, newIndex);
+        ref.invalidate(riverpodManager.queueProvider);
+      },
+      itemBuilder: (BuildContext context,int index) {
+        print(queue[index]);
+        if (queue[index][2] == true) {
+          return Card.filled(
+            key: Key('$index'),
+            child: Column(
+              children: [
+                Slidable(
+                  startActionPane: ActionPane(
+                    motion: DrawerMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (_) => (removeFromQueue(index)),
+                        icon: Icons.delete,
+                        label: 'Delete',
+                        backgroundColor: Colors.red,
+                      ),
+                    ],
+                  ),
+                  endActionPane: ActionPane(//farben überlegen
+                    motion: DrawerMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (_) => (goToAlbum(context, queue[index][1][4])),
+                        icon: Icons.album,
+                        label: 'Album',
+                      ),
+                      SlidableAction(
+                        onPressed: (_) => (goToArtist(context, queue[index][1][2])),
+                        icon: Icons.person,
+                        label: 'Artist',
+                      )
+                    ],
+                  ),
+                  child: ListTile(
+                    title: Text(queue[index][1][0]),
+                    subtitle: Text(queue[index][1][1]),
+                    trailing: ItemMenus(context).songMenu(queue[index][0], queue[index][1][2], queue[index][1][4]),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Card(
+            key: Key('$index'),
+            child: Column(
+              children: [
+                Slidable(
+                  startActionPane: ActionPane(
+                    motion: DrawerMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (_) => (removeFromQueue(index)),
+                        icon: Icons.delete,
+                        label: 'Delete',
+                        backgroundColor: Colors.red,
+                      ),
+                    ],
+                  ),
+                  endActionPane: ActionPane(//farben überlegen
+                    motion: DrawerMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (_) => (goToAlbum(context, queue[index][1][4])),
+                        icon: Icons.album,
+                        label: 'Album',
+                      ),
+                      SlidableAction(
+                        onPressed: (_) => (goToArtist(context, queue[index][1][2])),
+                        icon: Icons.person,
+                        label: 'Artist',
+                      )
+                    ],
+                  ),
+                  child: ListTile(
+                    title: Text(queue[index][1][0]),
+                    subtitle: Text(queue[index][1][1]),
+                    trailing: ItemMenus(context).songMenu(queue[index][0], queue[index][1][2], queue[index][1][4]),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -55,6 +164,7 @@ class _QueueScreenState extends State<QueueScreen> {
                 IconButton(
                   onPressed: () {
                     playerControl.shuffleQueue();
+                    ref.invalidate(riverpodManager.queueProvider);
                   },
                   icon: Icon(Icons.shuffle),
                 ),

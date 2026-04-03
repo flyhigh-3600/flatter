@@ -80,7 +80,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                 ],
               ),
             ) else
-            Card(
+              Card(
                 key: Key('$index'),
                 child: Column(
                   children: [
