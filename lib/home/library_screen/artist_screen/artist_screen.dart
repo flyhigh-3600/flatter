@@ -44,11 +44,10 @@ class ArtistScreen extends StatelessWidget {
         )
       );
     }
-    return Expanded(
-      child: GridView.count(
-        crossAxisCount: (screenWidth / 150).toInt(),
-        children: widgetList,
-      ),
+    return GridView.count(
+      crossAxisCount: (screenWidth / 150).toInt(),
+      children: widgetList,
+      physics: NeverScrollableScrollPhysics(),
     );
   }
 
