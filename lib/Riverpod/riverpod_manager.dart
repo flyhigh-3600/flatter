@@ -53,4 +53,11 @@ class RiverpodManager {
     List<List<dynamic>> queue = playerControl.getQueue();
     return queue;
   });
+
+  final playlistListProvider = FutureProvider<List<Map<String,dynamic>>>((ref) async {
+    List<Map<String,dynamic>> playlistList = await subsonicService.getPlaylists();
+    print('riverpod thingy here');
+    print(playlistList);
+    return playlistList;
+  });
 }

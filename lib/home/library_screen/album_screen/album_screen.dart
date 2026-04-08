@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
+import 'package:flatter/home/library_screen/artist_select_window.dart';
 import 'package:flatter/home/library_screen/itemMenus.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,6 +86,7 @@ class AlbumScreen extends StatelessWidget {
               AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
                 IconButton(
                   onPressed: () {
+                    ArtistSelectWindow.showArtistSelectWindow(context, ["1"]);
                     //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
                   },
                   icon: Icon(Icons.play_arrow),

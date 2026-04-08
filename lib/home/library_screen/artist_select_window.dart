@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_card/image_card.dart';
 
-class ArtistSelectWindow {
+class ArtistSelectWindow {//TODO:joa das hier machen nh :P
   static void showArtistSelectWindow(BuildContext context,List<String> artistIDs) {
     showDialog(
       context: context,
@@ -15,17 +15,16 @@ class ArtistSelectWindow {
             Size screenSize = MediaQuery.sizeOf(context);
             return Consumer(
               builder: (context, ref, child) {
-                final artistDetails = ref.watch()
-                return CarouselView(
+                return CarouselView.builder(
                   itemExtent: double.infinity,
-                  children: [
-                    TransparentImageCard(
-                      imageProvider: CachedNetworkImageProvider(url),
-                    )
-                  ],
+                  itemBuilder: (BuildContext context, int index) {
+                    return TransparentImageCard(
+                      imageProvider: CachedNetworkImageProvider("https://pngimg.com/uploads/apple/apple_PNG12480.png"),
+                    );
+                  },
                 );
               },
-            )
+            );
           },
         );
       }
