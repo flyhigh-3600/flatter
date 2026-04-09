@@ -80,31 +80,31 @@ class PlaylistScreen extends StatelessWidget {
         final playlistDetails = ref.watch(riverpodManager.playlistDetailsProvider(playlistID));
         return Scaffold(
           appBar: AppBar(
-              title: switch (playlistDetails) {
-                AsyncValue(:final value?) => Text(value['name']),
-                AsyncValue(error: != null) => Text("Error"),
-                AsyncValue() => CircularProgressIndicator(),
-              },
-              actions: switch (playlistDetails) {
-                AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
-                  IconButton(
-                    onPressed: () {
-                      ArtistSelectWindow.showArtistSelectWindow(context, ["1"]);
-                      //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
-                    },
-                    icon: Icon(Icons.play_arrow),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      //hier favouriten
-                    },
-                    icon: Icon(Icons.favorite_border),//probably damit sich das ändert hier ein eigenes widget bauen
-                  ),
-                  itemMenus.albumMenu(value['id'], value['artistId'], value['song']),
-                ],
-                AsyncValue(error: != null) => [Text("Error")],
-                AsyncValue() => [CircularProgressIndicator()]
-              }
+            title: switch (playlistDetails) {
+              AsyncValue(:final value?) => Text(value['name']),
+              AsyncValue(error: != null) => Text("Error"),
+              AsyncValue() => CircularProgressIndicator(),
+            },
+            actions: switch (playlistDetails) {
+              AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
+                IconButton(
+                  onPressed: () {
+                    ArtistSelectWindow.showArtistSelectWindow(context, ["1"]);
+                    //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
+                  },
+                  icon: Icon(Icons.play_arrow),
+                ),
+                IconButton(
+                  onPressed: () {
+                    //hier favouriten
+                  },
+                  icon: Icon(Icons.favorite_border),//probably damit sich das ändert hier ein eigenes widget bauen
+                ),
+                itemMenus.albumMenu(value['id'], value['owner'], value['entry']),
+              ],
+              AsyncValue(error: != null) => [Text("Error")],
+              AsyncValue() => [CircularProgressIndicator()]
+            }
           ),
           body: SingleChildScrollView(
             scrollDirection: Axis.vertical,

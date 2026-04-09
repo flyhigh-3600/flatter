@@ -191,7 +191,7 @@ class SubsonicService {
 
   Future<Map<dynamic,dynamic>> getPlaylistDetails(String id) async {
     List<String> url = getURL(null, null, null);
-    final uri = Uri.parse("${url[0]}getSong${url[1]}&id=$id");
+    final uri = Uri.parse("${url[0]}getPlaylist${url[1]}&id=$id");
     try {
       final data = await http.get(uri);
       try {
@@ -204,8 +204,6 @@ class SubsonicService {
         if (subsonicResponse['status'] != "ok") {
           return {};
         }
-        print("playlis details here");
-        print(subsonicResponse['playlist']);
         return subsonicResponse['playlist'];
       } catch(error) {
         return {};

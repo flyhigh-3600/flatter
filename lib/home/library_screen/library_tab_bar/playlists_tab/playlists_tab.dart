@@ -53,6 +53,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
             child: InkWell(
               splashColor: Colors.blue.withAlpha(30),
               onTap: () {
+                print("playlost tapped");
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
                         PlaylistScreen(playlistID: playlist['id'])));
@@ -100,6 +101,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
             child: InkWell(
               splashColor: Colors.blue.withAlpha(30),
               onTap: () {
+                print("playlist tabbed");
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
                         PlaylistScreen(playlistID: playlist['id'])));
