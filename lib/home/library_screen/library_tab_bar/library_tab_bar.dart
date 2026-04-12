@@ -8,6 +8,7 @@ import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playli
 import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playlists_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab_viewModel.dart';
+import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
 class LibraryTabBar extends StatelessWidget {
@@ -15,6 +16,10 @@ class LibraryTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int startTab = settingsControl.settingsMap['libraryTab'];
+    if (startTab == -1) {
+      startTab = settingsControl.settingsMap['lastLibraryTab'];
+    }
 //    final FoldersTabViewModel foldersTabViewModel = FoldersTabViewModel();
   //TODO:du brauchst noch einen tab nur zum suchen hier in dem man nach allem suchen kann
     final PlaylistsTabViewModel playlistsTabViewModel = PlaylistsTabViewModel();
@@ -22,7 +27,7 @@ class LibraryTabBar extends StatelessWidget {
     final AlbumsTabViewModel albumsTabViewModel = AlbumsTabViewModel();
     final ArtistsTabViewModel artistsTabViewModel = ArtistsTabViewModel();
     return DefaultTabController(
-      initialIndex: 0,
+      initialIndex: startTab,
       length: 4,
       child: Scaffold(
         appBar: AppBar(

@@ -20,7 +20,7 @@ class _PlaylistSongListTapActionSetting extends State<PlaylistSongListTapActionS
       ],
       initialSelection: settingsControl.settingsMap['playlistSongListTapAction'],
       onSelected: (value) {
-        settingsControl.changeSetting('PlaylistSongListTapAction', value);
+        settingsControl.changeSetting('playlistSongListTapAction', value);
       },
     );
   }

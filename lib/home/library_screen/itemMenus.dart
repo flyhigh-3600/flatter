@@ -29,6 +29,29 @@ class ItemMenus {
     );
   }
 
+  PopupMenuEntry playNowShuffled(List<dynamic> ids) {
+    return PopupMenuItem(
+      onTap: () {
+        playerControl.clearQueue();
+        if (ids[0] == null) {
+          if (ids[2] == "album") {
+            playerControl.addItemAlbumShuffled(ids[1]);
+          } else if (ids[2] == "playlist") {
+            playerControl.addItemPlaylistShuffled(ids[1]);
+          }
+          return;
+        }
+        List<String> toGive = [];
+        for (Map song in ids) {
+          toGive.add(song['id']);
+        }
+        toGive.shuffle();
+        playerControl.addItemList(toGive);
+      },
+      child: Text("Play now"),
+    );
+  }
+
   PopupMenuEntry addNext(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
@@ -50,6 +73,28 @@ class ItemMenus {
     );
   }
 
+  PopupMenuEntry addNextShuffled(List<dynamic> ids) {
+    return PopupMenuItem(
+      onTap: () {
+        if (ids[0] == [null]) {
+          if (ids[2] == "album") {
+            playerControl.addNextAlbumShuffled(ids[1]);
+          } else if (ids[2] == "playlist") {
+            playerControl.addNextPlaylistShuffled(ids[1]);
+          }
+          return;
+        }
+        List<String> toGive = [];
+        for (Map song in ids.reversed) {
+          toGive.add(song['id']);
+        }
+        toGive.shuffle();
+        playerControl.addNextList(toGive);
+      },
+      child: Text("Add next"),
+    );
+  }
+
   PopupMenuEntry enqueue(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
@@ -65,6 +110,28 @@ class ItemMenus {
         for (Map song in ids) {
           toGive.add(song['id']);
         }
+        playerControl.addItemList(toGive);
+      },
+      child: Text("Enqueue"),
+    );
+  }
+
+  PopupMenuEntry enqueueShuffled(List<dynamic> ids) {
+    return PopupMenuItem(
+      onTap: () {
+        if (ids[0] == null) {
+          if (ids[2] == "album") {
+            playerControl.addItemAlbumShuffled(ids[1]);
+          } else if (ids[2] == "playlist") {
+            playerControl.addItemPlaylistShuffled(ids[1]);
+          }
+          return;
+        }
+        List<String> toGive = [];
+        for (Map song in ids) {
+          toGive.add(song['id']);
+        }
+        toGive.shuffle();
         playerControl.addItemList(toGive);
       },
       child: Text("Enqueue"),
@@ -105,6 +172,10 @@ class ItemMenus {
         addNext([{'id': id}]),
         enqueue([{'id': id}]),
         PopupMenuDivider(),
+        playNowShuffled([{'id': id}]),
+        addNextShuffled([{'id': id}]),
+        enqueueShuffled([{'id': id}]),
+        PopupMenuDivider(),
         goToAlbum(albumID),
         goToArtist(artistID),
       ],
@@ -119,6 +190,10 @@ class ItemMenus {
         addNext(songIDs),
         enqueue(songIDs),
         PopupMenuDivider(),
+        playNowShuffled(songIDs),
+        addNextShuffled(songIDs),
+        enqueueShuffled(songIDs),
+        PopupMenuDivider(),
         goToArtist(albumArtistID),
       ],
       child: Icon(Icons.more_vert),
@@ -131,6 +206,10 @@ class ItemMenus {
         playNow([null,id,"album"]),
         addNext([null,id,"album"]),
         enqueue([null,id,"album"]),
+        PopupMenuDivider(),
+        playNowShuffled([null,id,"album"]),
+        addNextShuffled([null,id,"album"]),
+        enqueueShuffled([null,id,"album"]),
         PopupMenuDivider(),
         goToArtist(albumArtistID),
       ],
@@ -155,6 +234,10 @@ class ItemMenus {
         addNext(songIDs),
         enqueue(songIDs),
         PopupMenuDivider(),
+        playNowShuffled(songIDs),
+        addNextShuffled(songIDs),
+        enqueueShuffled(songIDs),
+        PopupMenuDivider(),
         showPlaylistsByOwner(owner),
       ],
       child: Icon(Icons.more_vert),
@@ -167,6 +250,10 @@ class ItemMenus {
         playNow([null,id,"playlist"]),
         addNext([null,id,"playlist"]),
         enqueue([null,id,"playlist"]),
+        PopupMenuDivider(),
+        playNowShuffled([null,id,"playlist"]),
+        addNextShuffled([null,id,"playlist"]),
+        enqueueShuffled([null,id,"playlist"]),
         PopupMenuDivider(),
         showPlaylistsByOwner(owner),
       ],

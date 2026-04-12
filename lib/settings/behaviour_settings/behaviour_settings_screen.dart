@@ -1,3 +1,4 @@
+import 'package:flatter/settings/behaviour_settings/library_start_tab_setting.dart';
 import 'package:flatter/settings/behaviour_settings/play_actions_settings/play_actions_settings_screen.dart';
 import 'package:flatter/settings/behaviour_settings/start_tab_setting.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,16 @@ class BehaviourSettingsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: ListView(
+      body: ListView(//hier space zwischen allen items machen
         shrinkWrap: true,
         children: [
           ListTile(
             title: Text("Start tab"),
             trailing: StartTabSetting(),
+          ),
+          ListTile(
+            title: Text("Library start tab"),
+            trailing: LibraryStartTabSetting(),
           ),
           ListTile(
             leading: Icon(Icons.play_arrow),

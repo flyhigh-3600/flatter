@@ -22,6 +22,8 @@ class SettingsController {
     'albumSongListTapAction':'enqueue',
     'playlistSongListTapAction':'enqueue',
     'songsTabTapAction':'enqueue',
+    'libraryTab':0,
+    'lastLibraryTab':0
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
@@ -42,14 +44,19 @@ class SettingsController {
     }
     settingsDocument = await TomlDocument.load(path);
     settingsMap = settingsDocument.toMap();
-    if (settingsMap.length < defaultSettingsMap.length) {
-      defaultSettingsMap.forEach((key,value) {
-        if (settingsMap[key] == null) {
-          settingsMap[key] = value;
-        }
-      });
-    }
+    defaultSettingsMap.forEach((key,value) {
+      if (settingsMap[key] == null) {
+        settingsMap[key] = value;
+      }
+    });
     print(settingsMap);
+  }
+
+  void resetSettings() {
+    settingsMap.clear();
+    defaultSettingsMap.forEach((key,value) {
+      changeSetting(key, value);
+    });
   }
 
   void changeSetting(String key,dynamic value) {

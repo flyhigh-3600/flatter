@@ -87,8 +87,17 @@ class AlbumScreen extends StatelessWidget {
               AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
                 IconButton(
                   onPressed: () {
-                    ArtistSelectWindow.showArtistSelectWindow(context, ["1"]);
-                    //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
+                    String action = settingsControl.settingsMap['albumPlayButtonAction'];
+                    switch (action) {
+                      case "playNow":
+                        playerControl.clearQueue();
+                        playerControl.addItemAlbum(value['id']);
+                      case "playNext":
+                        playerControl.addNextAlbum(value['id']);
+                      case "enqueue":
+                        playerControl.addItemAlbum(value['id']);
+                        //muss noch was für die shuffled dinger machen
+                    }
                   },
                   icon: Icon(Icons.play_arrow),
                 ),

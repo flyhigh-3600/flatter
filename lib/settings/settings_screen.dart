@@ -1,5 +1,6 @@
 import 'package:flatter/settings/appearance_settings/appearance_settings_screen.dart';
 import 'package:flatter/settings/behaviour_settings/behaviour_settings_screen.dart';
+import 'package:flatter/settings/info_screen/info_screen.dart';
 import 'package:flatter/settings/server_settings/server_settings_screen.dart';
 import 'package:flatter/settings/settings_screen_ViewModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -71,6 +72,14 @@ class SettingsScreen extends StatelessWidget {
             trailing: Icon(Icons.arrow_forward),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.info),
+            title: Text("About"),
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen()));
             },
           ),
         ],

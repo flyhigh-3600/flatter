@@ -158,7 +158,15 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   }
 
+  void addItemAlbumShuffled(String id) async {
+
+  }
+
   void addItemPlaylist(String id) async {
+
+  }
+
+  void addItemPlaylistShuffled(String id) async {
 
   }
 
@@ -201,7 +209,15 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   }
 
+  void addNextAlbumShuffled(String id) async {
+
+  }
+
   void addNextPlaylist(String id) async {
+
+  }
+
+  void addNextPlaylistShuffled(String id) async {
 
   }
 
