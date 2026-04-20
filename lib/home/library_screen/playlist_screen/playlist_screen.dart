@@ -47,7 +47,7 @@ class PlaylistScreen extends StatelessWidget {
                 SlidableAction(
                   onPressed: (_) => (goToAlbum(context, song['albumId'])),
                   icon: Icons.album,
-                  label: 'Playlist',
+                  label: 'Album',
                 ),
                 SlidableAction(
                   onPressed: (_) => (goToArtist(context, song['artistId'])),
