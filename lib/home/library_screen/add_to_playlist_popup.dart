@@ -20,6 +20,9 @@ class AddToPlaylistPopup {
               print(playlistIDs);
               print(songIDs);
               print(skipDuplicates);
+              playlistIDs.forEach((value) {
+                subsonicService.updatePlaylist(value, null, null, null, songIDs, null);
+              });
             }
             Widget buildPlaylistColumn(context,List<dynamic> playlistList,WidgetRef ref) {//vlt einen schalter machen, dass man mehrere playlists auswählen kann
               List<Widget> widgetList = [];
@@ -52,6 +55,7 @@ class AddToPlaylistPopup {
                         playlistIDs.add(key);
                       }
                     });
+                    updatePlaylists(playlistIDs);
                   },
                 ));
                 for (Map<dynamic,dynamic> playlist in playlistList) {

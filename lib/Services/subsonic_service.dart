@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flatter/main.dart';
 
 class SubsonicService {
+  //authentication
   String generateRandomString(int length) {
     final random = Random();
     const availableChars =
@@ -57,6 +58,7 @@ class SubsonicService {
     }
   }
 
+  //get things
   Future<List<dynamic>> getAlbums(List<String> filterSortOptions) async {
     List<String> url = getURL(null, null, null);
     print("here");
@@ -205,6 +207,52 @@ class SubsonicService {
           return {};
         }
         return subsonicResponse['playlist'];
+      } catch(error) {
+        return {};
+      }
+    } catch(error) {
+      return {};
+    }
+  }
+
+  //do something to server
+  Future<Map<dynamic,dynamic>> updatePlaylist(String id,String? name,String? comment,String? public,List<dynamic>? songIDsToAdd,List<int>? indexesToRemove) async {
+    List<String> url = getURL(null,null,null);
+    String request = "${url[0]}updatePlaylist${url[1]}&id=$id";
+    if (name != null) {
+      request = "$request&name=$name";
+    }
+    if (comment != null) {
+      request = "$request&comment=$comment";
+    }
+    if (public != null) {
+      request = "$request&public=$public";
+    }
+    if (songIDsToAdd != null) {
+      songIDsToAdd.forEach((value) {
+        request = "$request&songIdToAdd=${value.toString()}";
+      });
+    }
+    if (indexesToRemove != null) {
+      indexesToRemove.forEach((value) {
+        request = "$request&songIndexToRemove=$value";
+      });
+    }
+    final uri = Uri.parse(request);
+    try {
+      final data = await http.get(uri);
+      try {
+        final data = await http.get(uri);
+        if (data.statusCode != 200) {
+          return {};
+        }
+        final Map responseMap = jsonDecode(data.body);
+        Map subsonicResponse = responseMap['subsonic-response'];
+        if (subsonicResponse['status'] != "ok") {
+          return {};
+        }
+        print('successfully updated playlist');
+        return subsonicResponse;
       } catch(error) {
         return {};
       }
