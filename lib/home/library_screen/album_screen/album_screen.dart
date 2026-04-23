@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AlbumScreen extends StatelessWidget {
   const AlbumScreen({super.key,required this.albumID});
@@ -81,7 +82,7 @@ class AlbumScreen extends StatelessWidget {
             title: switch (albumDetails) {
               AsyncValue(:final value?) => Text(value['name']),
               AsyncValue(error: != null) => Text("Error"),
-              AsyncValue() => CircularProgressIndicator(),
+              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
             actions: switch (albumDetails) {
               AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
@@ -110,7 +111,7 @@ class AlbumScreen extends StatelessWidget {
                 itemMenus.albumMenu(value['id'], value['artistId'], value['song']),
               ],
               AsyncValue(error: != null) => [Text("Error")],
-              AsyncValue() => [CircularProgressIndicator()]
+              AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)]
             }
           ),
           body: SingleChildScrollView(
@@ -123,7 +124,7 @@ class AlbumScreen extends StatelessWidget {
                   AsyncValue(:final value?) => CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        CircularProgressIndicator(value: downloadProgress.progress),
+                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     errorWidget: (context, url, error) => IconButton(
                       onPressed: () {
                         //hier retry
@@ -132,7 +133,7 @@ class AlbumScreen extends StatelessWidget {
                     ),
                   ),
                   AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => CircularProgressIndicator(),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
                 switch (albumDetails) {
                   AsyncValue(:final value?) => TextButton(
@@ -142,7 +143,7 @@ class AlbumScreen extends StatelessWidget {
                     child: Text(value['artist']),
                   ),
                   AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => CircularProgressIndicator(),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
                 Row(
                   children: [
@@ -154,7 +155,7 @@ class AlbumScreen extends StatelessWidget {
                 switch (albumDetails) {
                   AsyncValue(:final value?) => buildAlbumColumn(value['song'],context,itemMenus),
                   AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => CircularProgressIndicator(),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
               ],
             ),

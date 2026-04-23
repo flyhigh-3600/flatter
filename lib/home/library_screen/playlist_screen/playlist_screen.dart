@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../album_screen/album_screen.dart';
 
@@ -83,7 +84,7 @@ class PlaylistScreen extends StatelessWidget {
             title: switch (playlistDetails) {
               AsyncValue(:final value?) => Text(value['name']),
               AsyncValue(error: != null) => Text("Error"),
-              AsyncValue() => CircularProgressIndicator(),
+              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
             actions: switch (playlistDetails) {
               AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
@@ -104,7 +105,7 @@ class PlaylistScreen extends StatelessWidget {
                 itemMenus.playlistMenu(value['id'], value['entry'], value['owner']),
               ],
               AsyncValue(error: != null) => [Text("Error")],
-              AsyncValue() => [CircularProgressIndicator()]
+              AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)]
             }
           ),
           body: SingleChildScrollView(
@@ -117,7 +118,7 @@ class PlaylistScreen extends StatelessWidget {
                   AsyncValue(:final value?) => CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        CircularProgressIndicator(value: downloadProgress.progress),
+                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     errorWidget: (context, url, error) => IconButton(
                       onPressed: () {
                         //hier retry
@@ -126,7 +127,7 @@ class PlaylistScreen extends StatelessWidget {
                     ),
                   ),
                   AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => CircularProgressIndicator(),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
                 switch (playlistDetails) {
                   AsyncValue(:final value?) => TextButton(
@@ -136,7 +137,7 @@ class PlaylistScreen extends StatelessWidget {
                     child: Text(value['owner']),
                   ),
                   AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => CircularProgressIndicator(),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
                 Row(
                   children: [
@@ -148,7 +149,7 @@ class PlaylistScreen extends StatelessWidget {
                 switch (playlistDetails) {
                   AsyncValue(:final value?) => buildPlaylistColumn(value['entry'],context,itemMenus),
                   AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => CircularProgressIndicator(),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
               ],
             ),

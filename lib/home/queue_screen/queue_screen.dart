@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../library_screen/artist_screen/artist_screen.dart';
 import '../library_screen/itemMenus.dart';
@@ -146,7 +147,7 @@ class _QueueScreenState extends State<QueueScreen> {
             child: switch (queue) {
               AsyncValue(:final value?) => buildQueue(ref,context,value),
               AsyncValue(error: != null) => const Text("error"),
-              AsyncValue() => CircularProgressIndicator(),
+              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
           ),
           Divider(),

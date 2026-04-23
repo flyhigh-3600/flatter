@@ -7,6 +7,7 @@ import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../itemMenus.dart';
@@ -69,8 +70,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                           null, null, null)[1]}&id=${playlist['coverArt']}",
                       progressIndicatorBuilder: (context, url,
                           downloadProgress) =>
-                          CircularProgressIndicator(
-                              value: downloadProgress.progress),
+                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                       errorWidget: (context, url, error) =>
                           IconButton(
                             onPressed: () {
@@ -118,8 +118,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                         null, null, null)[1]}&id=${playlist['coverArt']}",
                     progressIndicatorBuilder: (context, url,
                         downloadProgress) =>
-                        CircularProgressIndicator(
-                            value: downloadProgress.progress),
+                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     errorWidget: (context, url, error) =>
                         IconButton(
                           onPressed: () {
@@ -196,7 +195,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                     ],
                   ),
                   AsyncValue(error: != null) => Center(child: const Text("Error")),
-                  AsyncValue() => Center(child: const CircularProgressIndicator()),
+                  AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
                 },
               ),
             ],

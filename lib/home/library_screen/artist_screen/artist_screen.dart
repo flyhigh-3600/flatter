@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
 class ArtistScreen extends StatelessWidget {
@@ -31,7 +32,7 @@ class ArtistScreen extends StatelessWidget {
                   aspectRatio: 1,
                   child: CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${album['coverArt']}",
-                    progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress,),
+                    progressIndicatorBuilder: (context, url, downloadProgress) => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     errorWidget: (context,url,error) => IconButton(
                       onPressed: () {
                         //hier retry
@@ -65,7 +66,7 @@ class ArtistScreen extends StatelessWidget {
             title: switch (artistDetails) {
               AsyncValue(:final value?) => Text(value['name']),
               AsyncValue(error: != null) => Text("Error"),
-              AsyncValue() => CircularProgressIndicator(),
+              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
             actions: [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
               IconButton(
@@ -98,7 +99,7 @@ class ArtistScreen extends StatelessWidget {
                   AsyncValue(:final value?) => CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        CircularProgressIndicator(value: downloadProgress.progress),
+                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     errorWidget: (context, url, error) => IconButton(
                       onPressed: () {
                         //hier retry
@@ -107,7 +108,7 @@ class ArtistScreen extends StatelessWidget {
                     ),
                   ),
                   AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => CircularProgressIndicator(),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
                 Row(
                   children: [
@@ -120,7 +121,7 @@ class ArtistScreen extends StatelessWidget {
                 switch (artistDetails) {
                   AsyncValue(:final value?) => buildAlbumGrid(context, value['album'],screenSize.width),
                   AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => CircularProgressIndicator(),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
                 Divider(),
                 Text("Appears in:"),
