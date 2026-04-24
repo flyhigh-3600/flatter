@@ -194,10 +194,11 @@ class ItemMenus {
     );
   }
 
-  Widget albumMenu(String id,String albumArtistID, List<dynamic> songIDs) {
+  Widget albumMenu(String id,String albumArtistID, List<dynamic>? songIDs) {
+    songIDs ??= [];
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
-        playNow(songIDs),
+        playNow(songIDs!),
         addNext(songIDs),
         enqueue(songIDs),
         PopupMenuDivider(),
@@ -239,10 +240,11 @@ class ItemMenus {
     );
   }
 
-  Widget playlistMenu(String id,List<dynamic> songIDs,String owner) {//TODO:brauchst bei den dingern immer noch etwas zum shufflen/shuffled hinzufügen
+  Widget playlistMenu(String id,List<dynamic>? songIDs,String owner) {//TODO:brauchst bei den dingern immer noch etwas zum shufflen/shuffled hinzufügen
+    songIDs ??= [];
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
-        playNow(songIDs),
+        playNow(songIDs!),
         addNext(songIDs),
         enqueue(songIDs),
         PopupMenuDivider(),
