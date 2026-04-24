@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/itemMenus.dart';
@@ -95,7 +97,7 @@ class ArtistScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
                 //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                switch (artistDetails) {
+                if (Platform.isAndroid == true || Platform.isIOS == true) switch (artistDetails) {
                   AsyncValue(:final value?) => CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
@@ -106,15 +108,49 @@ class ArtistScreen extends StatelessWidget {
                       },
                       icon: Icon(Icons.error),
                     ),
+                    height: screenSize.width,
                   ),
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
-                Row(
+                if (Platform.isAndroid == true || Platform.isIOS == true) Row(
                   children: [
                     //also ja hier actions
                     //diese diablen bis ergebnis da ist
                     Text("hier sollen actions hin")
+                  ],
+                ),
+                if (Platform.isLinux == true || Platform.isMacOS == true|| Platform.isWindows == true) Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    switch (artistDetails) {
+                      AsyncValue(:final value?) => CachedNetworkImage(
+                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
+                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                        errorWidget: (context, url, error) => IconButton(
+                          onPressed: () {
+                            //hier retry
+                          },
+                          icon: Icon(Icons.error),
+                        ),
+                        width: screenSize.width / 3,
+                        height: screenSize.width / 3,
+                      ),
+                      AsyncValue(error: != null) => Text("Error"),
+                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                    },
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("hier"),
+                          Text("sollen"),
+                          Text("actions"),
+                          Text("hin"),
+                        ],
+                      ),
+                    )
                   ],
                 ),
                 Text("Albums"),

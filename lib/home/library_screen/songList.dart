@@ -17,6 +17,8 @@ class SongList extends StatelessWidget {
     List<dynamic> songList = [];
     if (songListNullable != null) {
       songList.addAll(songListNullable!);
+    } else {
+      return Center(child: Text("No songs"));
     }
     void goToAlbum(BuildContext context, String id) {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
@@ -119,6 +121,6 @@ class SongList extends StatelessWidget {
       }
       return Column(children: widgetList,);
     }
-    
+
   }
 }
