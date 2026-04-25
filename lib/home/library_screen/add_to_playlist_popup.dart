@@ -1,3 +1,4 @@
+import 'package:flatter/home/library_screen/edit_playlist_popup.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,8 @@ class AddToPlaylistPopup {
               print("no for each the subsonic service is called");
               playlistIDs.forEach((value) {
                 subsonicService.updatePlaylist(value, null, null, null, songIDs, null);
-              });
+              });//hier überlegen, ob das ding offen bleiben soll, bis es hinzugefügt wurde
+              Navigator.of(context).pop();
             }
             Widget buildPlaylistColumn(context,List<dynamic> playlistList,WidgetRef ref) {//vlt einen schalter machen, dass man mehrere playlists auswählen kann
               List<Widget> widgetList = [];
@@ -130,6 +132,13 @@ class AddToPlaylistPopup {
                           },
                         )
                       ],
+                    ),
+                    FilledButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        EditPlaylistPopup.showEditPlaylistPopUp(context, true, null, null, null, null, songIDs);
+                      },
+                      child: Text("Create new"),
                     ),
                     Consumer(
                       builder: (context,ref,child) {

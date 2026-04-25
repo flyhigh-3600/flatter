@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/artist_select_window.dart';
+import 'package:flatter/home/library_screen/edit_playlist_popup.dart';
 import 'package:flatter/home/library_screen/itemMenus.dart';
 import 'package:flatter/home/library_screen/song_list.dart';
 import 'package:flatter/main.dart';
@@ -46,6 +47,7 @@ class PlaylistScreen extends StatelessWidget {
                   onPressed: () {
                     //hier bearbeiten
                     //wär babo wenn du das nur anzeigen würdest, wenn du der owner bist
+                    EditPlaylistPopup.showEditPlaylistPopUp(context, false, value['id'], value['name'], value['comment'], value['public'],null);
                   },
                   icon: Icon(Icons.edit),//probably damit sich das ändert hier ein eigenes widget bauen
                 ),

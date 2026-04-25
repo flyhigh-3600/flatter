@@ -15,9 +15,16 @@ class ArtistScreen extends StatelessWidget {
   const ArtistScreen({super.key,required this.artistID});
   final String artistID;
 
-  Widget buildAlbumGrid(BuildContext context,List<dynamic> albums,double screenWidth) {
+  Widget buildAlbumGrid(BuildContext context,List<dynamic>? albumsNullable,double screenWidth) {
     //hier halt das gridview, evt aus diesen imagecards
     //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
+    List<dynamic> albums = [];
+    if (albumsNullable == null) {
+      return Text("No albums");
+    }
+    albumsNullable.forEach((value) {
+      albums.add(value);
+    });
     List<Widget> widgetList = [];
     for (Map<dynamic,dynamic> album in albums) {
       widgetList.add(

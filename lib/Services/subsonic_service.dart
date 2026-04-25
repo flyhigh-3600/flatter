@@ -216,6 +216,45 @@ class SubsonicService {
   }
 
   //do something to server
+  Future<Map<dynamic,dynamic>> createPlaylist(String name,List<dynamic>? songIDsToAdd) async {
+    List<String> url = getURL(null,null,null);
+    String request = "${url[0]}createPlaylist${url[1]}&name=$name";
+    if (songIDsToAdd != null) {
+      songIDsToAdd.forEach((value) {
+        request = "$request&songId=${value.toString()}";
+      });
+    }
+    final uri = Uri.parse(request);
+    print("now here comes the qrequest");
+    print(request);
+    print("hello hello this is the request");
+    try {
+      final data = await http.get(uri);
+      try {
+        final data = await http.get(uri);
+        if (data.statusCode != 200) {
+          print("error 4");
+          return {};
+        }
+        final Map responseMap = jsonDecode(data.body);
+        Map subsonicResponse = responseMap['subsonic-response'];
+        if (subsonicResponse['status'] != "ok") {
+          print(subsonicResponse);
+          print("error 3");
+          return {};
+        }
+        print('successfully created playlist');
+        return subsonicResponse;
+      } catch(error) {
+        print("error 2");
+        return {};
+      }
+    } catch(error) {
+      print("error 1");
+      return {};
+    }
+  }
+
   Future<Map<dynamic,dynamic>> updatePlaylist(String id,String? name,String? comment,String? public,List<dynamic>? songIDsToAdd,List<int>? indexesToRemove) async {
     List<String> url = getURL(null,null,null);
     String request = "${url[0]}updatePlaylist${url[1]}&playlistId=$id";
