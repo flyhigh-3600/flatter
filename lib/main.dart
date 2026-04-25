@@ -4,6 +4,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/home_navigation_bar.dart';
+import 'package:flatter/home/home_navigation_rail.dart';
 import 'package:flatter/player/player_controls.dart';
 import 'package:flatter/storage/database/database_controller.dart';
 import 'package:flatter/settings/settings_controller.dart';
@@ -53,12 +54,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'flatter',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-      ),
-      home: const HomeNavigationBar(),
-    );
+    bool landscapeMode = settingsControl.loadSetting('landscapeMode');
+    if (landscapeMode == true) {
+      return MaterialApp(
+        title: 'flatter',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+        ),
+        home: const HomeNavigationRail(),
+      );
+    } else {
+      return MaterialApp(
+        title: 'flatter',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+        ),
+        home: const HomeNavigationBar(),
+      );
+    }
   }
 }

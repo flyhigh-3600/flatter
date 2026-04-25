@@ -10,6 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../../settings/settings_screen.dart';
+import '../../settings/settings_screen_ViewModel.dart';
 import '../library_screen/artist_screen/artist_screen.dart';
 import '../library_screen/itemMenus.dart';
 
@@ -137,6 +139,14 @@ class _QueueScreenState extends State<QueueScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Queue"),
+        actions: [
+          if (settingsControl.loadSetting('landscapeMode') == false) IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsScreen(viewModel: SettingsScreenViewmodel())));
+              },
+              icon: Icon(Icons.settings)
+          ),
+        ],
       ),
       body: Consumer(builder: (context, ref, child) {
         final queue = ref.watch(riverpodManager.queueProvider);

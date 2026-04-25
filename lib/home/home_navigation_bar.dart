@@ -18,6 +18,7 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
   int currentPageIndex = settingsControl.loadSetting('startTab');
   final PlayerScreenViewModel playerScreenViewModel = PlayerScreenViewModel();
   final LibraryScreenViewModel libraryScreenViewModel = LibraryScreenViewModel();
+
   @override
   Widget build(BuildContext context) {
     if (currentPageIndex == -1) {

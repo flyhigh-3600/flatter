@@ -11,6 +11,9 @@ import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab_
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
+import '../../../settings/settings_screen.dart';
+import '../../../settings/settings_screen_ViewModel.dart';
+
 class LibraryTabBar extends StatelessWidget {
   const LibraryTabBar({super.key});
 
@@ -32,8 +35,13 @@ class LibraryTabBar extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Library"),
-          actions: [
-            //Sync Button
+          actions: [//im offline/local folder mode noch einen sync button
+            if (settingsControl.loadSetting('landscapeMode') == false) IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsScreen(viewModel: SettingsScreenViewmodel())));
+                },
+                icon: Icon(Icons.settings)
+            ),
           ],
           bottom: const TabBar(
             tabs: [

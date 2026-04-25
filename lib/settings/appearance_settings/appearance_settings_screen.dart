@@ -22,7 +22,7 @@ class AppearanceSettingsScreen extends StatelessWidget {
 //hier jtz bspw wie viele spalten das album gridview haben soll
           ListTile(
             title: Text("Landscape"),
-            subtitle: Text("Changes the look and layout of some things."),
+            subtitle: Text("Changes the look and layout of some things. Needs a restart to take full effect"),
             trailing: LandscapeModeSetting(),
           )
         ],
