@@ -56,14 +56,12 @@ class RiverpodManager {
   });
 
   final playlistDetailsProvider = FutureProvider.family<Map<dynamic,dynamic>,String>((ref,String id) async {
-    print("riverpod playlist provider here");
     Map<dynamic,dynamic> playlistDetails = await subsonicService.getPlaylistDetails(id);
-    print("printing thebdbdkba dh  values now");
-    print(playlistDetails);
     return playlistDetails;
   });
 
   final favoriteStatusProvider = FutureProvider.family<bool,List<String?>>((ref,List<String?> ids) async {
+    print("provider (favorite status)");
     bool favoriteStatus = await subsonicService.checkStarred(ids[0], ids[1], ids[2]);
     return favoriteStatus;
   });

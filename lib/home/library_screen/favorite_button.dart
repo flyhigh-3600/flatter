@@ -25,12 +25,28 @@ class FavoriteButton extends StatelessWidget {
         icon: Icon(Icons.error),
       );
     }
+    List<String?> ids = [songID,albumID,artistID];
     return Consumer(
       builder: (context,ref,child) {
-        final favoriteStatus = ref.watch(riverpodManager.favoriteStatusProvider([songID,albumID,artistID]));
-        return IconButton.filled(
+        final favoriteStatus = ref.watch(riverpodManager.favoriteStatusProvider(ids));
+        return IconButton(
           onPressed: () {
-
+            switch (favoriteStatus) {
+              case(AsyncValue(:final value?)):
+                if (value == true) {
+                  print("was unstarred");
+                  subsonicService.starUnstar(false, songID, albumID, artistID);
+                } else {
+                  print("was starred");
+                  subsonicService.starUnstar(true, songID, albumID, artistID);
+                }
+                ref.invalidate(riverpodManager.favoriteStatusProvider(ids));
+              case(AsyncValue(error: != null)):
+                print("hier sollte eig eine richtige fehlermeldung kommen");
+              case(AsyncValue()):
+                //hier so eine toast notification
+                print("boah mach mal nicht so schnell, wir sind noch nicht so weit");
+            }
           },
           icon: switch (favoriteStatus) {
             AsyncValue(:final value?) => decideIcon(value),

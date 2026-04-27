@@ -11,6 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
+import '../favorite_button.dart';
+
 class ArtistScreen extends StatelessWidget {
   const ArtistScreen({super.key,required this.artistID});
   final String artistID;
@@ -84,12 +86,7 @@ class ArtistScreen extends StatelessWidget {
                 },
                 icon: Icon(Icons.play_arrow),
               ),
-              IconButton(
-                onPressed: () {
-                  //hier favouriten
-                },
-                icon: Icon(Icons.favorite_border),//probably damit sich das ändert hier ein eigenes widget bauen
-              ),
+              FavoriteButton(songID: null, albumID: null, artistID: artistID),
               IconButton(
                 onPressed: () {
                   //Navigator.of(context).push();

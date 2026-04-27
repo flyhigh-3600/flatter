@@ -243,14 +243,14 @@ class SubsonicService {
     Map<dynamic,dynamic> starred = await getStarred();
     if (albumID != null) {
       for (Map<dynamic,dynamic> album in starred['album']) {
-        if (songID == album['id']) {
+        if (albumID == album['id']) {
           return true;
         }
       }
       return false;
     } else if (artistID != null) {
       for (Map<dynamic,dynamic> artist in starred['artist']) {
-        if (songID == artist['id']) {
+        if (artistID == artist['id']) {
           return true;
         }
       }
@@ -335,27 +335,63 @@ class SubsonicService {
     print("hello hello this is the request");
     try {
       final data = await http.get(uri);
-      try {
-        final data = await http.get(uri);
-        if (data.statusCode != 200) {
-          print("error 4");
-          return {};
-        }
-        final Map responseMap = jsonDecode(data.body);
-        Map subsonicResponse = responseMap['subsonic-response'];
-        if (subsonicResponse['status'] != "ok") {
-          print(subsonicResponse);
-          print("error 3");
-          return {};
-        }
-        print('successfully updated playlist');
-        return subsonicResponse;
-      } catch(error) {
-        print("error 2");
+      if (data.statusCode != 200) {
+        print("error 4");
         return {};
       }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        print(subsonicResponse);
+        print("error 3");
+        return {};
+      }
+      print('successfully updated playlist');
+      return subsonicResponse;
     } catch(error) {
-      print("error 1");
+      print("error 2");
+      return {};
+    }
+  }
+
+  Future<Map<dynamic,dynamic>> starUnstar(bool starred,String? songID,String? albumID,String? artistID) async {
+    List<String> url = getURL(null, null, null);
+    List<String> request = [];
+    if (starred == true) {
+      request.add("star");
+    } else {
+      request.add("unstar");
+    }
+    if (songID != null) {
+      request.add("id=$songID");
+    } else if (albumID != null) {
+      request.add("albumId=$albumID");
+    } else if (artistID != null) {
+      request.add("artistId=$artistID");
+    } else {
+      print("this should not have happened");
+      return {};
+    }
+    print("starunstar executed rn");
+    final uri = Uri.parse("${url[0]}${request[0]}${url[1]}&${request[1]}");
+    try {
+      final data = await http.get(uri);
+      if (data.statusCode != 200) {
+        print("error 1");
+        return {};
+      }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        print(subsonicResponse);
+        print("status not okay");
+        return {};
+      }
+      print("successfully updated star rating");
+      return subsonicResponse;
+    } catch(error) {
+      print("error2");
+      print(error);
       return {};
     }
   }
