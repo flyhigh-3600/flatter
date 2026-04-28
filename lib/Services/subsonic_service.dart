@@ -9,10 +9,8 @@ class SubsonicService {
   //authentication
   String generateRandomString(int length) {
     final random = Random();
-    const availableChars =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    final randomString = List.generate(length,
-            (index) => availableChars[random.nextInt(availableChars.length)]).join();
+    const availableChars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    final randomString = List.generate(length, (index) => availableChars[random.nextInt(availableChars.length)]).join();
 
     return randomString;
   }
@@ -61,8 +59,6 @@ class SubsonicService {
   //get things
   Future<List<dynamic>> getAlbums(List<String> filterSortOptions) async {
     List<String> url = getURL(null, null, null);
-    print("here");
-    print(filterSortOptions[3]);
     String offset = filterSortOptions[2];//TODO:herausfinden waurm und dann später wegmachen wenn es keinen grung gibt. wenn es einen grund gibt dann grund hier hinschreiben
     final uri = Uri.parse("${url[0]}getAlbumList2${url[1]}&type=${filterSortOptions[0]}&size=${filterSortOptions[1]}&offset=$offset&order=${filterSortOptions[3]}");//from year, to year und genre filtered fehlt da noch
     try {
@@ -103,8 +99,7 @@ class SubsonicService {
 
   Future<List<dynamic>> getArtists() async {
     List<String> url = getURL(null, null, null);
-    final uri = Uri.parse(
-        "${url[0]}getArtists${url[1]}"); //from year, to year und genre filtered fehlt da noch
+    final uri = Uri.parse("${url[0]}getArtists${url[1]}"); //from year, to year und genre filtered fehlt da noch
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
@@ -126,20 +121,15 @@ class SubsonicService {
     final uri = Uri.parse("${url[0]}getArtist${url[1]}&id=$id");
     try {
       final data = await http.get(uri);
-      try {
-        final data = await http.get(uri);
-        if (data.statusCode != 200) {
-          return {};
-        }
-        final Map responseMap = jsonDecode(data.body);
-        Map subsonicResponse = responseMap['subsonic-response'];
-        if (subsonicResponse['status'] != "ok") {
-          return {};
-        }
-        return subsonicResponse['artist'];
-      } catch(error) {
+      if (data.statusCode != 200) {
         return {};
       }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return {};
+      }
+      return subsonicResponse['artist'];
     } catch(error) {
       return {};
     }
@@ -150,21 +140,16 @@ class SubsonicService {
     final uri = Uri.parse("${url[0]}getSong${url[1]}&id=$id");
     try {
       final data = await http.get(uri);
-      try {
-        final data = await http.get(uri);
-        if (data.statusCode != 200) {
-          return {};
-        }
-        final Map responseMap = jsonDecode(data.body);
-        Map subsonicResponse = responseMap['subsonic-response'];
-        if (subsonicResponse['status'] != "ok") {
-          return {};
-        }
-        print(subsonicResponse);
-        return subsonicResponse['song'];
-      } catch(error) {
+      if (data.statusCode != 200) {
         return {};
       }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return {};
+      }
+      print(subsonicResponse);
+      return subsonicResponse['song'];
     } catch(error) {
       return {};
     }
@@ -172,8 +157,7 @@ class SubsonicService {
 
   Future<List<dynamic>> getPlaylists() async {
     List<String> url = getURL(null, null, null);
-    final uri = Uri.parse(
-        "${url[0]}getPlaylists${url[1]}"); //from year, to year und genre filtered fehlt da noch
+    final uri = Uri.parse("${url[0]}getPlaylists${url[1]}"); //from year, to year und genre filtered fehlt da noch
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
@@ -196,20 +180,15 @@ class SubsonicService {
     final uri = Uri.parse("${url[0]}getPlaylist${url[1]}&id=$id");
     try {
       final data = await http.get(uri);
-      try {
-        final data = await http.get(uri);
-        if (data.statusCode != 200) {
-          return {};
-        }
-        final Map responseMap = jsonDecode(data.body);
-        Map subsonicResponse = responseMap['subsonic-response'];
-        if (subsonicResponse['status'] != "ok") {
-          return {};
-        }
-        return subsonicResponse['playlist'];
-      } catch(error) {
+      if (data.statusCode != 200) {
         return {};
       }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return {};
+      }
+      return subsonicResponse['playlist'];
     } catch(error) {
       return {};
     }
@@ -220,20 +199,15 @@ class SubsonicService {
     final uri = Uri.parse("${url[0]}getStarred2${url[1]}");
     try {
       final data = await http.get(uri);
-      try {
-        final data = await http.get(uri);
-        if (data.statusCode != 200) {
-          return {};
-        }
-        final Map responseMap = jsonDecode(data.body);
-        Map subsonicResponse = responseMap['subsonic-response'];
-        if (subsonicResponse['status'] != "ok") {
-          return {};
-        }
-        return subsonicResponse['starred2'];
-      } catch(error) {
+      if (data.statusCode != 200) {
         return {};
       }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return {};
+      }
+      return subsonicResponse['starred2'];
     } catch(error) {
       return {};
     }
@@ -277,32 +251,23 @@ class SubsonicService {
       });
     }
     final uri = Uri.parse(request);
-    print("now here comes the qrequest");
-    print(request);
-    print("hello hello this is the request");
     try {
       final data = await http.get(uri);
-      try {
-        final data = await http.get(uri);
-        if (data.statusCode != 200) {
-          print("error 4");
-          return {};
-        }
-        final Map responseMap = jsonDecode(data.body);
-        Map subsonicResponse = responseMap['subsonic-response'];
-        if (subsonicResponse['status'] != "ok") {
-          print(subsonicResponse);
-          print("error 3");
-          return {};
-        }
-        print('successfully created playlist');
-        return subsonicResponse;
-      } catch(error) {
-        print("error 2");
+      if (data.statusCode != 200) {
+        print("error 4");
         return {};
       }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        print(subsonicResponse);
+        print("error 3");
+        return {};
+      }
+      print('successfully created playlist');
+      return subsonicResponse;
     } catch(error) {
-      print("error 1");
+      print("error 2");
       return {};
     }
   }
@@ -330,9 +295,6 @@ class SubsonicService {
       });
     }
     final uri = Uri.parse(request);
-    print("now here comes the qrequest");
-    print(request);
-    print("hello hello this is the request");
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
@@ -372,7 +334,6 @@ class SubsonicService {
       print("this should not have happened");
       return {};
     }
-    print("starunstar executed rn");
     final uri = Uri.parse("${url[0]}${request[0]}${url[1]}&${request[1]}");
     try {
       final data = await http.get(uri);
