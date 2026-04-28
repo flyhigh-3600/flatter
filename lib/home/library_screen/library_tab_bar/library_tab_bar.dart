@@ -8,6 +8,7 @@ import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playli
 import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playlists_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab_viewModel.dart';
+import 'package:flatter/home/search_screen/search_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
@@ -42,6 +43,12 @@ class LibraryTabBar extends StatelessWidget {
                 },
                 icon: Icon(Icons.settings)
             ),
+            if (settingsControl.loadSetting('landscapeMode') == false) IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchScreen()));
+              },
+              icon: Icon(Icons.search),
+            )
           ],
           bottom: const TabBar(
             tabs: [

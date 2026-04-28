@@ -4,6 +4,7 @@ import 'package:flatter/home/player_screen/player_screen.dart';
 import 'package:flatter/home/player_screen/player_screen_ViewModel.dart';
 import 'package:flatter/home/queue_screen/queue_screen.dart';
 import 'package:flatter/home/queue_screen/queue_screen_ViewModel.dart';
+import 'package:flatter/home/search_screen/search_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +28,14 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
+          if (currentPageIndex == index) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchScreen()));
+            return;//vlt, wenn man das von nem anderen fenster aus macht so machen, dass man nicht den tab wechselt
+          }
           setState(() {
-            currentPageIndex = index;
+            if (currentPageIndex <= 2) {
+              currentPageIndex = index;
+            }
             settingsControl.changeSetting('lastTab', index);
           });
         },
