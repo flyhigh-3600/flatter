@@ -44,11 +44,11 @@ class _HomeNavigationRailState extends State<HomeNavigationRail> {
               NavigationRailDestination(icon: Icon(Icons.library_music), label: Text('Library')),
               NavigationRailDestination(icon: Icon(Icons.music_note), label: Text('Player')),
               NavigationRailDestination(icon: Icon(Icons.queue_music), label: Text('Queue')),
-              NavigationRailDestination(icon: Icon(Icons.search), label: Text("Search")),
-              NavigationRailDestination(icon: Icon(Icons.settings), label: Text("Settings"))
+              NavigationRailDestination(icon: Icon(Icons.search), label: Text("")),
+              NavigationRailDestination(icon: Icon(Icons.settings), label: Text(""))
             ],
             groupAlignment: -1,//in den einstellungen festlegen
-            labelType: NavigationRailLabelType.selected,
+            labelType: NavigationRailLabelType.all,
             //extended: true,das ding extendable machen (dazu musst du noch was anderes umstellen, sonst gibt es einen fehler
           ),
           const VerticalDivider(),
