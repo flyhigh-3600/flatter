@@ -44,8 +44,8 @@ class _HomeNavigationRailState extends State<HomeNavigationRail> {
               NavigationRailDestination(icon: Icon(Icons.library_music), label: Text('Library')),
               NavigationRailDestination(icon: Icon(Icons.music_note), label: Text('Player')),
               NavigationRailDestination(icon: Icon(Icons.queue_music), label: Text('Queue')),
-              NavigationRailDestination(icon: Icon(Icons.search), label: Text("")),
-              NavigationRailDestination(icon: Icon(Icons.settings), label: Text(""))
+              NavigationRailDestination(icon: Icon(Icons.search), label: Text("")),//works tho lol
+              NavigationRailDestination(icon: Icon(Icons.settings), label: Text("")),//looks nice xD
             ],
             groupAlignment: -1,//in den einstellungen festlegen
             labelType: NavigationRailLabelType.all,
