@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
+import '../../../Riverpod/riverpod_manager.dart';
 import '../favorite_button.dart';
 
 class ArtistScreen extends StatelessWidget {
@@ -68,6 +69,7 @@ class ArtistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
     return Consumer(
       builder: (context,ref,child) {

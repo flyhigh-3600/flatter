@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../../Riverpod/riverpod_manager.dart';
 import 'add_server_popup.dart';
 
 class ServerList extends StatelessWidget {
@@ -13,6 +14,7 @@ class ServerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
     return Consumer(
       builder: (context,ref,child) {
         final serverWidgetList = ref.watch(riverpodManager.serverListProvider);

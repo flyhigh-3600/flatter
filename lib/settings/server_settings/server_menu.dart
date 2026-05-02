@@ -4,11 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../Riverpod/riverpod_manager.dart';
+
 class ServerMenu {
   final BuildContext context;
   final WidgetRef ref;
   final int id;
   ServerMenu(this.context,this.ref,this.id);
+  final riverpodManager = RiverpodManager();
 
   Widget serverMenu(int id) {
     return PopupMenuButton(

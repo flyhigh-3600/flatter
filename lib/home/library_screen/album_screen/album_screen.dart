@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/artist_select_window.dart';
 import 'package:flatter/home/library_screen/favorite_button.dart';
@@ -20,6 +21,7 @@ class AlbumScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
     return Consumer(

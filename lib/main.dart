@@ -17,7 +17,6 @@ late final PlayerControls playerControl;
 //DirectoryManager directoryControl = DirectoryManager();
 SafUtil safutil = SafUtil();
 SubsonicService subsonicService = SubsonicService();
-RiverpodManager riverpodManager = RiverpodManager();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;

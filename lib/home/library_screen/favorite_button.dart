@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../Riverpod/riverpod_manager.dart';
+
 class FavoriteButton extends StatelessWidget {
   const FavoriteButton({super.key,required this.songID,required this.albumID,required this.artistID});
   final String? songID;
@@ -19,6 +21,7 @@ class FavoriteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
     if (songID == null && albumID == null && artistID == null) {
       return IconButton(
         onPressed: null,

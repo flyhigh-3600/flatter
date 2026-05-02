@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
+import '../../../../Riverpod/riverpod_manager.dart';
+
 class ArtistsTab extends StatefulWidget {
   const ArtistsTab({super.key,required this.viewModel});
   final ArtistsTabViewModel viewModel;
@@ -91,6 +93,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
     return Expanded(
       child: Consumer(

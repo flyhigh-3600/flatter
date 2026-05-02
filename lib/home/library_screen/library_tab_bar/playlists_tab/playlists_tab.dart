@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
+import '../../../../Riverpod/riverpod_manager.dart';
 import '../../itemMenus.dart';
 
 class PlaylistsTab extends StatefulWidget {
@@ -157,6 +158,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
     return Consumer(
       builder: (context, ref, child) {

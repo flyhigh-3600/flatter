@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../../Riverpod/riverpod_manager.dart';
+
 
 
 class AddServerPopup {
   static void showAddServerPopUp(BuildContext context,String? serverName,String? serverURL,String? serverUsername,String? serverPassword,int? id) {
+    final riverpodManager = RiverpodManager();
     showDialog(
       context: context,
       barrierDismissible: true,

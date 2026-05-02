@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../../../Riverpod/riverpod_manager.dart';
 import '../album_screen/album_screen.dart';
 
 class PlaylistScreen extends StatelessWidget {
@@ -22,6 +23,7 @@ class PlaylistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
     return Consumer(

@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../../Riverpod/riverpod_manager.dart';
 import '../../settings/settings_screen.dart';
 import '../../settings/settings_screen_ViewModel.dart';
 import '../library_screen/artist_screen/artist_screen.dart';
@@ -25,6 +26,7 @@ class QueueScreen extends StatefulWidget {
 class _QueueScreenState extends State<QueueScreen> {
 
   Widget buildQueue(WidgetRef ref, BuildContext context, List<List<dynamic>> queue) {
+    final riverpodManager = RiverpodManager();
 
     void removeFromQueue(int index) {
       playerControl.removeItemAt(index);
@@ -136,6 +138,7 @@ class _QueueScreenState extends State<QueueScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Queue"),

@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../../Riverpod/riverpod_manager.dart';
+
 class AddToPlaylistPopup {
   static void showAddToPlaylistPopup(BuildContext context,List<dynamic> songIDs) {
+    final riverpodManager = RiverpodManager();
     bool skipDuplicates = settingsControl.settingsMap['addToPlaylistsSkipDuplicates'];
     bool selectMultiple = false;
     Map<dynamic,bool> selectedPlaylistsMap = {};

@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
+import '../../../../Riverpod/riverpod_manager.dart';
 import '../../itemMenus.dart';
 
 class AlbumsTab extends StatefulWidget {
@@ -85,6 +86,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
     return Expanded(
       child: Consumer(
