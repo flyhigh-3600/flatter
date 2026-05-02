@@ -154,7 +154,7 @@ class SearchScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: Icon(Icons.backspace),
+              icon: Icon(Icons.arrow_back),
             ),
             title: Consumer(builder: (context, ref, child) { return TextField(
               controller: searchFieldController,
@@ -166,12 +166,13 @@ class SearchScreen extends StatelessWidget {
               },
             ); },),
             actions: [
-              IconButton(
+              Consumer(builder: (context, ref, child) { return IconButton(
                 icon: Icon(Icons.backspace),
                 onPressed: () {
                   searchFieldController.clear();
+                  search("", ref);
                 },
-              )
+              ); },)
             ],
           ),
           body: Consumer(
