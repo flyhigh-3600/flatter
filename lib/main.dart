@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    if (screenSize.width >= screenSize.height) {
+    if (screenSize.width >= screenSize.height) {//das darf nicht immer ausgeführt werden lol
       settingsControl.changeSetting('landscapeMode', true);
       return MaterialApp(
         title: 'flatter',
