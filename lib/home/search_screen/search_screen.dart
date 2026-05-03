@@ -27,7 +27,7 @@ class SearchScreen extends StatelessWidget {
       ref.invalidate(riverpodManager.searchProvider);
     }
 
-    Widget buildSearchResultsColumn(BuildContext context,Map<dynamic,dynamic> searchResults) {//einstellen, in welcher reihenfolge die kategorien angezeigt werden sollen
+    Widget buildSearchResultsColumn(BuildContext context,Map<dynamic,dynamic> searchResults) {//einstellen, in welcher reihenfolge die kategorien angezeigt werden sollen//kategorien expandable machen//nur die anzahl der reihen, nicht der elemente einstellen
       List<Widget> widgetList = [];
       if (searchResults['artist'] != null) {
         widgetList.add(Text("Artists"));
