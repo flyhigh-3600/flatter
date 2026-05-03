@@ -25,7 +25,7 @@ class SettingsController {
     'libraryTab':0,
     'lastLibraryTab':0,
     'addToPlaylistsSkipDuplicates':true,
-    'landscapeMode':true,//TODO:das hier ändern lassen wenn sich die ausrichtung des bildschirms/die größe des fensters so verändert, dass es nicht mehr praktisch wäre
+    'landscapeMode':true,//TODO:das hier ändern lassen wenn sich die ausrichtung des bildschirms/die größe des fensters so verändert, dass es nicht mehr praktisch wäre//das passiert jetzt bei jedem starten, das noch beim drehen des bildschirms halt hinkriegen. außerdem muss der toggle den man hat, das overriden können, so macht der toggle gar nichts basically
     'firstStart':true,//einstellung für stern oder herz
     'searchArtistCount':10,
     'searchAlbumCount':10,
@@ -42,9 +42,6 @@ class SettingsController {
   void firstStart() {
     changeSetting('firstStart', false);
     //sets some settings for the first start
-    if (Platform.isAndroid == true|| Platform.isIOS == true) {
-      changeSetting('landscapeMode', false);
-    }
   }
 
   Future<void> loadSettings() async {

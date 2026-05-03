@@ -53,8 +53,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    bool landscapeMode = settingsControl.loadSetting('landscapeMode');
-    if (landscapeMode == true) {
+    Size screenSize = MediaQuery.of(context).size;
+    if (screenSize.width >= screenSize.height) {
+      settingsControl.changeSetting('landscapeMode', true);
       return MaterialApp(
         title: 'flatter',
         theme: ThemeData(
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         home: const HomeNavigationRail(),
       );
     } else {
+      settingsControl.changeSetting('landscapeMode', false);
       return MaterialApp(
         title: 'flatter',
         theme: ThemeData(
