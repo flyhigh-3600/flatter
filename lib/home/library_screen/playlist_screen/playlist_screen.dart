@@ -98,38 +98,51 @@ class PlaylistScreen extends StatelessWidget {
                     Text("hier sollen actions hin")
                   ],
                 ),
-                if (settingsControl.settingsMap['landscapeMode'] == true) Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    switch (playlistDetails) {
-                      AsyncValue(:final value?) => CachedNetworkImage(
-                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                        errorWidget: (context, url, error) => IconButton(
-                          onPressed: () {
-                            //hier retry
-                          },
-                          icon: Icon(Icons.error),
+                if (settingsControl.settingsMap['landscapeMode'] == true) Container(
+                  height: screenSize.width / 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    spacing: 8,
+                    children: [
+                      switch (playlistDetails) {
+                        AsyncValue(:final value?) => CachedNetworkImage(
+                          imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          errorWidget: (context, url, error) => IconButton(
+                            onPressed: () {
+                              //hier retry
+                            },
+                            icon: Icon(Icons.error),
+                          ),
+                          width: screenSize.width / 3,
+                          height: screenSize.width / 3,
                         ),
-                        width: screenSize.width / 3,
-                        height: screenSize.width / 3,
+                        AsyncValue(error: != null) => Text("Error"),
+                        AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                      },
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text("hier"),
+                            Text("sollen"),
+                            Text("actions"),
+                            Text("hin"),
+                          ],
+                        ),
                       ),
-                      AsyncValue(error: != null) => Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    },
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text("hier"),
-                          Text("sollen"),
-                          Text("actions"),
-                          Text("hin"),
-                        ],
-                      ),
-                    )
-                  ],
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: switch (playlistDetails) {
+                            AsyncValue(:final value?) => Text(value['comment']),
+                            AsyncValue(error: != null) => Text("error"),
+                            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          },
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 switch (playlistDetails) {
                   AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: false),

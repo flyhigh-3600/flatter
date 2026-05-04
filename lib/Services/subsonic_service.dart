@@ -188,6 +188,9 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return {};
       }
+      if (subsonicResponse['playlist']['comment'] == null) {
+        subsonicResponse['playlist']['comment'] = "";
+      }
       return subsonicResponse['playlist'];
     } catch(error) {
       return {};
