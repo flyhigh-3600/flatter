@@ -158,7 +158,7 @@ class AddServerPopup {
                               }
                               return null;
                             },
-                            onTapOutside: (value) {
+                            onChanged: (value) {
                               invalideStatus(ref);
                             },
                           ),
@@ -174,7 +174,7 @@ class AddServerPopup {
                               }
                               return null;
                             },
-                            onTapOutside: (value) {
+                            onChanged: (value) {
                               invalideStatus(ref);
                             },
                           ),
@@ -191,7 +191,7 @@ class AddServerPopup {
                               }
                               return null;
                             },
-                            onTapOutside: (value) {
+                            onChanged: (value) {
                               invalideStatus(ref);
                             },
                           ),
