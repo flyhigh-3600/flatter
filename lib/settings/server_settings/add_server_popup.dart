@@ -24,6 +24,26 @@ class AddServerPopup {
       serverUsernameController.text = serverUsername;
       serverPasswordController.text = serverPassword;
     }
+    Widget buildResultButtonColumn(context,WidgetRef ref,Map<dynamic,dynamic> responseMap) {
+      if (responseMap['status'] == "ok") {
+        return Column(
+          spacing: 8,
+          children: [
+            Text("Connection successful"),
+            ElevatedButton(
+              onPressed: () {
+                if (id != null) {
+                  databaseControl.deleteServer(id);
+                }
+                databaseControl.addServer(serverNameController.text, serverURLcontroller.text, serverUsernameController.text,serverPasswordController.text);
+                Navigator.of(context).pop();
+              },
+              child: Text("Save"),
+            )
+          ],
+        );
+      }
+    }
     List<String> authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
     showDialog(
       context: context,

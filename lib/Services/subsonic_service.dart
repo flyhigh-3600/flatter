@@ -34,25 +34,24 @@ class SubsonicService {
     return ["https://$baseURL/rest/",".view?u=$username&t=$token&s=$salt&v=$version&c=$appName&f=json"];
   }
 
-  Future<bool> authenticate(String baseURL,String username,String password) async {
+  Future<Map<dynamic,dynamic>> authenticate(String baseURL,String username,String password) async {
     List<String> url = getURL(baseURL, username, password);
     final uri = Uri.parse("${url[0]}ping${url[1]}");
     try {
       final data = await http.get(uri);
       print(data.body);
       if (data.statusCode != 200) {
-        return false;
+        return {};
       }
       final responseMap = jsonDecode(data.body);
-      print(responseMap);
-      print(responseMap["subsonic-response"]["status"]);
-      bool ok = false;
-      if (responseMap["subsonic-response"]["status"] == "ok") {
-        ok = true;
+      if (responseMap['subsonic-response'] == null) {
+        responseMap['subsonic-response'] = {
+          "status":"not subsonic",
+        };
       }
-      return ok;
+      return responseMap['subsonic-response'];
     } catch(error) {
-      return false;
+      return {};
     }
   }
 
