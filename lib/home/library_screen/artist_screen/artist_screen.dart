@@ -69,6 +69,7 @@ class ArtistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> nameAndId = [artistID,"Said the Sky"];
     final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
     return Consumer(
@@ -162,11 +163,28 @@ class ArtistScreen extends StatelessWidget {
                 Text("Albums"),
                 switch (artistDetails) {
                   AsyncValue(:final value?) => buildAlbumGrid(context, value['album'],screenSize.width),
-                  AsyncValue(error: != null) => Text("Error"),
+                  AsyncValue(error: != null) => Text("error"),
                   AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
                 Divider(),
                 Text("Appears in:"),
+                switch (artistDetails) {
+                  AsyncValue(:final value?) => Consumer(
+                    builder: (context,ref,child) {
+                      print("list being newly build");
+                      final artistAppearances = ref.watch(riverpodManager.artistAppearancesProvider(nameAndId));
+                      return Container(
+                        child: switch (artistAppearances) {
+                          AsyncValue(:final value?) => buildAlbumGrid(context, value, screenSize.width),
+                          AsyncValue(error: != null) => Text("error2"),
+                          AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                        },
+                      );
+                    },
+                  ),
+                  AsyncValue(error: != null) => Text("error1"),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)
+                }
               ],
             ),
           ),

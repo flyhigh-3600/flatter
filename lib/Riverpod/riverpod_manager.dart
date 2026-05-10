@@ -39,6 +39,12 @@ class RiverpodManager {
     return artistDetails;
   });
 
+  final artistAppearancesProvider = FutureProvider.family<List<Map<dynamic,dynamic>>,List<String>>((ref,List<String> nameAndId) async {
+    print("shitty ass provider gets executed again");
+    List<Map<dynamic,dynamic>> artistAppearances = await subsonicService.getArtistAppearances(nameAndId[0],nameAndId[1]);
+    return artistAppearances;
+  });
+
   final queueProvider = FutureProvider<List<List<dynamic>>>((ref) async {
     List<List<dynamic>> queue = playerControl.getQueue();
     return queue;

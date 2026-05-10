@@ -143,13 +143,31 @@ class SubsonicService {
     }
   }
 
-  Future<List<Map<dynamic,dynamic>>> getArtistAppearances(String artistName,String id) async {
+  Future<List<Map<dynamic,dynamic>>> getArtistAppearances(String id,String artistName) async {
+    List<Map<dynamic,dynamic>> artistAppearances = [];
     Map<dynamic,dynamic> searchResults = await search(artistName, 0, 0, 0);
     for (Map<dynamic,dynamic> album in searchResults['album']) {
       if (album['artistId'] != id) {
+        Map<dynamic,dynamic> albumInfo = await getAlbumDetails(album['id']);
+        for (Map<dynamic,dynamic> song in albumInfo['song']) {
+          if (song['artistId'] == id) {
+            artistAppearances.add(album);
+            break;
+          } else {
+            List<Map<dynamic,dynamic>> songArtists = song['artists'];
+            for (Map<dynamic,dynamic> artist in songArtists) {
+              if (artist['id'] == id) {
+                artistAppearances.add(album);
+                break;
+              }
+            }
+          }
+        }
         //idk ob das vlt zu lang dauert, aber theoretisch könnte man durch jedes album hier durchgehen und mit der songliste vom album checken, ob da irgendwo die artistID zu finden ist. aber dauert das nicht zu lange?
       }
     }
+    print("returning something");
+    return artistAppearances;
   }
 
   Future<Map<dynamic,dynamic>> getSongDetails(String id) async {
@@ -277,6 +295,7 @@ class SubsonicService {
       }
       final Map responseMap = jsonDecode(data.body);
       print(responseMap);
+      print(query);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
         return {};
