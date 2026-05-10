@@ -134,6 +134,9 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return {};
       }
+      if (subsonicResponse['artist']['starred'] == null) {
+        subsonicResponse['artist']['starred'] = "unstarred";
+      }
       return subsonicResponse['artist'];
     } catch(error) {
       return {};
@@ -154,6 +157,9 @@ class SubsonicService {
         return {};
       }
       print(subsonicResponse);
+      if (subsonicResponse['song']['starred'] == null) {
+        subsonicResponse['song']['starred'] = "unstarred";
+      }
       return subsonicResponse['song'];
     } catch(error) {
       return {};

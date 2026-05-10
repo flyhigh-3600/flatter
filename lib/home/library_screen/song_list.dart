@@ -60,9 +60,15 @@ class SongList extends StatelessWidget {
                 ),
               ],
             ),
-            child: ListTile(//evt noch cover hinzufügen oder so idk//außerdem slidables daraus machen obvs omg
-              leading: Text(songList[index]['duration'].toString()),
-              title: Text(songList[index]['title']),
+            child: ListTile(//evt noch cover hinzufügen oder so idk
+              leading: Text(songList[index]['duration'].toString()),//hier cover image
+              title: Row(
+                spacing: 8,
+                children: [
+                  if (songList[index]['starred'] != null) Icon(Icons.favorite),
+                  Text(songList[index]['title']),
+                ],
+              ),
               subtitle: Text(songList[index]['artist'].toString()),
               trailing: ItemMenus(context).songMenu(songList[index]['id'], songList[index]['artistId'], songList[index]['albumId']),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
               onTap: () {
@@ -107,9 +113,15 @@ class SongList extends StatelessWidget {
                 ),
               ],
             ),
-            child: ListTile(//evt noch cover hinzufügen oder so idk//außerdem slidables daraus machen obvs omg
-              leading: Text(song['duration'].toString()),
-              title: Text(song['title']),
+            child: ListTile(//evt noch cover hinzufügen oder so idk
+              leading: Text(song['duration'].toString()),//hier cover image
+              title: Row(
+                spacing: 8,
+                children: [
+                  if (song['starred'] != null) Icon(Icons.favorite),
+                  Text(song['title']),
+                ],
+              ),
               subtitle: Text(song['artist'].toString()),
               trailing: ItemMenus(context).songMenu(song['id'], song['artistId'], song['albumId']),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
               onTap: () {
