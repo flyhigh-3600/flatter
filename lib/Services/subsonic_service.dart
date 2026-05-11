@@ -63,7 +63,7 @@ class SubsonicService {
 
   //get things
   Future<List<dynamic>> getAlbums(List<String> filterSortOptions) async {
-    List<String> url = getURL(null, null, null);
+    List<String> url = getURL(null, null, null);//das offset mit der anzahl der results probably multiplizieren, das muss ma zumindest bei der search machen
     String offset = filterSortOptions[2];//TODO:herausfinden waurm und dann später wegmachen wenn es keinen grung gibt. wenn es einen grund gibt dann grund hier hinschreiben------habe ich mich einfach nur gefragt was das offset ist? die seiten
     final uri = Uri.parse("${url[0]}getAlbumList2${url[1]}&type=${filterSortOptions[0]}&size=${filterSortOptions[1]}&offset=$offset&order=${filterSortOptions[3]}");//from year, to year und genre filtered fehlt da noch
     try {
@@ -95,7 +95,6 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return {};
       }
-      print(subsonicResponse['album']);
       return subsonicResponse['album'];
     } catch(error) {
       return {};
@@ -143,30 +142,36 @@ class SubsonicService {
     }
   }
 
-  Future<List<Map<dynamic,dynamic>>> getArtistAppearances(String id,String artistName) async {
-    List<Map<dynamic,dynamic>> artistAppearances = [];
-    Map<dynamic,dynamic> searchResults = await search(artistName, 0, 0, 0);
-    for (Map<dynamic,dynamic> album in searchResults['album']) {
-      if (album['artistId'] != id) {
-        Map<dynamic,dynamic> albumInfo = await getAlbumDetails(album['id']);
-        for (Map<dynamic,dynamic> song in albumInfo['song']) {
-          if (song['artistId'] == id) {
-            artistAppearances.add(album);
-            break;
-          } else {
-            List<Map<dynamic,dynamic>> songArtists = song['artists'];
-            for (Map<dynamic,dynamic> artist in songArtists) {
-              if (artist['id'] == id) {
-                artistAppearances.add(album);
+  Future<List<dynamic>> getArtistAppearances(String id,String artistName) async {
+    List<dynamic> artistAppearances = [];
+    int offset = 0;
+    Map<dynamic,dynamic> searchResults = await search(artistName, 0, offset, 0);
+    while (searchResults['album'] != null) {
+      for (Map<dynamic,dynamic> album in searchResults['album']) {
+        if (album['artistId'] != id) {
+          Map<dynamic,dynamic> albumInfo = await getAlbumDetails(album['id']);
+          for (Map<dynamic,dynamic> song in albumInfo['song']) {
+            if (song['artistId'] == id) {
+              artistAppearances.add(album);
+              break;
+            } else {
+              List<dynamic> songArtists = song['artists'];
+              for (Map<dynamic,dynamic> artist in songArtists) {
+                if (artist['id'] == id) {
+                  artistAppearances.add(album);
+                  break;
+                }
+              }
+              if (artistAppearances.contains(album)) {
                 break;
               }
             }
           }
         }
-        //idk ob das vlt zu lang dauert, aber theoretisch könnte man durch jedes album hier durchgehen und mit der songliste vom album checken, ob da irgendwo die artistID zu finden ist. aber dauert das nicht zu lange?
       }
+      offset = offset + 1;
+      searchResults = await search(artistName, 0, offset, 0);
     }
-    print("returning something");
     return artistAppearances;
   }
 
@@ -287,6 +292,9 @@ class SubsonicService {
     int searchArtistCount = settingsControl.loadSetting('searchArtistCount');
     int searchAlbumCount = settingsControl.loadSetting('searchAlbumCount');
     int searchSongCount = settingsControl.loadSetting('searchSongCount');
+    artistOffset = searchArtistCount * artistOffset;
+    albumOffset = searchAlbumCount * albumOffset;
+    songOffset = searchSongCount * songOffset;
     final uri = Uri.parse("${url[0]}search3${url[1]}&query=$query&artistOffset=$artistOffset&albumOffset=$albumOffset&songOffset=$songOffset&artistCount=$searchArtistCount&albumCount=$searchAlbumCount&songCount=$searchSongCount");
     try {
       final data = await http.get(uri);
@@ -294,7 +302,7 @@ class SubsonicService {
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
-      print(responseMap);
+      print("query");
       print(query);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {

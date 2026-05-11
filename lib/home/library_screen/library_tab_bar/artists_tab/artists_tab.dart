@@ -81,8 +81,6 @@ class _ArtistsTabState extends State<ArtistsTab> {
           ),
         );
       }
-      print("inner widget list");
-      print(innerWidgetList);
       outerWidgetList.add(MasonryGrid(column: (screenWidth / 175).toInt(),children: new List.from(innerWidgetList),),);
       innerWidgetList.clear();//irgendwie wird das masonry grid dadurch unsichtbar klein
       index = index + 1;

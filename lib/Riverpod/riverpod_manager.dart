@@ -6,9 +6,7 @@ import '../main.dart';
 
 class RiverpodManager {
   final authenticateProvider = FutureProvider.family<Map<dynamic,dynamic>,List<String>>((ref,List<String> loginInformation) async {
-    //mehr statusdinger zurückgeben
     if (loginInformation[0].isEmpty || loginInformation[1].isEmpty || loginInformation[2].isEmpty) {
-      print("erevythjing null as it should be");
       return {"status":"didn't even try"};//default value
     }
     Map<dynamic,dynamic> authenticateResponse = await subsonicService.authenticate(loginInformation[0],loginInformation[1],loginInformation[2]);
@@ -39,9 +37,8 @@ class RiverpodManager {
     return artistDetails;
   });
 
-  final artistAppearancesProvider = FutureProvider.family<List<Map<dynamic,dynamic>>,List<String>>((ref,List<String> nameAndId) async {
-    print("shitty ass provider gets executed again");
-    List<Map<dynamic,dynamic>> artistAppearances = await subsonicService.getArtistAppearances(nameAndId[0],nameAndId[1]);
+  final artistAppearancesProvider = FutureProvider.family<List<dynamic>,List<String>>((ref,List<String> nameAndId) async {
+    List<dynamic> artistAppearances = await subsonicService.getArtistAppearances(nameAndId[0],nameAndId[1]);
     return artistAppearances;
   });
 
@@ -61,13 +58,11 @@ class RiverpodManager {
   });
 
   final favoriteStatusProvider = FutureProvider.family<bool,List<String?>>((ref,List<String?> ids) async {
-    print("provider (favorite status)");
     bool favoriteStatus = await subsonicService.checkStarred(ids[0], ids[1], ids[2]);
     return favoriteStatus;
   });
 
   final searchProvider = FutureProvider.family<Map<dynamic,dynamic>,List<dynamic>>((ref,List<dynamic> searchParams) async {
-    print("search privder exyecuted");
     Map<dynamic,dynamic> searchResultsMap = await subsonicService.search(searchParams[0], searchParams[1], searchParams[2], searchParams[3]);
     return searchResultsMap;
   });

@@ -22,12 +22,14 @@ class ArtistScreen extends StatelessWidget {
     //hier halt das gridview, evt aus diesen imagecards
     //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
     List<dynamic> albums = [];
-    if (albumsNullable == null) {
+    print(albumsNullable);
+    print("thjs was albvumsnullable");
+    if (albumsNullable == null || albumsNullable.isEmpty) {
       return Text("No albums");
     }
-    albumsNullable.forEach((value) {
+    for (var value in albumsNullable) {
       albums.add(value);
-    });
+    }
     List<Widget> widgetList = [];
     for (Map<dynamic,dynamic> album in albums) {
       widgetList.add(
@@ -72,6 +74,23 @@ class ArtistScreen extends StatelessWidget {
     List<String> nameAndId = [artistID,"Said the Sky"];
     final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
+
+    Widget buildArtistAppearances(BuildContext context,String name,double screenWidth) {
+      nameAndId[1] = name;
+      return Consumer(
+        builder: (context,ref,child) {
+          final artistAppearances = ref.watch(riverpodManager.artistAppearancesProvider(nameAndId));
+          return Container(
+            child: switch (artistAppearances) {
+              AsyncValue(:final value?) => buildAlbumGrid(context, value, screenSize.width),
+              AsyncValue(error: != null) => Text(artistAppearances.error.toString()),
+              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+            },
+          );
+        },
+      );
+    }
+
     return Consumer(
       builder: (context,ref,child) {
         final artistDetails = ref.watch(riverpodManager.artistDetailsProvider(artistID));
@@ -169,19 +188,7 @@ class ArtistScreen extends StatelessWidget {
                 Divider(),
                 Text("Appears in:"),
                 switch (artistDetails) {
-                  AsyncValue(:final value?) => Consumer(
-                    builder: (context,ref,child) {
-                      print("list being newly build");
-                      final artistAppearances = ref.watch(riverpodManager.artistAppearancesProvider(nameAndId));
-                      return Container(
-                        child: switch (artistAppearances) {
-                          AsyncValue(:final value?) => buildAlbumGrid(context, value, screenSize.width),
-                          AsyncValue(error: != null) => Text("error2"),
-                          AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                        },
-                      );
-                    },
-                  ),
+                  AsyncValue(:final value?) => buildArtistAppearances(context, value['name'], screenSize.width),
                   AsyncValue(error: != null) => Text("error1"),
                   AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)
                 }
