@@ -314,6 +314,62 @@ class SubsonicService {
     }
   }
 
+  Future<Map<dynamic,dynamic>> fullSearch(String query) async {
+    List<String> url = getURL(null, null, null);
+    int count = 500;//eig egal welche zahl, hauptsache hoch, ich weiß nicht was das maximum ist
+    final uri = Uri.parse("${url[0]}search3${url[1]}&query=query&artistCount=$count&albumCount=$count&songCount=$count");
+    Map<dynamic,dynamic> fullSearchResults = {
+      'artist':[],
+      'album':[],
+      'song':[],
+    };
+    List<dynamic> artistResultList = [];
+    List<dynamic> albumResultList = [];
+    List<dynamic> songResultList = [];
+    try {
+      var data = await http.get(uri);
+      if (data.statusCode != 200) {
+        return {};
+      }
+      Map responseMap = jsonDecode(data.body);
+      print("query");
+      print(query);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return {};
+      }
+      subsonicResponse = subsonicResponse['searchResult3'];
+      while (subsonicResponse['album'] != null && subsonicResponse['artist'] != null && subsonicResponse['song'] != null) {
+        if (subsonicResponse['album'] != null) {
+          for (Map<dynamic,dynamic> album in subsonicResponse['album']) {
+            albumResultList.add(album);
+          }
+          for (Map<dynamic,dynamic> artist in subsonicResponse['artist']) {
+            artistResultList.add(artist);
+          }
+          for (Map<dynamic,dynamic> song in subsonicResponse['song']) {
+            songResultList.add(song);
+          }
+        }
+        data = await http.get(uri);
+        if (data.statusCode != 200) {
+          return {};
+        }
+        responseMap = jsonDecode(data.body);
+        print("query");
+        print(query);
+        subsonicResponse = responseMap['subsonic-response'];
+        if (subsonicResponse['status'] != "ok") {
+          return {};
+        }
+        subsonicResponse = subsonicResponse['searchResult3'];
+      }
+      return fullSearchResults;
+    } catch(error) {
+      return {};
+    }
+  }
+
   //do something to server
   Future<Map<dynamic,dynamic>> createPlaylist(String name,List<dynamic>? songIDsToAdd) async {
     List<String> url = getURL(null,null,null);

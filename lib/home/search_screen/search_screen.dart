@@ -3,6 +3,7 @@ import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/song_list.dart';
+import 'package:flatter/home/search_screen/search_song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -145,7 +146,7 @@ class SearchScreen extends StatelessWidget {
             Text("Songs"),
             ElevatedButton(
               onPressed: () {
-                //zum albumscreen gehen
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: searchFieldController.text)));
               },
               child: Row(
                 children: [
