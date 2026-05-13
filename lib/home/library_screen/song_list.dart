@@ -15,7 +15,8 @@ class SongList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<dynamic> songList = [];
-    if (songListNullable != null) {
+    if (songListNullable != null && songListNullable?.isEmpty == false) {
+      print(songListNullable);
       songList.addAll(songListNullable!);
     } else {
       return Center(child: Text("No songs"));
@@ -28,6 +29,7 @@ class SongList extends StatelessWidget {
     }
     if (listView == true) {
       return ListView.builder(
+        itemCount: songList.length,
         itemBuilder: (BuildContext context, int index) {
           return Slidable(
             startActionPane: ActionPane(

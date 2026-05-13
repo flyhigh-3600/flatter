@@ -3,6 +3,8 @@ import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/song_list.dart';
+import 'package:flatter/home/search_screen/search_album_screen.dart';
+import 'package:flatter/home/search_screen/search_artist_screen.dart';
 import 'package:flatter/home/search_screen/search_song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +39,7 @@ class SearchScreen extends StatelessWidget {
           Text("Artists"),
           ElevatedButton(
             onPressed: () {
-              //zum albumscreen gehen
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchArtistScreen(query: searchFieldController.text)));
             },
             child: Row(
               children: [
@@ -92,7 +94,7 @@ class SearchScreen extends StatelessWidget {
             Text("Albums"),
             ElevatedButton(
               onPressed: () {
-                //zum albumscreen gehen
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchAlbumScreen(query: searchFieldController.text)));
               },
               child: Row(
                 children: [

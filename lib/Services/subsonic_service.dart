@@ -316,13 +316,10 @@ class SubsonicService {
 
   Future<Map<dynamic,dynamic>> fullSearch(String query) async {
     List<String> url = getURL(null, null, null);
+    int iteration = 0;
     int count = 500;//eig egal welche zahl, hauptsache hoch, ich weiß nicht was das maximum ist
-    final uri = Uri.parse("${url[0]}search3${url[1]}&query=query&artistCount=$count&albumCount=$count&songCount=$count");
-    Map<dynamic,dynamic> fullSearchResults = {
-      'artist':[],
-      'album':[],
-      'song':[],
-    };
+    final uri = Uri.parse("${url[0]}search3${url[1]}&query=$query&artistCount=$count&albumCount=$count&songCount=$count&artistOffset=${count * iteration}&albumOffset=${count * iteration}&songOffset=${count * iteration}");
+    Map<dynamic,dynamic> fullSearchResults = {};
     List<dynamic> artistResultList = [];
     List<dynamic> albumResultList = [];
     List<dynamic> songResultList = [];
@@ -332,13 +329,13 @@ class SubsonicService {
         return {};
       }
       Map responseMap = jsonDecode(data.body);
-      print("query");
-      print(query);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
         return {};
       }
       subsonicResponse = subsonicResponse['searchResult3'];
+      print(subsonicResponse);
+      print("this were the results for the page");
       while (subsonicResponse['album'] != null && subsonicResponse['artist'] != null && subsonicResponse['song'] != null) {
         if (subsonicResponse['album'] != null) {
           for (Map<dynamic,dynamic> album in subsonicResponse['album']) {
@@ -351,19 +348,22 @@ class SubsonicService {
             songResultList.add(song);
           }
         }
+        iteration = iteration + 1;
+        final uri = Uri.parse("${url[0]}search3${url[1]}&query=$query&artistCount=$count&albumCount=$count&songCount=$count&artistOffset=${count * iteration}&albumOffset=${count * iteration}&songOffset=${count * iteration}");
         data = await http.get(uri);
         if (data.statusCode != 200) {
           return {};
         }
         responseMap = jsonDecode(data.body);
-        print("query");
-        print(query);
         subsonicResponse = responseMap['subsonic-response'];
         if (subsonicResponse['status'] != "ok") {
           return {};
         }
         subsonicResponse = subsonicResponse['searchResult3'];
       }
+      fullSearchResults['artist'] = artistResultList;
+      fullSearchResults['album'] = albumResultList;
+      fullSearchResults['song'] = songResultList;
       return fullSearchResults;
     } catch(error) {
       return {};
