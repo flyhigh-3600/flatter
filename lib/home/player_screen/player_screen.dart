@@ -101,8 +101,71 @@ class PlayerScreen extends StatelessWidget {
           );
         } else {
           return Column(
+            spacing: 12,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Image.asset("lib/assets/images/empty_player.png",height: screenSize.width - 16,),
+                    Column(
+                      children: [
+                        TextButton(
+                          onPressed: () {
 
+                          },
+                          child: Text("Title"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+
+                          },
+                          child: Text("Album"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+
+                          },
+                          child: Text("Artist"),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),//minus das padding auf beiden sieten halt
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  spacing: 12,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.fast_rewind),
+                          onPressed: () {
+
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.play_arrow),
+                          onPressed: () {
+
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.fast_forward),
+                          onPressed: () {
+
+                          },
+                        ),
+                      ],
+                    ),
+                    Text("hier der slider")
+                  ],
+                ),
+              ),
             ],
           );
         }
