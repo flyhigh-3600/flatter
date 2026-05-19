@@ -44,20 +44,36 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   //queue controls
   @override
   Future<dynamic> customAction(String name,[Map<String,dynamic>? extras]) async {
-    switch (name) {
-      case 'getQueue':
-        return getQueue();
-      case 'clearQueue':
-        _queueRepository.clearQueue();
-        return;
-      case 'addNext':
-        if (extras != null) {
-          int currentIndex = _queueRepository.getCurrentIndex();
-          List<MediaItem> mediaItemList = extras['addNext'];
-          for (MediaItem item in mediaItemList.reversed) {
-            insertQueueItem(currentIndex, item);
-          }
+    if (name case 'getQueue') {
+      return getQueue();
+    } else if (name case 'clearQueue') {
+      _queueRepository.clearQueue();
+      return;
+    } else if (name case 'addNext') {
+      if (extras != null) {
+        int currentIndex = _queueRepository.getCurrentIndex();
+        List<MediaItem> mediaItemList = extras['addNext'];
+        for (MediaItem item in mediaItemList.reversed) {
+          insertQueueItem(currentIndex, item);
         }
+      }
+    } else if (name case 'addMultiple') {
+      if (extras != null) {
+        List<MediaItem> mediaItemList = extras['addMultiple'];
+        for (MediaItem item in mediaItemList) {
+          addQueueItem(item);
+        }
+      }
+    } else if (name case 'moveQueueItem') {
+      if (extras != null) {
+        int oldIndex = extras['moveQueueItem']['oldIndex'];
+        int newIndex = extras['moveQueueItem']['newIndex'];
+        MediaItem item = _queueRepository.getItemAtPos(oldIndex);
+        removeQueueItemAt(oldIndex);
+        insertQueueItem(newIndex, item);
+      }
+    } else if (name case 'shuffleQueue') {
+      _queueRepository.shuffleQueue();
     }
   }
   @override

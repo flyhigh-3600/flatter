@@ -1,8 +1,7 @@
 import 'dart:collection';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
-import 'package:flatter/home/queue_screen/queue_screen_ViewModel.dart';
-import 'package:flatter/home/queue_screen/queue_widget/queue_widget.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +24,11 @@ class QueueScreen extends StatefulWidget {
 
 class _QueueScreenState extends State<QueueScreen> {
 
-  Widget buildQueue(WidgetRef ref, BuildContext context, List<List<dynamic>> queue) {
+  Widget buildQueue(WidgetRef ref, BuildContext context, List<MediaItem> queue) {
     final riverpodManager = RiverpodManager();
 
     void removeFromQueue(int index) {
-      playerControl.removeItemAt(index);
+      playerControl.removeQueueItemAt(index);
       ref.invalidate(riverpodManager.queueProvider);
     }
     void goToAlbum(BuildContext context, String id) {
@@ -45,11 +44,11 @@ class _QueueScreenState extends State<QueueScreen> {
         if (oldIndex < newIndex) {
           newIndex -= 1;
         }
-        playerControl.moveItem(oldIndex, newIndex);
+        playerControl.customAction("moveQueueItem",{'moveQueueItem':{'oldIndex':oldIndex,'newIndex':newIndex}});
         ref.invalidate(riverpodManager.queueProvider);
       },
       itemBuilder: (BuildContext context,int index) {
-        if (queue[index][2] == true) {
+        if (queue[index].extras!['current'] == true) {
           return Card.filled(
             key: Key('$index'),
             child: Column(
@@ -59,12 +58,12 @@ class _QueueScreenState extends State<QueueScreen> {
                     motion: DrawerMotion(),
                     children: [
                       SlidableAction(
-                        onPressed: (_) => (goToAlbum(context, queue[index][1][4])),
+                        onPressed: (_) => (goToAlbum(context, queue[index].extras!['albumID'])),
                         icon: Icons.album,
                         label: 'Album',
                       ),
                       SlidableAction(
-                        onPressed: (_) => (goToArtist(context, queue[index][1][2])),
+                        onPressed: (_) => (goToArtist(context, queue[index].extras!['artistID'])),
                         icon: Icons.person,
                         label: 'Artist',
                       )
@@ -82,9 +81,9 @@ class _QueueScreenState extends State<QueueScreen> {
                     ],
                   ),
                   child: ListTile(
-                    title: Text(queue[index][1][0]),
-                    subtitle: Text(queue[index][1][1]),
-                    trailing: ItemMenus(context).songMenu(queue[index][0], queue[index][1][2], queue[index][1][4]),
+                    title: Text(queue[index].title),
+                    subtitle: Text(queue[index].artist!),
+                    trailing: ItemMenus(context).songMenu(queue[index].id, queue[index].extras!['artistID'], queue[index].extras!['albumID']),
                   ),
                 ),
               ],
@@ -100,12 +99,12 @@ class _QueueScreenState extends State<QueueScreen> {
                     motion: DrawerMotion(),
                     children: [
                       SlidableAction(
-                        onPressed: (_) => (goToAlbum(context, queue[index][1][4])),
+                        onPressed: (_) => (goToAlbum(context, queue[index].extras!['albumID'])),
                         icon: Icons.album,
                         label: 'Album',
                       ),
                       SlidableAction(
-                        onPressed: (_) => (goToArtist(context, queue[index][1][2])),
+                        onPressed: (_) => (goToArtist(context, queue[index].extras!['artistID'])),
                         icon: Icons.person,
                         label: 'Artist',
                       )
@@ -123,9 +122,9 @@ class _QueueScreenState extends State<QueueScreen> {
                     ],
                   ),
                   child: ListTile(
-                    title: Text(queue[index][1][0]),
-                    subtitle: Text(queue[index][1][1]),
-                    trailing: ItemMenus(context).songMenu(queue[index][0], queue[index][1][2], queue[index][1][4]),
+                    title: Text(queue[index].title),
+                    subtitle: Text(queue[index].artist!),
+                    trailing: ItemMenus(context).songMenu(queue[index].id, queue[index].extras!['artistID'], queue[index].extras!['albumID']),
                   ),
                 ),
               ],
@@ -177,7 +176,7 @@ class _QueueScreenState extends State<QueueScreen> {
                 ),
                 IconButton(
                   onPressed: () {
-                    playerControl.shuffleQueue();
+                    playerControl.customAction('shuffleQueue');
                     ref.invalidate(riverpodManager.queueProvider);
                   },
                   icon: Icon(Icons.shuffle),
