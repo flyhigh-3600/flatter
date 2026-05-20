@@ -44,7 +44,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
   //queue controls
   @override
-  Future<dynamic> customAction(String name,[Map<String,dynamic>? extras]) async {
+  Future<dynamic> customAction(String name,[Map<String,dynamic>? extras]) async {//hier fehlt noch addshuffled
     if (name case 'getQueue') {
       return getQueue();
     } else if (name case 'clearQueue') {
@@ -85,9 +85,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         String? artistID = extras['addNextByID']['albumID'];
         if (albumID != null) {
           Map<dynamic,dynamic> albumDetails = await subsonicService.getAlbumDetails(albumID);
-          for (Map<dynamic,dynamic> song in albumDetails['song']) {
-            songList.add()
-          }
+
         }
       }
     }

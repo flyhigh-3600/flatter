@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
@@ -42,11 +43,15 @@ class AlbumScreen extends StatelessWidget {
                     switch (action) {//die sachen so implementieren, dass sich dieses ding hier die dinger holt oder ein anderer teil und dann die sahcne an die playercontrol weitergegeben werden, die playercontrol sollte nicht die sachen holen müssen
                       case "playNow":
                         playerControl.customAction('clearQueue');
-                        playerControl.addItemAlbum(value['id']);
+                        List<MediaItem> mediaItemList = [];
+                        playerControl.customAction('addMultiple',{'addMultiple':mediaItemList});
                       case "playNext":
                         playerControl.addNextAlbum(value['id']);
+                        List<MediaItem> mediaItemList = [];
+                        playerControl.customAction('addNext',{'addNext':mediaItemList});
                       case "enqueue":
-                        playerControl.addItemAlbum(value['id']);
+                        List<MediaItem> mediaItemList = [];
+                        playerControl.customAction('addMultiple',{'addMultiple':mediaItemList});
                         //muss noch was für die shuffled dinger machen
                     }
                   },
