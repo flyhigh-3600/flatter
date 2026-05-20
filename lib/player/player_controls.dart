@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/Repositories/queue_repository.dart';
+import 'package:flatter/main.dart';
 import 'package:flatter/player/audio_player.dart';
 
 class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
@@ -74,6 +75,21 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       }
     } else if (name case 'shuffleQueue') {
       _queueRepository.shuffleQueue();
+    } else if (name case 'addByID') {
+
+    } else if (name case 'addNextByID') {
+      if (extras != null) {
+        List<MediaItem> songList = [];
+        String? albumID = extras['addNextByID']['albumID'];
+        String? playlistID = extras['addNextByID']['albumID'];
+        String? artistID = extras['addNextByID']['albumID'];
+        if (albumID != null) {
+          Map<dynamic,dynamic> albumDetails = await subsonicService.getAlbumDetails(albumID);
+          for (Map<dynamic,dynamic> song in albumDetails['song']) {
+            songList.add()
+          }
+        }
+      }
     }
   }
   @override
