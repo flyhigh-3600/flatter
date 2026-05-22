@@ -79,13 +79,20 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       }
     } else if (name case 'shuffleQueue') {
       _queueRepository.shuffleQueue();
-    } else if (name case 'addByID') {
+    } else if (name case 'addByID') {//TODO: das hier fehlt halt
 
     } else if (name case 'addNextByID') {
       if (extras != null) {
+        String? songID = extras['addNextByID']['songID'];//should not be used, i should use full song items
         String? albumID = extras['addNextByID']['albumID'];
         String? playlistID = extras['addNextByID']['albumID'];
         String? artistID = extras['addNextByID']['albumID'];
+        if (songID != null) {
+          //hier song details halt bekommen
+          Map<dynamic,dynamic> details = await subsonicService.getSongDetails(songID);
+          MediaItem mediaItem = usefulScript.subsonicSongToMediaItem(details['song']);
+          customAction('addNext',{'addNext':[mediaItem]});
+        }
         if (albumID != null) {
           Map<dynamic,dynamic> details = await subsonicService.getAlbumDetails(albumID);
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(details['song']);

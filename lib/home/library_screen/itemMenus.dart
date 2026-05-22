@@ -3,9 +3,8 @@ import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ItemMenus {
+class ItemMenus {//have to completely rework this, either by using mediaitems or by using the full maps
   final BuildContext context;
   ItemMenus(this.context);
 

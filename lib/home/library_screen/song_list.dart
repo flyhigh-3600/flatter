@@ -1,3 +1,4 @@
+import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -14,6 +15,7 @@ class SongList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
     List<dynamic> songList = [];
     if (songListNullable != null && songListNullable?.isEmpty == false) {
       print(songListNullable);
@@ -36,7 +38,7 @@ class SongList extends StatelessWidget {
               motion: DrawerMotion(),
               children: [
                 SlidableAction(
-                  onPressed: (_) => (playerControl.addNext(songList[index]['id'])),
+                  onPressed: (_) => (playerControl.customAction('addNext',{'addNext':[usefulScripts.subsonicSongToMediaItem(songList[index])]})),
                   icon: Icons.list,
                   label: "Play next",
                 ),
@@ -74,7 +76,7 @@ class SongList extends StatelessWidget {
               subtitle: Text(songList[index]['artist'].toString()),
               trailing: ItemMenus(context).songMenu(songList[index]['id'], songList[index]['artistId'], songList[index]['albumId']),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
               onTap: () {
-                playerControl.addItem(songList[index]['id']);
+                playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(songList[index]));
               },
             ),
           );
@@ -89,7 +91,7 @@ class SongList extends StatelessWidget {
                 motion: DrawerMotion(),
                 children: [
                   SlidableAction(
-                    onPressed: (_) => (playerControl.addNext(song['id'])),
+                    onPressed: (_) => (playerControl.customAction('addNext',{'addNext':[usefulScripts.subsonicSongToMediaItem(song)]})),
                     icon: Icons.list,
                     label: "Play next",
                   ),
@@ -127,7 +129,7 @@ class SongList extends StatelessWidget {
                 subtitle: Text(song['artist'].toString()),
                 trailing: ItemMenus(context).songMenu(song['id'], song['artistId'], song['albumId']),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
                 onTap: () {
-                  playerControl.addItem(song['id']);
+                  playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));
                 },
               ),
             )
