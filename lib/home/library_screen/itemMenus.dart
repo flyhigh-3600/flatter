@@ -1,31 +1,129 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
 class ItemMenus {//man muss hier halt später einstellen können, welche aktionen hier und welche im bottom sheet angezeigt werden sollen
   ItemMenus(this.context);
   final BuildContext context;
 
+  //actions//TODO:noch die by id dinger hinzufügen, dafür gibt's ja was in den player controls
+  PopupMenuEntry playNow(List<MediaItem> items) {
+    return PopupMenuItem(
+      onTap: () {
+        playerControl.customAction('clearQueue');
+        playerControl.customAction('addMultiple',{'addMultiple':items});
+      },
+      child: Text("Play now"),
+    );
+  }
+  PopupMenuEntry addNext(List<MediaItem> items) {
+
+  }
+  PopupMenuEntry enqueue(List<MediaItem> items) {
+
+  }
+  PopupMenuEntry playNowShuffled(List<MediaItem> items) {
+    items.shuffle();
+    return PopupMenuItem(
+      onTap: () {
+        playerControl.customAction('clearQueue');
+        playerControl.customAction('addMultiple',{'addMultiple':items});
+      },
+      child: Text("Play now shuffled"),
+    );
+  }
+  PopupMenuEntry addNextShuffled(List<MediaItem> items) {
+
+  }
+  PopupMenuEntry enqueueShuffled(List<MediaItem> items) {
+
+  }
+  PopupMenuEntry album(String albumID) {
+
+  }
+  PopupMenuEntry artist(String artistID) {//TODO:später zu dem machen, dass du zwischen mehreren artists auswählen kannst
+
+  }
+
+  //song menus
   Widget songMenu(Map<dynamic,dynamic> song) {
+    Map actionOrder = settingsControl.loadSetting('songMenuActionOrder');
+    List<PopupMenuEntry> menuEntryList = [];
+
+    for (String action in actionOrder['mainMenu']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
+    for (String action in actionOrder['moreSheet']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
+    menuEntryList.add(PopupMenuItem(
+      onTap: () {
+        showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return SizedBox(//mal schauen wie du das mit dem grid machst//die gridsize einstellung gibt es schon (also in der settingsmap)
+                child: Text("here are more options"),
+              );
+            }
+        );
+      },
+      child: Text("More"),
+    ));
     return PopupMenuButton(
-      itemBuilder: (BuildContext context) => <PopupMenuEntry> [
-        PopupMenuItem(
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return SizedBox(//mal schauen wie du das mit dem grid machst
-                  child: Text("here are more options"),
-                );
-              }
-            );
-          },
-          child: Text("More"),
-        )
-      ],
+      itemBuilder: (BuildContext context) => menuEntryList,
       child: Icon(Icons.more_vert),
     );
   }
   Widget songMenuQueue(MediaItem song) {
+    Map actionOrder = settingsControl.loadSetting('songMenuActionOrder');
+    List<PopupMenuEntry> menuEntryList = [];
+
+    for (String action in actionOrder['mainMenu']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
+    for (String action in actionOrder['moreSheet']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
 
@@ -33,6 +131,35 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     );
   }
   Widget albumMenu(Map<dynamic,dynamic> album) {
+    Map actionOrder = settingsControl.loadSetting('albumMenuActionOrder');
+    List<PopupMenuEntry> menuEntryList = [];
+
+    for (String action in actionOrder['mainMenu']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
+    for (String action in actionOrder['moreSheet']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
 
@@ -41,6 +168,35 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     );
   }
   Widget albumMenuList(Map<dynamic,dynamic> albumID) {
+    Map actionOrder = settingsControl.loadSetting('albumMenuActionOrder');
+    List<PopupMenuEntry> menuEntryList = [];
+
+    for (String action in actionOrder['mainMenu']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
+    for (String action in actionOrder['moreSheet']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
 
@@ -49,6 +205,35 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     );
   }
   Widget artistMenu(Map<dynamic,dynamic> artist) {
+    Map actionOrder = settingsControl.loadSetting('artistMenuActionOrder');
+    List<PopupMenuEntry> menuEntryList = [];
+
+    for (String action in actionOrder['mainMenu']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
+    for (String action in actionOrder['moreSheet']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
 
@@ -57,6 +242,35 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     );
   }
   Widget playlistMenu(Map<dynamic,dynamic> playlist) {
+    Map actionOrder = settingsControl.loadSetting('playlistMenuActionOrder');
+    List<PopupMenuEntry> menuEntryList = [];
+
+    for (String action in actionOrder['mainMenu']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
+    for (String action in actionOrder['moreSheet']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
 
@@ -65,6 +279,35 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     );
   }
   Widget playlistMenuList(Map<dynamic,dynamic> playistID) {
+    Map actionOrder = settingsControl.loadSetting('playlistMenuActionOrder');
+    List<PopupMenuEntry> menuEntryList = [];
+
+    for (String action in actionOrder['mainMenu']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
+    for (String action in actionOrder['moreSheet']) {
+      switch (action) {
+        case 'playNow':
+
+        case 'addNext':
+
+        case 'enqueue':
+
+        case 'album':
+
+        case 'artist':
+      }
+    }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
 
