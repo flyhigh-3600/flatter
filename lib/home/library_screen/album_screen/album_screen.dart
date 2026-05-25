@@ -43,7 +43,9 @@ class AlbumScreen extends StatelessWidget {
                     switch (action) {//die sachen so implementieren, dass sich dieses ding hier die dinger holt oder ein anderer teil und dann die sahcne an die playercontrol weitergegeben werden, die playercontrol sollte nicht die sachen holen müssen
                       case "playNow":
                         playerControl.customAction('clearQueue');
-                        playerControl.customAction('addMultiple',{'addMultiple':value['id']});
+                        playerControl.customAction('addMultiple',{'addMultiple': {
+                          'tracks':value['id'],
+                        }});
                       case "playNext":
                         playerControl.customAction('addNextByID',{'addNextByID':value['id']});
                       case "enqueue":

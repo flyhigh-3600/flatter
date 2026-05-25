@@ -38,7 +38,9 @@ class SongList extends StatelessWidget {
               motion: DrawerMotion(),
               children: [
                 SlidableAction(
-                  onPressed: (_) => (playerControl.customAction('addNext',{'addNext':[usefulScripts.subsonicSongToMediaItem(songList[index])]})),
+                  onPressed: (_) => (playerControl.customAction('addNext',{'addNext': {
+                    'tracks':[usefulScripts.subsonicSongToMediaItem(songList[index])]
+                  }})),
                   icon: Icons.list,
                   label: "Play next",
                 ),
@@ -91,7 +93,9 @@ class SongList extends StatelessWidget {
                 motion: DrawerMotion(),
                 children: [
                   SlidableAction(
-                    onPressed: (_) => (playerControl.customAction('addNext',{'addNext':[usefulScripts.subsonicSongToMediaItem(song)]})),
+                    onPressed: (_) => (playerControl.customAction('addNext',{'addNext': {
+                      'tracks':usefulScripts.subsonicSongToMediaItem(song)
+                    }})),
                     icon: Icons.list,
                     label: "Play next",
                   ),

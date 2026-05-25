@@ -48,7 +48,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
   //queue controls
   @override
-  Future<dynamic> customAction(String name,[Map<String,dynamic>? extras]) async {//hier fehlt noch addshuffled
+  Future<dynamic> customAction(String name,[Map<String,dynamic>? extras]) async {
     if (name case 'getQueue') {
       return getQueue();
     } else if (name case 'clearQueue') {
@@ -57,14 +57,18 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     } else if (name case 'addNext') {
       if (extras != null) {
         int currentIndex = _queueRepository.getCurrentIndex();
-        List<MediaItem> mediaItemList = extras['addNext'];
+        List<MediaItem> mediaItemList = extras['addNext']['tracks'];
+        bool? shuffled = extras['addNext']['shuffled'];
+        if (shuffled == true) mediaItemList.shuffle();
         for (MediaItem item in mediaItemList.reversed) {
           insertQueueItem(currentIndex, item);
         }
       }
     } else if (name case 'addMultiple') {
       if (extras != null) {
-        List<MediaItem> mediaItemList = extras['addMultiple'];
+        List<MediaItem> mediaItemList = extras['addMultiple']['tracks'];
+        bool? shuffled = extras['addMultiple']['shuffled'];
+        if (shuffled == true) mediaItemList.shuffle();
         for (MediaItem item in mediaItemList) {
           addQueueItem(item);
         }
@@ -97,15 +101,18 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         if (albumID != null) {
           Map<dynamic,dynamic> details = await subsonicService.getAlbumDetails(albumID);
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(details['song']);
+          if (shuffled == true) mediaItemList.shuffle();
           customAction('addNext',{'addNext':mediaItemList});
         }
         if (playlistID != null) {
           Map<dynamic,dynamic> details = await subsonicService.getPlaylistDetails(playlistID);
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(details['entry']);
+          if (shuffled == true) mediaItemList.shuffle();
           customAction('addNext',{'addNext':mediaItemList});
         }
         if (artistID != null) {
           //hier halt alle songs bekommen, probably durch full search einfach
+          //shuffle nd vergessen
         }
       }
     }
