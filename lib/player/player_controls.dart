@@ -92,7 +92,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         String? playlistID = extras['addNextByID']['albumID'];
         String? artistID = extras['addNextByID']['albumID'];
         bool? shuffled = extras['addNextByID']['shuffled'];
-        if (songID != null) {//TODO:hier noch shuffled hinzufügen
+        if (songID != null) {
           //hier song details halt bekommen
           Map<dynamic,dynamic> details = await subsonicService.getSongDetails(songID);
           MediaItem mediaItem = usefulScript.subsonicSongToMediaItem(details['song']);
