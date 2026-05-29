@@ -18,10 +18,10 @@ class PlayButton extends StatelessWidget {
           children: [
             if (processingState == AudioProcessingState.error)
               IconButton(onPressed: null, icon: Icon(Icons.error))
-            else if (processingState == AudioProcessingState.buffering || processingState == AudioProcessingState.loading)
+            else if (processingState == AudioProcessingState.loading)//etwas für buffering hinzugügen, beim buffering kann es ja durchaus noch abspielen
               IconButton(onPressed: null, icon: CircularProgressIndicator())
-            else if (processingState == AudioProcessingState.idle)
-              IconButton(onPressed: null, icon: Icon(Icons.stop))
+            //else if (processingState == AudioProcessingState.idle)
+              //IconButton(onPressed: null, icon: Icon(Icons.stop))
             else
               if (playing)
                 IconButton(onPressed: playerControl.pause, icon: Icon(Icons.pause))
