@@ -88,7 +88,7 @@ class PlayerScreen extends StatelessWidget {
                               IconButton(
                                 icon: Icon(Icons.shuffle),
                                 onPressed: () {
-                                  playerControl.customAction('shuffleQueue');
+                                  playerControl.customAction('shuffleQueue');//das soll vermutlich eig was anderes machen, aber ich checke highkey den shuffle modus bei den anderen prorgammen nicht. wozu?
                                 },
                               ),
                             ],

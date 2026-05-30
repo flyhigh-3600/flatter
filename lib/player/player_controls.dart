@@ -18,6 +18,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     playbackState.add(playbackState.value.copyWith(
       controls: [MediaControl.pause],
       playing: true,
+      updatePosition:
     ));
   }
   @override
