@@ -1,6 +1,8 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
+import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
+import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/progess_slider.dart';
 import 'package:flatter/main.dart';
@@ -25,27 +27,39 @@ class PlayerScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Image.asset("lib/assets/images/empty_player.png",height: screenSize.width / 3,),
-                    Column(
-                      children: [
-                        TextButton(
-                          onPressed: () {
-
-                          },
-                          child: Text("Title"),
-                        ),
-                        TextButton(
-                          onPressed: () {
-
-                          },
-                          child: Text("Album"),
-                        ),
-                        TextButton(
-                          onPressed: () {
-
-                          },
-                          child: Text("Artist"),
-                        ),
-                      ],
+                    StreamBuilder(
+                      stream: playerControl.mediaItem,
+                      builder: (context, asyncSnapshot) {
+                        final String title = asyncSnapshot.data?.title ?? "Unknown";
+                        final String album = asyncSnapshot.data?.album ?? "Unknown";
+                        final String artist = asyncSnapshot.data?.artist ?? "Unknown";
+                        final String? albumID = asyncSnapshot.data?.extras?['albumId'];
+                        final String? artistID = asyncSnapshot.data?.extras?['artistId'];
+                        return Column(
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                //hier vlt noch was hinzufügen
+                              },
+                              child: Text(title),
+                            ),
+                            if (albumID == null) Text(album),
+                            if (albumID != null) TextButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumID)));
+                              },
+                              child: Text(album),
+                            ),
+                            if (artistID == null) Text(album),
+                            if (artistID != null) TextButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
+                              },
+                              child: Text(artist),
+                            ),
+                          ],
+                        );
+                      }
                     ),
                   ],
                 ),
@@ -121,27 +135,39 @@ class PlayerScreen extends StatelessWidget {
             child: Column(
               children: [
                 Image.asset("lib/assets/images/empty_player.png",height: screenSize.width - 16,),
-                Column(
-                  children: [
-                    TextButton(
-                      onPressed: () {
-
-                      },
-                      child: Text("Title"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-
-                      },
-                      child: Text("Album"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-
-                      },
-                      child: Text("Artist"),
-                    ),
-                  ],
+                StreamBuilder(
+                  stream: playerControl.mediaItem,
+                  builder: (context, asyncSnapshot) {
+                    final String title = asyncSnapshot.data?.title ?? "Unknown";
+                    final String album = asyncSnapshot.data?.album ?? "Unknown";
+                    final String artist = asyncSnapshot.data?.artist ?? "Unknown";
+                    final String? albumID = asyncSnapshot.data?.extras?['albumId'];//TODO:hier natürlich auch den artist chooser ausführen später
+                    final String? artistID = asyncSnapshot.data?.extras?['artistId'];
+                    return Column(
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                    //hier vlt noch was hinzufügen
+                          },
+                          child: Text(title),
+                        ),
+                        if (albumID == null) Text(album),
+                        if (albumID != null) TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumID)));
+                          },
+                          child: Text(album),
+                        ),
+                        if (artistID == null) Text(album),
+                        if (artistID != null) TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
+                          },
+                          child: Text(artist),
+                        ),
+                      ],
+                    );
+                  }
                 ),
               ],
             ),//minus das padding auf beiden sieten halt
