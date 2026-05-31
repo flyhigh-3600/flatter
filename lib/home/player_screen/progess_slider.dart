@@ -67,19 +67,30 @@ class ActualSliderState extends State<ActualSlider> {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text(value.toInt().toString()),
+          if (Duration(seconds: value.toInt()).toString().startsWith("0"))
+            Text(Duration(seconds: value.toInt()).toString().split('.')[0].substring(2))
+          else
+            Text(Duration(seconds: value.toInt()).toString().split('.')[0]),
           Slider(
-            year2023: false,
+            year2023: false,//wenn das zu false defaultet wegmachen
             value: value,
             max: widget.duration.inSeconds.toDouble(),
             onChanged: (value) {
-
+              setState(() {
+                dragging = true;
+                dragValue = value;
+              });
             },
             onChangeEnd: (value) {
+              dragging = false;
               playerControl.seek(Duration(seconds: value.toInt()));
             },
           ),
-          Text(widget.duration.toString())
+          if (widget.duration.toString().startsWith("0"))
+            Text(widget.duration.toString().split('.')[0].substring(2))
+          else
+
+            Text(widget.duration.toString().split('.')[0]),
         ],
       ),
     );
