@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
@@ -75,7 +76,13 @@ class PlayerScreen extends StatelessWidget {
                               IconButton(
                                 icon: Icon(Icons.fast_rewind),
                                 onPressed: () {
-                                  playerControl.skipToPrevious();//TODO:nur wenn mehr als [zeit] überschritten wurde (in den einstellungen zeit einstellen)
+                                  AudioService.position.listen((Duration position) {
+                                    if (position.inSeconds < settingsControl.loadSetting('timeUntilSeekToStart')) {
+                                      playerControl.seek(Duration.zero);
+                                    } else {
+                                      playerControl.skipToPrevious();
+                                    }
+                                  });
                                 },
                               ),
                               PlayButton(),
@@ -150,7 +157,13 @@ class PlayerScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.fast_rewind),
                       onPressed: () {
-                        playerControl.skipToPrevious();
+                        AudioService.position.listen((Duration position) {
+                          if (position.inSeconds < settingsControl.loadSetting('timeUntilSeekToStart')) {
+                            playerControl.seek(Duration.zero);
+                          } else {
+                            playerControl.skipToPrevious();
+                          }
+                        });
                       },
                     ),
                     PlayButton(),

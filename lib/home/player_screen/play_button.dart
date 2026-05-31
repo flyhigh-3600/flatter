@@ -2,11 +2,11 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iconify_flutter_plus/icons/ic.dart';
 
 class PlayButton extends StatelessWidget {
-  PlayButton({super.key});
+  const PlayButton({super.key});
 
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<PlaybackState>(
       stream: playerControl.playbackState,

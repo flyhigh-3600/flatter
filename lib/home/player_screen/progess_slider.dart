@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ProgressSlider extends StatelessWidget {
-  ProgressSlider({super.key});
-
+  const ProgressSlider({super.key});
 
   Stream<MediaState> get mediaStateStream =>
       Rx.combineLatest2<MediaItem?, Duration, MediaState>(
@@ -17,13 +16,6 @@ class ProgressSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AudioService.position.listen((pos) {
-      print("Neue Position: $pos");
-    });
-    playerControl.mediaItem.listen((data) {
-      int duration = data?.duration?.inSeconds ?? 0;
-      print("duration: $duration");
-    });
     return StreamBuilder<MediaState>(
       stream: mediaStateStream,
       builder: (context, snapshot) {
@@ -46,7 +38,7 @@ class ActualSlider extends StatefulWidget {
   final Duration duration;
   final Duration position;
   final Duration bufferedPosition;
-  ActualSlider({
+  const ActualSlider({
     super.key,
     required this.duration,
     required this.position,
@@ -64,7 +56,7 @@ class ActualSliderState extends State<ActualSlider> {
   @override
   Widget build(BuildContext context) {
     final value = min(
-      dragValue ?? widget.position.inMilliseconds.toDouble(),
+      dragValue ?? widget.position.inSeconds.toDouble(),
       widget.duration.inMilliseconds.toDouble(),
     );
     if (dragValue != null && !dragging) {

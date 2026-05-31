@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/player/audio_player.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../useful_scripts.dart';
 
@@ -9,40 +10,44 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final QueueRepository _queueRepository = QueueRepository();
   final _player = MyPlayer();
 
+  PlayerControls() {
+    _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
+  }
+
   final SubsonicJustAudioCompatibility usefulScript = SubsonicJustAudioCompatibility();
 
   //play controls
   @override
   Future<void> play() async {
     _player.play();
-    playbackState.add(playbackState.value.copyWith(
-      controls: [MediaControl.pause],
-      playing: true,
-      updatePosition:
-    ));
   }
   @override
   Future<void> pause() async {
     _player.pause();
-    playbackState.add(playbackState.value.copyWith(
-      playing: false,
-      controls: [MediaControl.play],
-    ));
   }
   @override
   Future<void> stop() => _player.stop();
   @override
   Future<void> seek(Duration position) => _player.seek(position);
   @override
-  Future<void> skipToNext() => skipToQueueItem(_queueRepository.getCurrentIndex() + 1);
+  Future<void> skipToNext() async {
+    if (_queueRepository.getCurrentIndex() != _queueRepository.getQueueLength() - 1) {
+      skipToQueueItem(_queueRepository.getCurrentIndex() + 1);
+    }
+  }
   @override
-  Future<void> skipToPrevious() => skipToQueueItem(_queueRepository.getCurrentIndex() - 1);
+  Future<void> skipToPrevious() async {
+    if (_queueRepository.getCurrentIndex() != 0) {//vlt hier machen, dass es funktioniert wenn man ein looping angeschaltet hat
+      skipToQueueItem(_queueRepository.getCurrentIndex() - 1);
+    }
+  }
   @override
   Future<void> skipToQueueItem(int index) async {
     MediaItem item = _queueRepository.getItemAtPos(index);
     _queueRepository.makeCurrent(index);
     _player.seek(Duration.zero);
     _player.setSource(item.id);
+    mediaItem.add(item);
     play();
   }
   /*
@@ -144,4 +149,33 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
   @override
   Future<void> removeQueueItemAt(int index) => _queueRepository.removeItem(index);
+
+
+  PlaybackState _transformEvent(PlaybackEvent event) {
+    return PlaybackState(
+      controls: [
+        MediaControl.rewind,
+        if (_player.playerState.playing) MediaControl.pause else MediaControl.play,//TODO:aussuchen, was alles angezeigt werden soll
+        MediaControl.fastForward,
+      ],
+      systemActions: const {
+        MediaAction.seek,
+        MediaAction.seekForward,
+        MediaAction.seekBackward,
+      },
+      androidCompactActionIndices: const [0, 1, 3],
+      processingState: const {
+        ProcessingState.idle: AudioProcessingState.idle,
+        ProcessingState.loading: AudioProcessingState.loading,
+        ProcessingState.buffering: AudioProcessingState.buffering,
+        ProcessingState.ready: AudioProcessingState.ready,
+        ProcessingState.completed: AudioProcessingState.completed,
+      }[_player.playerState.processingState]!,
+      playing: _player.playerState.playing,
+      updatePosition: _player.position,
+      bufferedPosition: _player.bufferedPosition,
+      speed: _player.speed,
+      queueIndex: event.currentIndex,
+    );
+  }
 }

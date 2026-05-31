@@ -52,6 +52,7 @@ class SettingsController {
       'unused':[],
     },
     'moreOptionsSheetGridSize':3,//evt wegmachen, falls du das nicht als grid nimmst
+    'timeUntilSeekToStart':3//inSeconds,
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;

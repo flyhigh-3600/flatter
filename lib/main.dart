@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
       return MaterialApp(
         title: 'flatter',
         theme: ThemeData(
+          useMaterial3: true,//in die settings packen
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         ),
         home: const HomeNavigationRail(),
