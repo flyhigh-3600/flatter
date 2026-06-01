@@ -43,11 +43,14 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
           NavigationDestination(icon: Icon(Icons.queue_music), label: 'Queue'),
         ],
       ),
-      body: <Widget>[
-        LibraryScreen(viewModel: libraryScreenViewModel,),
-        PlayerScreen(),
-        QueueScreen(),
-      ][currentPageIndex],
+      body: IndexedStack(
+        index: currentPageIndex,
+        children: <Widget>[
+          LibraryScreen(viewModel: libraryScreenViewModel,),
+          PlayerScreen(),
+          QueueScreen(),
+        ],
+      ),
     );
   }
 }

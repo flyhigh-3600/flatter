@@ -50,13 +50,18 @@ class _HomeNavigationRailState extends State<HomeNavigationRail> {
             //extended: true,das ding extendable machen (dazu musst du noch was anderes umstellen, sonst gibt es einen fehler
           ),
           const VerticalDivider(),
-          Expanded(child: [
-            LibraryScreen(viewModel: libraryScreenViewModel),
-            PlayerScreen(),
-            QueueScreen(),
-            SearchScreen(),
-            SettingsScreen(viewModel: settingsScreenViewmodel),
-          ][currentPageIndex]),
+          Expanded(
+            child: IndexedStack(
+              index: currentPageIndex,
+              children: [
+              LibraryScreen(viewModel: libraryScreenViewModel),
+              PlayerScreen(),
+              QueueScreen(),
+              SearchScreen(),
+              SettingsScreen(viewModel: settingsScreenViewmodel),
+              ],
+            ),
+          ),
         ],
       ),
     );
