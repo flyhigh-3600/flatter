@@ -8,17 +8,30 @@ class TimeUntilSeekToStartSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    controller.text = settingsControl.loadSetting('timeUntilSeekToStart').toString();
+    return IntrinsicWidth(
       child: TextFormField(
         keyboardType: TextInputType.number,
         controller: controller,
         maxLines: 1,
         decoration: const InputDecoration(
           hintText: "Seconds",
+          border: OutlineInputBorder(),
         ),
-        onChanged: (value) {
-          settingsControl.changeSetting('timeUntilSeekToStart',int.parse(value));
+        onChanged: (value) {//TODO:dieser code hier ist sehr schlimm, aber funktioniert so halbwegs
+          if (value.isEmpty) {
+
+          } else {
+            try {
+              int intvalue = int.parse(value);
+              if (intvalue >= -1) {
+
+              }
+              settingsControl.changeSetting('timeUntilSeekToStart',int.parse(value));
+            } catch (e) {
+
+            }
+          }
         },
         validator: (String? value) {
           if (value == null || value.isEmpty) {
@@ -31,7 +44,6 @@ class TimeUntilSeekToStartSetting extends StatelessWidget {
               return "Please enter a number";
             }
           }
-          return null;
         },
       ),
     );
