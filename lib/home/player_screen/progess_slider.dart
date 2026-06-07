@@ -19,8 +19,8 @@ class ProgressSlider extends StatelessWidget {
     return StreamBuilder<MediaState>(
       stream: mediaStateStream,
       builder: (context, snapshot) {
-        final Duration duration = snapshot.data?.mediaItem?.duration ?? Duration.zero;
-        final Duration position = snapshot.data?.position ?? Duration.zero;
+        final Duration duration = snapshot.data?.mediaItem?.duration ?? playerControl.getDuration() ?? Duration.zero;
+        final Duration position = snapshot.data?.position ?? playerControl.getPosition();
         return ActualSlider(duration: duration, position: position);
       },
     );

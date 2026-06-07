@@ -51,16 +51,26 @@ class _HomeNavigationRailState extends State<HomeNavigationRail> {
           ),
           const VerticalDivider(),
           Expanded(
-            child: IndexedStack(
-              index: currentPageIndex,
-              children: [
+            child: [
               LibraryScreen(viewModel: libraryScreenViewModel),
               PlayerScreen(),
               QueueScreen(),
               SearchScreen(),
               SettingsScreen(viewModel: settingsScreenViewmodel),
+              ][currentPageIndex],
+            /*
+            child: IndexedStack(
+              index: currentPageIndex,
+              children: [
+                LibraryScreen(viewModel: libraryScreenViewModel),
+                PlayerScreen(),
+                QueueScreen(),
+                SearchScreen(),
+                SettingsScreen(viewModel: settingsScreenViewmodel),
               ],
             ),
+
+             */
           ),
         ],
       ),
