@@ -1,4 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:flatter/home/library_screen/album_grid.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/main.dart';
@@ -120,45 +121,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                 ),
               ),
               switch (albumList) {
-                AsyncValue(:final value?) => SliverMasonryGrid.count(
-                  crossAxisCount: (screenSize.width / 175).toInt(),
-                  childCount: value.length,
-                  itemBuilder: (context, index) {
-                    Map albumOne = value[index];
-                    return Card(
-                      clipBehavior: Clip.hardEdge,
-                      child: InkWell(
-                        splashColor: Colors.blue.withAlpha(30),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
-                        },
-                        child: Column(
-                          children: [
-                            AspectRatio(
-                              aspectRatio: 1,
-                              child: CachedNetworkImage(
-                                imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
-                                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                                errorWidget: (context, url, error) => IconButton(
-                                  onPressed: () {
-                                    //hier retry
-                                  },
-                                  icon: Icon(Icons.error),
-                                ),
-                              ),
-                            ),
-                            ListTile(
-                              title: Text(albumOne['name']),
-                              subtitle: Text(albumOne['artist']),
-                              trailing: ItemMenus(context).albumMenuList(albumOne),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
                 AsyncValue(error: != null) => Center(child: const Text("Error")),
                 AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
               },

@@ -1,4 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:flatter/home/library_screen/artist_grid.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/artists_tab/artists_tab_ViewModel.dart';
 import 'package:flatter/main.dart';
@@ -97,44 +98,38 @@ class _ArtistsTabState extends State<ArtistsTab> {
       child: Consumer(
         builder: (context, ref, child) {
           final artistList = ref.watch(riverpodManager.artistListProvider);
-          return Column(
-            children: [
-              ListTile(
-                title: Text("uh"),
-                subtitle: Text("hier suchleiste und filter stuff"),
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text("uh"),
+                      subtitle: Text("hier suchleiste und filter stuff"),
+                    ),
+                    Row(
+                      children: [
+                        Text("hier drop down menü"),
+                        IconButton(
+                          onPressed: () {
+                            reverseSort();
+                            ref.invalidate(riverpodManager.artistListProvider);
+                          },
+                          icon: (ascending
+                              ? Icon(Icons.arrow_upward)
+                              : Icon(Icons.arrow_downward)),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  Text("hier drop down menü"),
-                  IconButton(
-                    onPressed: () {
-                      reverseSort();
-                      ref.invalidate(riverpodManager.artistListProvider);
-                    },
-                    icon: (ascending
-                        ? Icon(Icons.arrow_upward)
-                        : Icon(Icons.arrow_downward)),
-                  )
-                ],
-              ),
-              Expanded(
-                child: switch (artistList) {
-                  AsyncValue(:final value?) => Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          ref.invalidate(riverpodManager.artistListProvider);
-                        },
-                        child: Text("invalidate"),
-                      ),
-                      buildListView(value,context,screenSize.width),
-                    ],
-                  ),
-                  AsyncValue(error: != null) => Center(child: const Text("Error")),
-                  AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-                },
-              ),
+              switch (artistList) {
+                //AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
+                AsyncValue(:final value?) => buildListView(value, context, screenSize.width),
+                AsyncValue(error: != null) => Center(child: const Text("Error")),
+                AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
+              },
             ],
           );
         },
