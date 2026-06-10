@@ -5,6 +5,7 @@ import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
@@ -92,44 +93,75 @@ class _AlbumsTabState extends State<AlbumsTab> {
       child: Consumer(
         builder: (context, ref, child) {
           final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
-          return Column(
-            children: [
-              ListTile(
-                title: Text("uh"),
-                subtitle: Text("hier suchleiste und filter stuff"),
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text("uh"),
+                      subtitle: Text("hier suchleiste und filter stuff"),
+                    ),
+                    Row(
+                      children: [
+                        Text("hier drop down menü"),
+                        IconButton(
+                          onPressed: () {
+                            reverseSort();
+                            ref.invalidate(riverpodManager.albumListProvider);
+                          },
+                          icon: (ascending
+                              ? Icon(Icons.arrow_upward)
+                              : Icon(Icons.arrow_downward)),
+                        )
+                      ],
+                    ),
+                  ]
+                ),
               ),
-              Row(
-                children: [
-                  Text("hier drop down menü"),
-                  IconButton(
-                    onPressed: () {
-                      reverseSort();
-                      ref.invalidate(riverpodManager.albumListProvider);
-                    },
-                    icon: (ascending
-                      ? Icon(Icons.arrow_upward)
-                      : Icon(Icons.arrow_downward)),
-                  )
-                ],
-              ),
-              Expanded(
-                child: switch (albumList) {
-                  AsyncValue(:final value?) => Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          ref.invalidate(riverpodManager.albumListProvider);
+              switch (albumList) {
+                AsyncValue(:final value?) => SliverMasonryGrid.count(
+                  crossAxisCount: (screenSize.width / 175).toInt(),
+                  childCount: value.length,
+                  itemBuilder: (context, index) {
+                    Map albumOne = value[index];
+                    return Card(
+                      clipBehavior: Clip.hardEdge,
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
                         },
-                        child: Text("invalidate"),
+                        child: Column(
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 1,
+                              child: CachedNetworkImage(
+                                imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
+                                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                    LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                errorWidget: (context, url, error) => IconButton(
+                                  onPressed: () {
+                                    //hier retry
+                                  },
+                                  icon: Icon(Icons.error),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(albumOne['name']),
+                              subtitle: Text(albumOne['artist']),
+                              trailing: ItemMenus(context).albumMenuList(albumOne),
+                            ),
+                          ],
+                        ),
                       ),
-                      buildListView(value,context,screenSize.width),
-                    ],
-                  ),
-                  AsyncValue(error: != null) => Center(child: const Text("Error")),
-                  AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-                },
-              ),
+                    );
+                  },
+                ),
+                AsyncValue(error: != null) => Center(child: const Text("Error")),
+                AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
+              },
             ],
           );
         },
