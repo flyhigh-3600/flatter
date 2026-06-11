@@ -239,13 +239,67 @@ class SearchScreen extends StatelessWidget {
                   AsyncValue(:final value?) => CustomScrollView(
                     slivers: [
                       if (value['artist'] != null)
-                        SliverToBoxAdapter(child: Text("Artists"),),
+                        SliverToBoxAdapter(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Artists"),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchArtistScreen(query: searchFieldController.text)));
+                                },
+                                child: Row(
+                                  children: [
+                                    Text("Show all"),
+                                    Icon(Icons.arrow_forward),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                       ArtistGrid(artistListNullable: value['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true),
                       if (value['album'] != null)
-                        SliverToBoxAdapter(child: Text("Albums"),),
+                        SliverToBoxAdapter(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Albums"),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchAlbumScreen(query: searchFieldController.text)));
+                                },
+                                child: Row(
+                                  children: [
+                                    Text("Show all"),
+                                    Icon(Icons.arrow_forward),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                       AlbumGrid(albumListNullable: value['album'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true),
                       if (value['song'] != null)
-                        SliverToBoxAdapter(child: Text("Songs"),),
+                        SliverToBoxAdapter(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Songs"),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: searchFieldController.text)));
+                                },
+                                child: Row(
+                                  children: [
+                                    Text("Show all"),
+                                    Icon(Icons.arrow_forward),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                       SongList(songListNullable: value['song'], listView: true, sliver: true, filter: false),
                     ],
                   ),
