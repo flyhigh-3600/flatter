@@ -1,6 +1,8 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
+import 'package:flatter/home/library_screen/album_grid.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
+import 'package:flatter/home/library_screen/artist_grid.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/song_list.dart';
 import 'package:flatter/home/search_screen/search_album_screen.dart';
@@ -233,7 +235,20 @@ class SearchScreen extends StatelessWidget {
               final searchResults = ref.watch(riverpodManager.searchProvider(searchParams));
               return Container(
                 child: switch (searchResults) {
-                  AsyncValue(:final value?) => buildSearchResultsColumn(context,value),
+                  //AsyncValue(:final value?) => buildSearchResultsColumn(context,value),
+                  AsyncValue(:final value?) => CustomScrollView(
+                    slivers: [
+                      if (value['artist'] != null)
+                        SliverToBoxAdapter(child: Text("Artists"),),
+                      ArtistGrid(artistListNullable: value['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true),
+                      if (value['album'] != null)
+                        SliverToBoxAdapter(child: Text("Albums"),),
+                      AlbumGrid(albumListNullable: value['album'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true),
+                      if (value['song'] != null)
+                        SliverToBoxAdapter(child: Text("Songs"),),
+                      SongList(songListNullable: value['song'], listView: true, sliver: true, filter: false),
+                    ],
+                  ),
                   AsyncValue(error: != null) => const Text("error"),
                   AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
                 },
