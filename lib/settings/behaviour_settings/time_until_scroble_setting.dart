@@ -2,13 +2,13 @@ import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TimeUntilSeekToStartSetting extends StatelessWidget {
-  const TimeUntilSeekToStartSetting({super.key});
+class TimeUntilScrobleSetting extends StatelessWidget {
+  const TimeUntilScrobleSetting({super.key});
 
   @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
-    controller.text = settingsControl.loadSetting('timeUntilSeekToStart').toString();
+    controller.text = settingsControl.loadSetting('timeUntilScrobble').toString();
     return IntrinsicWidth(
       child: TextFormField(
         keyboardType: TextInputType.number,
@@ -29,7 +29,7 @@ class TimeUntilSeekToStartSetting extends StatelessWidget {
               }
               settingsControl.changeSetting('timeUntilSeekToStart',int.parse(value));
             } catch (e) {
-              
+
             }
           }
         },

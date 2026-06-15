@@ -509,4 +509,32 @@ class SubsonicService {
       return {};
     }
   }
+
+  Future<Map<dynamic,dynamic>> scrobble(String? id,bool submission) async {
+    if (id == null) {
+      return {};
+    }
+    List<String> url = getURL(null,null,null);
+    final Duration time = DateTime.now().difference(DateTime(1970));
+    final uri = Uri.parse("${url[0]}scrobble${url[1]}&id=$id&time=${time.inMilliseconds}&submission=$submission");
+    try {
+      final data = await http.get(uri);
+      if (data.statusCode != 200) {
+        print("error 4");
+        return {};
+      }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        print(subsonicResponse);
+        print("error 3");
+        return {};
+      }
+      print('successfully scrobbled');
+      return subsonicResponse;
+    } catch(error) {
+      print("error 2");
+      return {};
+    }
+  }
 }

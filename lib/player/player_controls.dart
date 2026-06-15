@@ -25,6 +25,12 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         skipToNext();
       }
     });
+    AudioService.position.listen((data) {
+      if (data >= Duration(seconds: settingsControl.loadSetting('timeUntilScrobble'))) {
+        print("harharhar");
+        subsonicService.scrobble(mediaItem.value?.id ?? null, true);
+      }
+    });
   }
 
   final SubsonicJustAudioCompatibility usefulScript = SubsonicJustAudioCompatibility();

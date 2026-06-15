@@ -1,6 +1,7 @@
 import 'package:flatter/settings/behaviour_settings/library_start_tab_setting.dart';
 import 'package:flatter/settings/behaviour_settings/play_actions_settings/play_actions_settings_screen.dart';
 import 'package:flatter/settings/behaviour_settings/start_tab_setting.dart';
+import 'package:flatter/settings/behaviour_settings/time_until_scroble_setting.dart';
 import 'package:flatter/settings/behaviour_settings/time_until_seek_to_start_setting.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,12 @@ class BehaviourSettingsScreen extends StatelessWidget {
             title: Text("Time until seek to start"),
             trailing: TimeUntilSeekToStartSetting(),
             subtitle: Text("The time that has to be passed, until pressing the rewind key will seek to the start of the current item instead of skipping to the previous one. Put -1 to never seek to the start."),
-          )
+          ),
+          ListTile(
+            title: Text("Time until scrobble"),
+            trailing: TimeUntilScrobleSetting(),
+            subtitle: Text("The time that has to be passed, for the server to register you playing the song"),
+          ),
         ],
       ),
     );
