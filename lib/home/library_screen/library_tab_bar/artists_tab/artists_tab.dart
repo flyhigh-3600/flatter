@@ -2,6 +2,7 @@ import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/artist_grid.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/artists_tab/artists_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/search_filter_widget.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
+    final ValueNotifier<String> filterNotifier = ValueNotifier('');
     return Expanded(
       child: Consumer(
         builder: (context, ref, child) {
@@ -103,10 +105,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    ListTile(
-                      title: Text("uh"),
-                      subtitle: Text("hier suchleiste und filter stuff"),
-                    ),
+                    SearchFilterWidget(filterNotifier: filterNotifier),
                     Row(
                       children: [
                         Text("hier drop down menü"),
@@ -125,8 +124,8 @@ class _ArtistsTabState extends State<ArtistsTab> {
                 ),
               ),
               switch (artistList) {
-                //AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
-                AsyncValue(:final value?) => buildListView(value, context, screenSize.width),
+                AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: true,),//noch schauen wie ich die index buchstaben einfügen kann
+                //AsyncValue(:final value?) => SliverToBoxAdapter(child: buildListView(value, context, screenSize.width)),
                 AsyncValue(error: != null) => Center(child: const Text("Error")),
                 AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
               },

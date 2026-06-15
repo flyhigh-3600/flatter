@@ -81,7 +81,7 @@ class SearchArtistScreen extends StatelessWidget {
         builder: (context,ref,child) {
           final fullSearchResults = ref.watch(riverpodManager.fullSearchProvider(query));
           return switch (fullSearchResults) {
-            AsyncValue(:final value?) => ArtistGrid(artistListNullable: value['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: false),
+            AsyncValue(:final value?) => ArtistGrid(artistListNullable: value['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: false,withIndexesGiven: false,),
             AsyncValue(error: != null) => Text("error"),
             AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
           };

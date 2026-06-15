@@ -258,7 +258,7 @@ class SearchScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ArtistGrid(artistListNullable: value['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true),
+                      ArtistGrid(artistListNullable: value['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true,withIndexesGiven: false,),
                       if (value['album'] != null)
                         SliverToBoxAdapter(
                           child: Row(

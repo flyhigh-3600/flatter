@@ -8,18 +8,25 @@ import 'artist_screen/artist_screen.dart';
 import 'itemMenus.dart';//TODO:Item menus hierfür hinzufügen
 
 class ArtistGrid extends StatelessWidget {
-  const ArtistGrid({super.key,required this.artistListNullable,required this.crossAxisCount,required this.sliver,this.filterNotifier});
+  const ArtistGrid({super.key,required this.artistListNullable,required this.crossAxisCount,required this.sliver,this.filterNotifier,required this.withIndexesGiven});
   final List<dynamic>? artistListNullable;
   final int crossAxisCount;
   final bool sliver;
   final ValueNotifier<String>? filterNotifier;
+  final bool withIndexesGiven;
 
   @override
   Widget build(BuildContext context) {
     List<dynamic> artistList = [];
     if (artistListNullable != null && artistListNullable?.isEmpty == false) {
       print(artistListNullable);
-      artistList.addAll(artistListNullable!);
+      if (withIndexesGiven == true) {
+        for (Map index in artistListNullable!) {
+          artistList.addAll(index['artist']);
+        }
+      } else {
+        artistList.addAll(artistListNullable!);
+      }
     } else {
       if (sliver == true) {
         return SliverToBoxAdapter(
