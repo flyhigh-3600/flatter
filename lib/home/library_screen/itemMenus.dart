@@ -142,6 +142,22 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: Text("Artist"),
     );
   }
+  PopupMenuEntry unFavorite(String? songID,String? albumID,String? artistID) {//TODO:später zu dem machen, dass du zwischen mehreren artists auswählen kannst
+    return PopupMenuItem(
+      onTap: () {
+        unFavoriteLogic(songID, albumID, artistID);
+      },
+      child: Text("(Un)favorite)"),
+    );
+  }
+  Future<void> unFavoriteLogic(String? songID,String? albumID,String? artistID) async {
+    bool favoriteStatus = await subsonicService.checkStarred(songID, albumID, artistID);
+    if (favoriteStatus == true) {
+      subsonicService.starUnstar(true, songID, albumID, artistID);
+    } else {
+      subsonicService.starUnstar(false, songID, albumID, artistID);
+    }
+  }
   //More Sheet Menu Entry Actions
   ListTile playNowMoreSheet(List<MediaItem> items) {
     return ListTile(
@@ -272,8 +288,16 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       title: Text("Artist"),
     );
   }
+  ListTile unFavoriteMoreSheet(String? songID,String? albumID, String? artistID) {//TODO:später zu dem machen, dass du zwischen mehreren artists auswählen kannst
+    return ListTile(
+      onTap: () {
+        unFavoriteLogic(songID, albumID, artistID);
+      },
+      title: Text("Artist"),
+    );
+  }
 
-  //menus
+  //menus//TODO:favorite/unfavorite noch hinzufügen
   Widget songMenu(Map<dynamic,dynamic> songOld) {
     Map<dynamic,dynamic> song = songOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('songMenuActionOrder');
