@@ -45,6 +45,11 @@ class RiverpodManager {
     return artistDetails;
   });
 
+  final randomSongListProvider = FutureProvider.family<List<dynamic>,List<dynamic>>((ref,List<dynamic> filterSortOptions) async {
+    List<dynamic> randomSongList = await subsonicService.getRandomSongs(filterSortOptions[0], filterSortOptions[1], filterSortOptions[2], filterSortOptions[3]);
+    return randomSongList;
+  });
+
   final artistAppearancesProvider = FutureProvider.family<List<dynamic>,List<String>>((ref,List<String> nameAndId) async {
     List<dynamic> artistAppearances = await subsonicService.getArtistAppearances(nameAndId[0],nameAndId[1]);
     return artistAppearances;

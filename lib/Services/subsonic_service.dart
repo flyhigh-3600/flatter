@@ -175,6 +175,38 @@ class SubsonicService {
     return artistAppearances;
   }
 
+  Future<List<dynamic>> getRandomSongs(int? size,String? genre,int? fromYear,int? toYear) async {
+    List<String> url = getURL(null, null, null);
+    String uriString = "${url[0]}getArtists${url[1]}";
+    if (size != null) {
+      uriString = "$uriString&size=$size";
+    }
+    if (genre != null) {
+      uriString = "$uriString&genre=$genre";
+    }
+    if (fromYear != null) {
+      uriString = "$uriString&fromYear=$fromYear";
+    }
+    if (toYear != null) {
+      uriString = "$uriString&toYear=$toYear";
+    }
+    final uri = Uri.parse(uriString); //from year, to year und genre filtered fehlt da noch
+    try {
+      final data = await http.get(uri);
+      if (data.statusCode != 200) {
+        return [];
+      }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return [];
+      }
+      return subsonicResponse['randomSongs'];
+    } catch (error) {
+      return [];
+    }
+  }
+
   Future<Map<dynamic,dynamic>> getSongDetails(String id) async {
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse("${url[0]}getSong${url[1]}&id=$id");

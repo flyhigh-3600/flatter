@@ -121,7 +121,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
               ),
               switch (albumList) {
                 AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,filterNotifier: filterNotifier,),
-                AsyncValue(error: != null) => Center(child: const Text("Error")),
+                AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: const Text("Error"))),
                 AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
               },
             ],
