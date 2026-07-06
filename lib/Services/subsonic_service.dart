@@ -201,7 +201,7 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return [];
       }
-      return subsonicResponse['randomSongs'];
+      return subsonicResponse['randomSongs']['song'];
     } catch (error) {
       return [];
     }

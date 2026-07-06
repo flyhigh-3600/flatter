@@ -15,7 +15,6 @@ class SongsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
-    final Size screenSize = MediaQuery.sizeOf(context);
     final filterNotifier = ValueNotifier<String>('');
     bool ascending = true;
     List<dynamic> filterSortList = [500,null,null,null];
@@ -45,12 +44,7 @@ class SongsTab extends StatelessWidget {
                 ),
               ),
               switch (randomSongList) {
-                AsyncValue(:final value?) => SliverToBoxAdapter(child: Text(value.toString()),),
-                AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: Text("error"),)),
-                AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),),
-              },
-              switch (randomSongList) {
-                AsyncValue(:final value?) => SongList(listView: true,sliver: true,songListNullable: value,),
+                AsyncValue(:final value?) => SongList(listView: true,sliver: true,songListNullable: value,filterNotifier: filterNotifier,),
                 AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: Text("error"),)),
                 AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),),
               }
