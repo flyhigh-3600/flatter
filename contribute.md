@@ -77,4 +77,4 @@ Uses the pathProvider package to get the operating system specific paths.
 Contains the database controller and the files for the specific datbases. Each database file contains the specific sql "code" needed to do the stuff it needs to do.
 
 ### database_controller.dart
-Contains the database logic. If something is saved to a database, the database controller is used. The database controller is the only class that should acced the specific databases.
+Contains the database logic. If something is saved to a database, the database controller is used. The database controller is the only class that should access the specific databases.

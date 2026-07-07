@@ -28,8 +28,8 @@ class SubsonicService {
       password = serverInfo[2];
     }
     final String salt = getSalt();
-    final String version = "1.16.1";//irgendwo anders herbekommen
-    final String appName = "flatter";//irgendwo anders herbekommen
+    final String version = "1.16.1"; // get this from somewhere else
+    final String appName = "flatter"; // get this from somewhere else
     final String token = md5.convert(utf8.encode(password + salt)).toString();
     return ["https://$baseURL/rest/",".view?u=$username&t=$token&s=$salt&v=$version&c=$appName&f=json"];
   }
@@ -63,9 +63,9 @@ class SubsonicService {
 
   //get things
   Future<List<dynamic>> getAlbums(List<String> filterSortOptions) async {
-    List<String> url = getURL(null, null, null);//das offset mit der anzahl der results probably multiplizieren, das muss ma zumindest bei der search machen
-    String offset = filterSortOptions[2];//TODO:herausfinden waurm und dann später wegmachen wenn es keinen grung gibt. wenn es einen grund gibt dann grund hier hinschreiben------habe ich mich einfach nur gefragt was das offset ist? die seiten
-    final uri = Uri.parse("${url[0]}getAlbumList2${url[1]}&type=${filterSortOptions[0]}&size=${filterSortOptions[1]}&offset=$offset&order=${filterSortOptions[3]}");//from year, to year und genre filtered fehlt da noch
+    List<String> url = getURL(null, null, null); // probably multiply the offset by the number of results, at least that's what has to be done for search
+    String offset = filterSortOptions[2]; // TODO: find out why and remove later if there is no reason. if there is a reason, write it down here ------ was I just wondering what the offset is? the pages
+    final uri = Uri.parse("${url[0]}getAlbumList2${url[1]}&type=${filterSortOptions[0]}&size=${filterSortOptions[1]}&offset=$offset&order=${filterSortOptions[3]}"); // from year, to year and genre filtering is still missing
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
@@ -103,7 +103,7 @@ class SubsonicService {
 
   Future<List<dynamic>> getArtists() async {
     List<String> url = getURL(null, null, null);
-    final uri = Uri.parse("${url[0]}getArtists${url[1]}"); //from year, to year und genre filtered fehlt da noch
+    final uri = Uri.parse("${url[0]}getArtists${url[1]}"); // from year, to year and genre filtering is still missing
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
@@ -190,7 +190,7 @@ class SubsonicService {
     if (toYear != null) {
       uriString = "$uriString&toYear=$toYear";
     }
-    final uri = Uri.parse(uriString); //from year, to year und genre filtered fehlt da noch
+    final uri = Uri.parse(uriString); // from year, to year and genre filtering is still missing
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
@@ -232,7 +232,7 @@ class SubsonicService {
 
   Future<List<dynamic>> getPlaylists() async {
     List<String> url = getURL(null, null, null);
-    final uri = Uri.parse("${url[0]}getPlaylists${url[1]}"); //from year, to year und genre filtered fehlt da noch
+    final uri = Uri.parse("${url[0]}getPlaylists${url[1]}"); // from year, to year and genre filtering is still missing
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
@@ -319,7 +319,7 @@ class SubsonicService {
     }
   }
 
-  Future<Map<dynamic,dynamic>> search(String query,int artistOffset,int albumOffset,int songOffset) async {//hier search2 machen wenn opensubsonic nicht verfügbar ist
+  Future<Map<dynamic,dynamic>> search(String query,int artistOffset,int albumOffset,int songOffset) async { // use search2 here if opensubsonic is not available
     List<String> url = getURL(null, null, null);
     int searchArtistCount = settingsControl.loadSetting('searchArtistCount');
     int searchAlbumCount = settingsControl.loadSetting('searchAlbumCount');
@@ -349,7 +349,7 @@ class SubsonicService {
   Future<Map<dynamic,dynamic>> fullSearch(String query) async {
     List<String> url = getURL(null, null, null);
     int iteration = 0;
-    int count = 500;//eig egal welche zahl, hauptsache hoch, ich weiß nicht was das maximum ist
+    int count = 500; // the exact number doesn't matter as long as it is high, I don't know what the maximum is
     final uri = Uri.parse("${url[0]}search3${url[1]}&query=$query&artistCount=$count&albumCount=$count&songCount=$count&artistOffset=${count * iteration}&albumOffset=${count * iteration}&songOffset=${count * iteration}");
     Map<dynamic,dynamic> fullSearchResults = {};
     List<dynamic> artistResultList = [];
